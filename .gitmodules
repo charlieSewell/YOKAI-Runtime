@@ -1,0 +1,3 @@
+[submodule "lib/ICT398-Game-Engine"]
+	path = lib/ICT398-Game-Engine
+	url = git@github.com:charlieSewell/ICT398-Game-Engine.git
