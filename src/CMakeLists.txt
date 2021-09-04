@@ -2,6 +2,7 @@
 target_sources(${PROJECT_NAME} PRIVATE
         main.cpp
 
+		DemoScene.cpp
 )
 
 # Include project header files.
