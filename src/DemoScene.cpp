@@ -3,6 +3,8 @@
 void DemoScene::Init() 
 {
 	std::cout << "Layer Init\n";
+	
+	testObject.AddComponent(
 }
 
 void DemoScene::Update(float frameRate)

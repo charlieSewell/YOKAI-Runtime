@@ -1,6 +1,6 @@
 
 #include "Controller/Yokai.hpp"
-#include "DemoScene.hpp"
+#include "DemoScene/DemoScene.hpp"
 
 int main()
 {
