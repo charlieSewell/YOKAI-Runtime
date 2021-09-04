@@ -3,6 +3,8 @@
 #include "Controller/Layer.hpp"
 #include "Model/GameObject.hpp"
 #include "Model/Components/DrawableEntity.hpp"
+#include "Model/Components/PlayerControlledMotion.hpp"
+
 //#include "Controller/UIManager.hpp"
 
 /**
@@ -18,9 +20,9 @@ class DemoScene : public Layer
      * @brief Initialised the Scene
      */
     void Init() override;
-    /**
-     * @brief Updates the Scene
-     */
+	/**
+	 * @brief Updates the Scene
+	 */
     void Update(float frameRate) override;
     /**
      * @brief Draws the Scene
@@ -39,6 +41,6 @@ class DemoScene : public Layer
     ///Is this scene active
     bool isEnabled = true;
 
-	
-	GameObject testObject;
+	GameObject Player;
+	GameObject LectureTheatre;
 };
