@@ -4,6 +4,7 @@
 #include "Model/Component.hpp"
 #include "Model/Components/PlayerControlledMotion.hpp"
 #include "Model/Components/Camera.hpp"
+#include "Controller/InputComponent.hpp"
 
 class GameObject;
 
@@ -17,7 +18,13 @@ public:
 	void Draw();
 
 private:
-	GameObject* player;
+	GameObject* gameObject;
 	std::shared_ptr<PlayerControlledMotion> playerControlledMotion;
 	std::shared_ptr<Camera> camera;
+	std::shared_ptr<Input> input;
+
+	float movementSpeed = 0;
+	float lookSensitivity = 0;
+
+	void UpdateMovement();
 };

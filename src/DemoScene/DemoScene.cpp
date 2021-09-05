@@ -10,13 +10,13 @@ void DemoScene::Init()
 {
 	Player.AddComponent<PlayerScript>();
 
-	LectureTheatre.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/LectureTheatre.gltf");
+	LectureTheatre.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/Theatre.gltf");
 	LectureTheatre.Start();	// This line only exists to add a transform. Should come up with a better solution
 }
 
 void DemoScene::Update(float frameRate)
 {
-
+	Player.Update(frameRate);
 }
 
 void DemoScene::Draw()
