@@ -5,7 +5,6 @@ PlayerScript::PlayerScript(GameObject* parent)
 	Component(parent),
 	gameObject(parent),
 	camera(gameObject->AddComponent<Camera>()),
-	playerControlledMotion(gameObject->AddComponent<PlayerControlledMotion>()),
 	input(gameObject->AddComponent<Input>())
 
 {
@@ -16,6 +15,7 @@ void PlayerScript::Awake()
 {
 	movementSpeed = 0.01f;
 	lookSensitivity = 0.05f;
+	sprintMultiplyer = 4;
 }
 
 void PlayerScript::Start()
@@ -44,26 +44,34 @@ void PlayerScript::UpdateMovement()
 	if (input->GetKeyState('a'))
 		camera->m_position -= glm::normalize(glm::cross(camera->m_frontDirection, camera->m_upDirection)) * movementSpeed;
 
-	if (input->GetKeyState('d'))
+	if (input->GetKeyState('p'))
 		camera->m_position += glm::normalize(glm::cross(camera->m_frontDirection, camera->m_upDirection)) * movementSpeed;
 
 	if (input->GetKeyState(' '))
 		camera->m_position += camera->m_upDirection * movementSpeed;
 
-	if (input->GetKeyState('c'))
+	if (input->GetKeyState(SPECIAL::LEFT_CONTROL))
 		camera->m_position -= camera->m_upDirection * movementSpeed;
 
-	static double xoffset = input->GetMouseOffset().x;
-	static double yoffset = input->GetMouseOffset().y;
+	if (input->GetKeyState(SPECIAL::LEFT_SHIFT))
+	{
+		if(!sprintActive)
+			movementSpeed *= sprintMultiplyer;
 
-	double yaw = -90.0f;
-	double pitch = 0.0f;
+		sprintActive = true;
+	}
+	else
+	{
+		if (sprintActive)
+			movementSpeed /= sprintMultiplyer;
 
-	xoffset *= lookSensitivity;
-	yoffset *= lookSensitivity;
+		sprintActive = false;
+	}
+		
 
-	yaw += xoffset;
-	pitch -= yoffset;
+
+	yaw += input->GetMouseState().offset.x * lookSensitivity;
+	pitch -= input->GetMouseState().offset.y * lookSensitivity;
 
 	// stops bad weird camera movement
 	if (pitch > 89.0f)
