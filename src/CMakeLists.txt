@@ -2,7 +2,8 @@
 target_sources(${PROJECT_NAME} PRIVATE
         main.cpp
 
-	DemoScene/DemoScene.cpp
+		DemoScene/DemoScene.cpp
+		DemoScene/ScuffedPhysicsComponent.cpp
 )
 
 # Include project header files.
