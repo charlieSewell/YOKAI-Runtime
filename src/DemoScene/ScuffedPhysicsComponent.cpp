@@ -14,7 +14,7 @@ void ScuffedPhysicsComponent::Start()
         m_parent->AddComponent<Transform>();
     }
 
-    m_parent->GetComponent<Transform>()->setPosition(50,0,50);
+    m_parent->GetComponent<Transform>()->setPosition(0,0,26);
     modelID = m_parent->GetComponent<DrawableEntity>()->GetModelID();
     Model* model = Yokai::getInstance().getModelManager()->GetModel(modelID);
     std::vector<Mesh>::iterator mesh;
@@ -46,7 +46,17 @@ void ScuffedPhysicsComponent::Start()
             }
         }
     }
-    colliderID = PhysicsSystem::getInstance().addTerrainShape(3,m_parent->GetComponent<Transform>().get(),height);
+    for(auto& x : height)
+    {
+        for(auto& y : x)
+        {
+         if(y == 0)
+            y = 5;
+        } 
+        //std::cout << std::endl;
+    }
+    m_parent->GetComponent<Transform>()->setPosition(0,0,26);
+    colliderID = PhysicsSystem::getInstance().addTerrainShape(m_parent->GetObjectID(),m_parent->GetComponent<Transform>().get(),height);
 }
 
 void ScuffedPhysicsComponent::Update(float deltaTime)
