@@ -1,19 +1,23 @@
 #include "PLayerScript.hpp"
 
 PlayerScript::PlayerScript(GameObject* parent)
-	: 
+	:
 	Component(parent),
 	gameObject(parent),
+	transform(gameObject->AddComponent<Transform>()),
 	camera(gameObject->AddComponent<Camera>()),
-	input(gameObject->AddComponent<Input>())
-
+	input(gameObject->AddComponent<Input>()),
+	sphereCollider(gameObject->AddComponent<SphereCollider>())
 {
 	Awake();
 }
 
 void PlayerScript::Awake()
 {
-	movementSpeed = 0.01f;
+	//camera->m_position = glm::vec3(8, 20, 5);
+	transform->setPosition(glm::vec3(18, 5, 4));
+	//camera->m_position = glm::vec3(11, 20, 21);
+	movementSpeed = 3.05f;
 	lookSensitivity = 0.05f;
 	sprintMultiplyer = 4;
 }
@@ -27,6 +31,7 @@ void PlayerScript::Start()
 void PlayerScript::Update(float deltaTime)
 {
 	UpdateMovement();
+	std::cout << camera->m_position.x << ", " << camera->m_position.y << ", " << camera->m_position.z << ", \n";
 }
 
 void PlayerScript::Draw()
@@ -36,23 +41,25 @@ void PlayerScript::Draw()
 
 void PlayerScript::UpdateMovement()
 {
+	glm::vec3 tempPosition = glm::vec3(0, 0, 0);
+
 	if(input->GetKeyState('w'))
-		camera->m_position += glm::vec3(camera->m_frontDirection.x, 0, camera->m_frontDirection.z) * movementSpeed;
+		tempPosition += glm::vec3(camera->m_frontDirection.x, 0, camera->m_frontDirection.z) * movementSpeed;
 
 	if (input->GetKeyState('s'))
-		camera->m_position -= glm::vec3(camera->m_frontDirection.x, 0, camera->m_frontDirection.z) * movementSpeed;
+		tempPosition -= glm::vec3(camera->m_frontDirection.x, 0, camera->m_frontDirection.z) * movementSpeed;
 
 	if (input->GetKeyState('a'))
-		camera->m_position -= glm::normalize(glm::cross(camera->m_frontDirection, camera->m_upDirection)) * movementSpeed;
+		tempPosition -= glm::normalize(glm::cross(camera->m_frontDirection, camera->m_upDirection)) * movementSpeed;
 
-	if (input->GetKeyState('p'))
-		camera->m_position += glm::normalize(glm::cross(camera->m_frontDirection, camera->m_upDirection)) * movementSpeed;
+	if (input->GetKeyState('d'))
+		tempPosition += glm::normalize(glm::cross(camera->m_frontDirection, camera->m_upDirection)) * movementSpeed;
 
 	if (input->GetKeyState(' '))
-		camera->m_position += camera->m_upDirection * movementSpeed;
+		tempPosition += camera->m_upDirection * movementSpeed;
 
 	if (input->GetKeyState(SPECIAL::LEFT_CONTROL))
-		camera->m_position -= camera->m_upDirection * movementSpeed;
+		tempPosition -= camera->m_upDirection * movementSpeed;
 
 	if (input->GetKeyState(SPECIAL::LEFT_SHIFT))
 	{
@@ -85,4 +92,10 @@ void PlayerScript::UpdateMovement()
 	direction.y = sin(glm::radians(pitch));
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	camera->m_frontDirection = glm::normalize(direction);
+
+
+	//sphereCollider->NewPosition = transform->getPosition() + tempPosition;
+	sphereCollider->NewPosition = tempPosition;
+	//transform->setPosition(transform->getPosition() + tempPosition);
+	camera->m_position = transform->getPosition();
 }

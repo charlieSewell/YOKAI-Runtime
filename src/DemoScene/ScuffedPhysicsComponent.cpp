@@ -5,7 +5,11 @@
 #include "ScuffedPhysicsComponent.hpp"
 #include "Controller/Yokai.hpp"
 
-ScuffedPhysicsComponent::ScuffedPhysicsComponent(GameObject* parent) : Component(parent){}
+ScuffedPhysicsComponent::ScuffedPhysicsComponent(GameObject* parent)
+	: Component(parent), UpdateTransform()
+{
+
+}
 
 void ScuffedPhysicsComponent::Start()
 {
@@ -56,7 +60,7 @@ void ScuffedPhysicsComponent::Start()
         //std::cout << std::endl;
     }
     m_parent->GetComponent<Transform>()->setPosition(0,0,26);
-    colliderID = PhysicsSystem::getInstance().addTerrainShape(m_parent->GetObjectID(),m_parent->GetComponent<Transform>().get(),height);
+    colliderID = PhysicsSystem::getInstance().addTerrainShape(m_parent->GetObjectID(), &UpdateTransform, height);
 }
 
 void ScuffedPhysicsComponent::Update(float deltaTime)
