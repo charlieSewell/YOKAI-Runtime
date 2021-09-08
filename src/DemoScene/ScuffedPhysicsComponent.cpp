@@ -16,12 +16,11 @@ void ScuffedPhysicsComponent::Start()
 
     m_parent->GetComponent<Transform>()->setPosition(0,0,26);
     modelID = m_parent->GetComponent<DrawableEntity>()->GetModelID();
-    Model* model = Yokai::getInstance().getModelManager()->GetModel(modelID);
+    std::shared_ptr<Model> model = Yokai::getInstance().getModelManager()->GetModel(modelID);
     std::vector<Mesh>::iterator mesh;
     std::vector<std::vector<float>> height;
     height.resize(100);
     modelID = m_parent->GetComponent<DrawableEntity>()->GetModelID();
-    int meshCount =0;
     for(auto& vec : height)
     {
         vec.resize(100);
