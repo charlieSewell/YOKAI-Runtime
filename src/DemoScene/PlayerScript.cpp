@@ -31,7 +31,7 @@ void PlayerScript::Start()
 void PlayerScript::Update(float deltaTime)
 {
 	UpdateMovement();
-	//std::cout << camera->m_position.x << ", " << camera->m_position.y << ", " << camera->m_position.z << ", \n";
+	std::cout << camera->m_position.x << ", " << camera->m_position.y << ", " << camera->m_position.z << ", \n";
 }
 
 void PlayerScript::Draw()
