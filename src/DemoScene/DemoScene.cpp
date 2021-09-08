@@ -1,6 +1,7 @@
 #include "DemoScene.hpp"
-#include "Model/Components/SphereCollider.hpp"
 #include "ScuffedPhysicsComponent.hpp"
+#include "PlayerScript.hpp"
+#include "Model/Components/SphereCollider.hpp"
 DemoScene::DemoScene()
 {
 
@@ -8,17 +9,13 @@ DemoScene::DemoScene()
 
 void DemoScene::Init() 
 {
-	Player.AddComponent<Camera>();
-    Player.AddComponent<Transform>();
-	Player.AddComponent<PlayerControlledMotion>();
-	Player.GetComponent<PlayerControlledMotion>()->registerAllMovement(Player.GetComponent<Camera>()->m_frontDirection, Player.GetComponent<Camera>()->m_upDirection, Player.GetComponent<Camera>()->m_position);
+	Player.AddComponent<PlayerScript>();
+	Player.AddComponent<SphereCollider>();
     Player.GetComponent<Camera>()->m_position = glm::vec3(45,15,70);
-    Player.AddComponent<SphereCollider>();
-    Player.Start();
-	LectureTheatre.AddComponent<DrawableEntity>();
-	LectureTheatre.GetComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/TheatreNoCeilingCentered.gltf");
+	Player.Start();
+	LectureTheatre.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/TheatreNoCeilingCentered.gltf");
 	LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
-	LectureTheatre.Start();
+	LectureTheatre.Start();	// This line only exists to add a transform. Should come up with a better solution
 }
 
 void DemoScene::Update(float frameRate)
