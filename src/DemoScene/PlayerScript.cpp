@@ -20,7 +20,8 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-
+	
+    
 }
 
 void PlayerScript::Update(float deltaTime)
