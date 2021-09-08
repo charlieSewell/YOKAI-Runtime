@@ -42,4 +42,6 @@ class DemoScene : public Layer
 	GameObject Player;
 	GameObject LectureTheatre;
 	GameObject Test;
+    GameObject LectureTheatreCeiling;
+    GameObject LectureTheatreExtras;
 };
