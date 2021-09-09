@@ -16,6 +16,7 @@ void PlayerScript::Awake()
 {
 	//camera->m_position = glm::vec3(8, 20, 5);
 	transform->setPosition(glm::vec3(18, 5, 4));
+	sphereCollider->NewPosition = transform->getPosition();
 	//camera->m_position = glm::vec3(11, 20, 21);
 	movementSpeed = 3.05f;
 	lookSensitivity = 0.05f;
@@ -31,7 +32,7 @@ void PlayerScript::Start()
 void PlayerScript::Update(float deltaTime)
 {
 	UpdateMovement();
-	std::cout << camera->m_position.x << ", " << camera->m_position.y << ", " << camera->m_position.z << ", \n";
+	//std::cout << camera->m_position.x << ", " << camera->m_position.y << ", " << camera->m_position.z << ", \n";
 }
 
 void PlayerScript::Draw()

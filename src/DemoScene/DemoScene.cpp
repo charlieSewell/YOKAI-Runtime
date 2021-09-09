@@ -13,19 +13,21 @@ void DemoScene::Init()
 {
 	Player.AddComponent<PlayerScript>();
 	Player.Start();
-	LectureTheatre.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
-	//LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
-	Test.AddComponent<BoxCollider>();
-	Test.GetComponent<BoxCollider>()->SetExtents(glm::vec3(100, 1, 100));
-	Test.Start();
 
+	LectureTheatre.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
 	LectureTheatreCeiling.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
 	LectureTheatreExtras.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
+	//LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
+	Test.AddComponent<BoxCollider>()->SetExtents(glm::vec3(100, 0, 100));
+	//Test.GetComponent<BoxCollider>()->SetExtents(glm::vec3(100, 1, 100));
+	//LectureTheatreCeiling.AddComponent<Transform>()->setPosition(0, 0, 0);
+	Test.Start();
+
 	LectureTheatreCeiling.Start();
 	LectureTheatreExtras.Start();
 	LectureTheatreCeiling.GetComponent<Transform>()->setPosition(0, 0, 26);
 	LectureTheatreExtras.GetComponent<Transform>()->setPosition(0, 0, 26);
-	LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
+	//LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
 	LectureTheatre.Start();	// This line only exists to add a transform. Should come up with a better solution
 }
 

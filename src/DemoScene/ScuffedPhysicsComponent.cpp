@@ -37,7 +37,7 @@ void ScuffedPhysicsComponent::Start()
 
             glm::vec4 temp = m_parent->GetComponent<Transform>()->getMatrix() * mesh->getTransform() * glm::vec4(vertice->position,1.0);
 
-            if(height.at(static_cast<int>(temp.x)).at(static_cast<int>(temp.z)) != 0)
+            if(height.at(static_cast<int>(temp.z)).at(static_cast<int>(temp.x)) != 0)
             {
                 if(height.at(static_cast<int>(temp.x)).at(static_cast<int>(temp.z)) <= temp.y)
                 {
@@ -46,7 +46,7 @@ void ScuffedPhysicsComponent::Start()
             }
             else
             {
-                height.at(static_cast<int>(temp.x)).at(static_cast<int>(temp.z)) = temp.y;
+                height.at(static_cast<int>(temp.z)).at(static_cast<int>(temp.x)) = temp.y;
             }
         }
     }
@@ -54,8 +54,9 @@ void ScuffedPhysicsComponent::Start()
     {
         for(auto& y : x)
         {
-         if(y == 0)
-            y = 5;
+			//std::cout << y << ", ";
+			if(y == 0)
+				y = 5;
         } 
         //std::cout << std::endl;
     }
