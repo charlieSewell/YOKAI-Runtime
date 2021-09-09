@@ -15,8 +15,8 @@ PlayerScript::PlayerScript(GameObject* parent)
 void PlayerScript::Awake()
 {
 	//camera->m_position = glm::vec3(8, 20, 5);
-	transform->setPosition(glm::vec3(18, 5, 4));
-	sphereCollider->NewPosition = transform->getPosition();
+	transform->setPosition(glm::vec3(16, 2, -5));
+	//sphereCollider->NewVelocity = transform->getPosition();
 	//camera->m_position = glm::vec3(11, 20, 21);
 	movementSpeed = 3.05f;
 	lookSensitivity = 0.05f;
@@ -96,7 +96,9 @@ void PlayerScript::UpdateMovement()
 
 
 	//sphereCollider->NewPosition = transform->getPosition() + tempPosition;
-	sphereCollider->NewPosition = tempPosition;
+	tempPosition.y -= movementSpeed / 4; //(gravity)
+	sphereCollider->NewVelocity = tempPosition;
 	//transform->setPosition(transform->getPosition() + tempPosition);
 	camera->m_position = transform->getPosition();
+	camera->m_position.y += 0.75;
 }
