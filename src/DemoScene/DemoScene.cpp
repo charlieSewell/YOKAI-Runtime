@@ -13,6 +13,7 @@ void DemoScene::Init()
 {
 	Player.AddComponent<PlayerScript>();
 	Player.Start();
+<<<<<<< HEAD
 
 	LectureTheatre.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
 	LectureTheatreCeiling.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
@@ -36,6 +37,8 @@ void DemoScene::Update(float frameRate)
     Player.Update(frameRate);
 	//LectureTheatre.GetComponent<ScuffedPhysicsComponent>()->UpdateTransform.setPosition(Player.GetComponent<Camera>()->m_position);
 	//LectureTheatre.GetComponent<ScuffedPhysicsComponent>()->UpdateTransform.setPosition(Player.GetComponent<Camera>()->m_position);
+
+	PhysicsSystem::getInstance().RendererUpdate();
 }
 
 void DemoScene::Draw()
@@ -43,6 +46,7 @@ void DemoScene::Draw()
 	LectureTheatre.Draw();
 	LectureTheatreCeiling.Draw();
 	LectureTheatreExtras.Draw();
+	PhysicsSystem::getInstance().Draw();
 }
 
 void DemoScene::Enable()
