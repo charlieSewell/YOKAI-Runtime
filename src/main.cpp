@@ -6,7 +6,10 @@ int main()
 {
 	auto& engine = Yokai::getInstance();
 	engine.addScene(std::shared_ptr<Layer>(new DemoScene()));
-	engine.Init();
+	if(!engine.Init())
+	{
+		exit(EXIT_FAILURE);
+	}
     engine.Run();
 	return 0;
 }

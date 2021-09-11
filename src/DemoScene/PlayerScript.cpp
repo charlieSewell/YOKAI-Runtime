@@ -1,4 +1,4 @@
-#include "PLayerScript.hpp"
+#include "PlayerScript.hpp"
 
 PlayerScript::PlayerScript(GameObject* parent)
 	:

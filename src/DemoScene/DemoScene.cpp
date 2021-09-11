@@ -15,6 +15,7 @@ void DemoScene::Init()
 	Player.Start();
 
 	LectureTheatre.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
+	//LectureTheatre.AddComponent<ConcaveCollider>();
 	LectureTheatreCeiling.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
 	LectureTheatreExtras.AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
 	//LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
@@ -46,7 +47,6 @@ void DemoScene::Draw()
 	LectureTheatre.Draw();
 	LectureTheatreCeiling.Draw();
 	LectureTheatreExtras.Draw();
-
 	if(m_physicsOn)
 		PhysicsSystem::getInstance().Draw();
 }
