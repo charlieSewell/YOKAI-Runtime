@@ -43,15 +43,15 @@ class DemoScene : public Layer
 
 	bool m_physicsOn;
 
-	GameObject Player;
-	GameObject LectureTheatre;
-  GameObject LectureTheatreCeiling;
-  GameObject LectureTheatreExtras;
-	GameObject UIInputObject;
+	unsigned int Player;
+	unsigned int LectureTheatre;
+  unsigned int LectureTheatreCeiling;
+  unsigned int LectureTheatreExtras;
+	unsigned int UIInputObject;
 	std::shared_ptr<Input> UIinput;
 
 	//colliders
-	GameObject FloorCollider;
-	GameObject DeskCollider;
+	unsigned int FloorCollider;
+	unsigned int DeskCollider;
 
 };
