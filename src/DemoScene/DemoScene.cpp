@@ -1,5 +1,4 @@
 #include "DemoScene.hpp"
-#include "ScuffedPhysicsComponent.hpp"
 #include "PlayerScript.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/BoxCollider.hpp"
@@ -19,14 +18,11 @@ void DemoScene::Init()
 	LectureTheatreCeiling = objectManager.CreateObject();
 	LectureTheatreExtras = objectManager.CreateObject();
 	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
-	//LectureTheatre.AddComponent<ConcaveCollider>();
 	objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
 	objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
-	//LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
 
 	objectManager.GetObject(LectureTheatreCeiling)->Start();
 	objectManager.GetObject(LectureTheatreExtras)->Start();
-	//LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
 	objectManager.GetObject(LectureTheatre)->Start();	// This line only exists to add a transform. Should come up with a better solution
 
 	// COLLIDERS
@@ -38,9 +34,6 @@ void DemoScene::Init()
 void DemoScene::Update(float frameRate)
 {
     objectManager.Update(frameRate);
-	//LectureTheatre.GetComponent<ScuffedPhysicsComponent>()->UpdateTransform.setPosition(Player.GetComponent<Camera>()->m_position);
-	//LectureTheatre.GetComponent<ScuffedPhysicsComponent>()->UpdateTransform.setPosition(Player.GetComponent<Camera>()->m_position);
-
 	PhysicsSystem::getInstance().RendererUpdate();
 	m_physicsOn = UIinput->GetKeyState('f');
 
