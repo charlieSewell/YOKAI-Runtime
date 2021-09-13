@@ -3,11 +3,11 @@
 //
 
 #pragma once
-#include "Model/Component.hpp"
-#include "Model/GameObject.hpp"
+#include "Components/Component.hpp"
+#include "Engine/GameObject.hpp"
 
-#include "Model/Components/Transform.hpp"
-#include "Model/Components/DrawableEntity.hpp"
+#include "Components/Transform.hpp"
+#include "Components/DrawableEntity.hpp"
 class ScuffedPhysicsComponent : public Component{
 public:
     ScuffedPhysicsComponent(GameObject* parent);

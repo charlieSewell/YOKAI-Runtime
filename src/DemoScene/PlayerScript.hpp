@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Model/GameObject.hpp"
-#include "Model/Components/Transform.hpp"
-#include "Model/Component.hpp"
-#include "Model/Components/Camera.hpp"
-#include "Model/Components/SphereCollider.hpp"
-#include "Controller/InputComponent.hpp"
-#include "Model/Components/ConcaveCollider.hpp"
+#include "Engine/GameObject.hpp"
+#include "Components/Transform.hpp"
+#include "Components/Component.hpp"
+#include "Components/Camera.hpp"
+#include "Components/SphereCollider.hpp"
+#include "Components/InputComponent.hpp"
+#include "Components/ConcaveCollider.hpp"
 
 class GameObject;
 

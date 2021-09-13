@@ -3,7 +3,7 @@
 //
 
 #include "ScuffedPhysicsComponent.hpp"
-#include "Controller/Yokai.hpp"
+#include "Engine/Yokai.hpp"
 
 ScuffedPhysicsComponent::ScuffedPhysicsComponent(GameObject* parent)
 	: Component(parent), UpdateTransform()

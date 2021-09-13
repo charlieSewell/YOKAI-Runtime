@@ -1,8 +1,8 @@
 #include "DemoScene.hpp"
 #include "ScuffedPhysicsComponent.hpp"
 #include "PlayerScript.hpp"
-#include "Model/Components/SphereCollider.hpp"
-#include "Model/Components/BoxCollider.hpp"
+#include "Components/SphereCollider.hpp"
+#include "Components/BoxCollider.hpp"
 
 DemoScene::DemoScene()
 {
