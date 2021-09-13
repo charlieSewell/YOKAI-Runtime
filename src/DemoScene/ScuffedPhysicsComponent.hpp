@@ -13,6 +13,7 @@ public:
     ScuffedPhysicsComponent(GameObject* parent);
     void Start();
     void Update(float deltaTime);
+	Transform UpdateTransform;
 private:
     unsigned int colliderID;
     unsigned int modelID;

@@ -5,7 +5,11 @@
 #include "ScuffedPhysicsComponent.hpp"
 #include "Controller/Yokai.hpp"
 
-ScuffedPhysicsComponent::ScuffedPhysicsComponent(GameObject* parent) : Component(parent){}
+ScuffedPhysicsComponent::ScuffedPhysicsComponent(GameObject* parent)
+	: Component(parent), UpdateTransform()
+{
+
+}
 
 void ScuffedPhysicsComponent::Start()
 {
@@ -16,12 +20,11 @@ void ScuffedPhysicsComponent::Start()
 
     m_parent->GetComponent<Transform>()->setPosition(0,0,26);
     modelID = m_parent->GetComponent<DrawableEntity>()->GetModelID();
-    Model* model = Yokai::getInstance().getModelManager()->GetModel(modelID);
+    std::shared_ptr<Model> model = Yokai::getInstance().getModelManager()->GetModel(modelID);
     std::vector<Mesh>::iterator mesh;
     std::vector<std::vector<float>> height;
     height.resize(100);
     modelID = m_parent->GetComponent<DrawableEntity>()->GetModelID();
-    int meshCount =0;
     for(auto& vec : height)
     {
         vec.resize(100);
@@ -33,7 +36,7 @@ void ScuffedPhysicsComponent::Start()
 
             glm::vec4 temp = m_parent->GetComponent<Transform>()->getMatrix() * mesh->getTransform() * glm::vec4(vertice->position,1.0);
 
-            if(height.at(static_cast<int>(temp.x)).at(static_cast<int>(temp.z)) != 0)
+            if(height.at(static_cast<int>(temp.z)).at(static_cast<int>(temp.x)) != 0)
             {
                 if(height.at(static_cast<int>(temp.x)).at(static_cast<int>(temp.z)) <= temp.y)
                 {
@@ -42,7 +45,7 @@ void ScuffedPhysicsComponent::Start()
             }
             else
             {
-                height.at(static_cast<int>(temp.x)).at(static_cast<int>(temp.z)) = temp.y;
+                height.at(static_cast<int>(temp.z)).at(static_cast<int>(temp.x)) = temp.y;
             }
         }
     }
@@ -50,13 +53,14 @@ void ScuffedPhysicsComponent::Start()
     {
         for(auto& y : x)
         {
-         if(y == 0)
-            y = 5;
+			//std::cout << y << ", ";
+			if(y == 0)
+				y = 5;
         } 
         //std::cout << std::endl;
     }
     m_parent->GetComponent<Transform>()->setPosition(0,0,26);
-    colliderID = PhysicsSystem::getInstance().addTerrainShape(m_parent->GetObjectID(),m_parent->GetComponent<Transform>().get(),height);
+    colliderID = PhysicsSystem::getInstance().addTerrainShape(m_parent->GetObjectID(), &UpdateTransform, height);
 }
 
 void ScuffedPhysicsComponent::Update(float deltaTime)

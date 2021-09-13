@@ -3,7 +3,7 @@
 #include "Controller/Layer.hpp"
 #include "Model/GameObject.hpp"
 #include "Model/Components/DrawableEntity.hpp"
-#include "Model/Components/ConcaveCollider.hpp"
+#include "Controller/InputComponent.hpp"
 //#include "Controller/UIManager.hpp"
 
 /**
@@ -36,12 +36,22 @@ class DemoScene : public Layer
      */
     void Disable() override;
   private:
-
+	
+	void InitColliders();
     ///Is this scene active
     bool isEnabled = true;
 
-	GameObject Player;
-	GameObject LectureTheatre;
-    GameObject LectureTheatreCeiling;
-    GameObject LectureTheatreExtras;
+	bool m_physicsOn;
+
+	unsigned int Player;
+	unsigned int LectureTheatre;
+  unsigned int LectureTheatreCeiling;
+  unsigned int LectureTheatreExtras;
+	unsigned int UIInputObject;
+	std::shared_ptr<Input> UIinput;
+
+	//colliders
+	unsigned int FloorCollider;
+	unsigned int DeskCollider;
+
 };
