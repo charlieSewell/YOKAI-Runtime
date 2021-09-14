@@ -17,16 +17,20 @@ void DemoScene::Init()
 	LectureTheatre = objectManager.CreateObject();
 	LectureTheatreCeiling = objectManager.CreateObject();
 	LectureTheatreExtras = objectManager.CreateObject();
-	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
-	objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
-	objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
+	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
+	//objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
+	//objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
+	//objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
 
-	objectManager.GetObject(LectureTheatreCeiling)->Start();
-	objectManager.GetObject(LectureTheatreExtras)->Start();
+	//objectManager.GetObject(LectureTheatreCeiling)->Start();
+	//objectManager.GetObject(LectureTheatreExtras)->Start();
 	objectManager.GetObject(LectureTheatre)->Start();	// This line only exists to add a transform. Should come up with a better solution
-
+	objectManager.GetObject(LectureTheatre)->GetComponent<Transform>()->scale(0.1);
+	//unsigned int obj = objectManager.CreateObject();
+	//objectManager.GetObject(obj)->AddComponent<DrawableEntity>()->LoadModel("content/Zombie/ZombieSmooth.gltf");
+	//objectManager.GetObject(obj)->Start();
 	// COLLIDERS
-	InitColliders();
+	//InitColliders();
 	UIInputObject = objectManager.CreateObject();
 	UIinput = objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
