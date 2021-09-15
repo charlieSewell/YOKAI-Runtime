@@ -15,7 +15,7 @@ PlayerScript::PlayerScript(GameObject* parent)
 
 void PlayerScript::Awake()
 {
-	transform->setPosition(glm::vec3(16, 2, -5));
+	
 	movementSpeed = 3.05f;
 	lookSensitivity = 0.05f;
 	sprintMultiplyer = 4;
@@ -23,7 +23,7 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-	
+	transform->setPosition(glm::vec3(0, 8, 0));
     
 }
 

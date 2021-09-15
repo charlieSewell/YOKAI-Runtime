@@ -15,8 +15,8 @@ void DemoScene::Init()
 	objectManager.GetObject(Player)->Start();
 
 	LectureTheatre = objectManager.CreateObject();
-	LectureTheatreCeiling = objectManager.CreateObject();
-	LectureTheatreExtras = objectManager.CreateObject();
+	//LectureTheatreCeiling = objectManager.CreateObject();
+	//LectureTheatreExtras = objectManager.CreateObject();
 	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
 	//objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
 	//objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
