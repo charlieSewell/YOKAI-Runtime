@@ -67,7 +67,7 @@ void main() {
 	for (uint i = 0; i < 1024 && visibleLightIndicesBuffer.data[offset + i].index != -1; i++) {
 		uint lightIndex = visibleLightIndicesBuffer.data[offset + i].index;
 		PointLight light = lightBuffer.data[lightIndex];
-
+		
 		vec4 lightColor = light.color;
 		vec3 tangentLightPosition = fragment_in.TBN * light.position.xyz;
 		float lightRadius = light.paddingAndRadius.w;
@@ -93,7 +93,6 @@ void main() {
 		vec3 irradiance = lightColor.rgb * ((base_diffuse.rgb * diffuse) + (base_specular.rgb * vec3(specular))) * attenuation;
 		color.rgb += irradiance;
 	}
-
 	color.rgb += base_diffuse.rgb * 0.08;
 
 	// Use the mask to discard any fragments that are transparent
