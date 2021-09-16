@@ -32,6 +32,7 @@ uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_specular1;
 uniform sampler2D texture_normal1;
 uniform int numberOfTilesX;
+uniform int numberOfLights;
 
 out vec4 fragColor;
 
@@ -63,8 +64,8 @@ void main() {
 	// The offset is this tile's position in the global array of valid light indices.
 	// Loop through all these indices until we hit max number of lights or the end (indicated by an index of -1)
 	// Calculate the lighting contribution from each visible point light
-	uint offset = index * 1024;
-	for (uint i = 0; i < 1024 && visibleLightIndicesBuffer.data[offset + i].index != -1; i++) {
+	uint offset = index * numberOfLights;
+	for (uint i = 0; i < numberOfLights && visibleLightIndicesBuffer.data[offset + i].index != -1; i++) {
 		uint lightIndex = visibleLightIndicesBuffer.data[offset + i].index;
 		PointLight light = lightBuffer.data[lightIndex];
 		
