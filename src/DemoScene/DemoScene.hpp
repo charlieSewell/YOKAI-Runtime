@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Controller/Layer.hpp"
-#include "Model/GameObject.hpp"
-#include "Model/Components/DrawableEntity.hpp"
-#include "Controller/InputComponent.hpp"
-//#include "Controller/UIManager.hpp"
+#include "Engine/Scene.hpp"
+#include "Engine/GameObject.hpp"
+#include "Components/DrawableEntity.hpp"
+#include "Components/InputComponent.hpp"
+//#include "Engine/UIManager.hpp"
 
 /**
  * @class DemoScene
  * @brief A demo Scene for Assignment 1
  */
-class DemoScene : public Layer
+class DemoScene : public Scene
 {
   public:
 
