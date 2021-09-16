@@ -23,13 +23,14 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-	transform->setPosition(glm::vec3(0, 8, 0));
+	transform->setPosition(glm::vec3(16, 2, -5));
     
 }
 
 void PlayerScript::Update(float deltaTime)
 {
 	UpdateMovement();
+	//std::cout << transform->getPosition().x << ", " << transform->getPosition().y << ", " << transform->getPosition().z << "\n";
 }
 
 void PlayerScript::Draw()

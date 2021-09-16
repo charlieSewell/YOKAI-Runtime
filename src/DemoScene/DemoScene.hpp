@@ -51,7 +51,6 @@ class DemoScene : public Scene
 	std::shared_ptr<Input> UIinput;
 
 	//colliders
-	unsigned int FloorCollider;
-	unsigned int DeskCollider;
+	unsigned int Colliders;
 
 };

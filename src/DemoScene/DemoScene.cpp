@@ -15,22 +15,23 @@ void DemoScene::Init()
 	objectManager.GetObject(Player)->Start();
 
 	LectureTheatre = objectManager.CreateObject();
-	//LectureTheatreCeiling = objectManager.CreateObject();
-	//LectureTheatreExtras = objectManager.CreateObject();
-	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
-	//objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
-	//objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
-	//objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
+	LectureTheatreCeiling = objectManager.CreateObject();
+	LectureTheatreExtras = objectManager.CreateObject();
+	//objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
+	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
+	objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
+	objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
 
-	//objectManager.GetObject(LectureTheatreCeiling)->Start();
-	//objectManager.GetObject(LectureTheatreExtras)->Start();
+	objectManager.GetObject(LectureTheatreCeiling)->Start();
+	objectManager.GetObject(LectureTheatreExtras)->Start();
 	objectManager.GetObject(LectureTheatre)->Start();	// This line only exists to add a transform. Should come up with a better solution
-	objectManager.GetObject(LectureTheatre)->GetComponent<Transform>()->scale(0.1);
+	//objectManager.GetObject(LectureTheatre)->GetComponent<Transform>()->scale(0.1);
+	
 	//unsigned int obj = objectManager.CreateObject();
 	//objectManager.GetObject(obj)->AddComponent<DrawableEntity>()->LoadModel("content/Zombie/ZombieSmooth.gltf");
 	//objectManager.GetObject(obj)->Start();
 	// COLLIDERS
-	//InitColliders();
+	InitColliders();
 	UIInputObject = objectManager.CreateObject();
 	UIinput = objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
@@ -62,51 +63,114 @@ void DemoScene::Disable()
 
 void DemoScene::InitColliders()
 {
-	FloorCollider = objectManager.CreateObject();
+	Colliders = objectManager.CreateObject();
 	// Floor
-	objectManager.GetObject(FloorCollider)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20, 0.5, 20));
-	objectManager.GetObject(FloorCollider)->AddComponent<Transform>()->setPosition(glm::vec3(15, 0, -15));
-	objectManager.GetObject(FloorCollider)->Start();
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20, 0.4, 20));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(15, 0, -15));
+	objectManager.GetObject(Colliders)->Start();
 
 	// Desk
-	objectManager.GetObject(FloorCollider)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(1.00, 0.75, 0.5));
-	objectManager.GetObject(FloorCollider)->AddComponent<Transform>()->setPosition(glm::vec3(13.125, 0.5, -4.25));
-	objectManager.GetObject(FloorCollider)->Start();
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(1.00, 0.75, 0.5));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(13.125, 0.5, -4.25));
+	objectManager.GetObject(Colliders)->Start();
 
 	// Left Stairs
-	objectManager.GetObject(FloorCollider)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20.00, 0.5, 10.0));
-	objectManager.GetObject(FloorCollider)->AddComponent<Transform>()->setPosition(glm::vec3(9.75, 0.25, -10));
-	objectManager.GetObject(FloorCollider)->Start();
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20.00, 0.5, 11.0));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(9.75, 0.25, -10));
+	objectManager.GetObject(Colliders)->Start();
 	//FloorCollider.GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.970, 0.171, 0.171, 0.030));
-	objectManager.GetObject(FloorCollider)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.986, 0.165, 0.003, -0.017));
+	objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.986, 0.165, 0.0, 0.0));
 
 	// Left Wall
-	objectManager.GetObject(FloorCollider)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(0.10, 5.0, 5.0));
-	objectManager.GetObject(FloorCollider)->AddComponent<Transform>()->setPosition(glm::vec3(7.0, 0.25, -6.5));
-	objectManager.GetObject(FloorCollider)->Start();
-	objectManager.GetObject(FloorCollider)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, 0.259, 0));
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(0.10, 5.0, 5.0));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(7.0, 0.25, -6.5));
+	objectManager.GetObject(Colliders)->Start();
+	objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, 0.259, 0));
 
 	// Right Wall
-	objectManager.GetObject(FloorCollider)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(0.10, 5.0, 5.0));
-	objectManager.GetObject(FloorCollider)->AddComponent<Transform>()->setPosition(glm::vec3(18.5, 0.25, -6.5));
-	objectManager.GetObject(FloorCollider)->Start();
-	objectManager.GetObject(FloorCollider)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, -0.259, 0));
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(0.10, 5.0, 5.0));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(18.5, 0.25, -6.5));
+	objectManager.GetObject(Colliders)->Start();
+	objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, -0.259, 0));
 
 	// Back Wall
-	objectManager.GetObject(FloorCollider)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(5.0, 5.0, 0.10));
-	objectManager.GetObject(FloorCollider)->AddComponent<Transform>()->setPosition(glm::vec3(12, 0.25, -1.775));
-	objectManager.GetObject(FloorCollider)->Start();
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(5.0, 5.0, 0.10));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(12, 0.25, -1.775));
+	objectManager.GetObject(Colliders)->Start();
 
-	// Front row
-	for(int i=0; i<12; ++i)
+	// Middle rows
+	for(int i=0; i<14; ++i)
 	{
-		float y = 0.32;
-		float z = -1;
+		float y = 0.32 * i;
+		float z = -1 * i;
 
-		float extX = 0.2;
+		float extX = 0.3 * i;
 
-		objectManager.GetObject(FloorCollider)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(2.5 + i*extX, 0.55, 0.20));
-		objectManager.GetObject(FloorCollider)->AddComponent<Transform>()->setPosition(glm::vec3(13, 0.25 + i*y, -8.75 + i*z));
-		objectManager.GetObject(FloorCollider)->Start();
+		// To acount for diamond shape of rows
+		if(i > 7)
+			extX -= (0.21 * (i-7)) * 1.5;	// don't think about it lol
+
+		objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(2.2 + extX, 0.55, 0.20));
+		objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(13.125, 0.1 + y, -8.75 + z));
+		objectManager.GetObject(Colliders)->Start();
+	}
+
+	// Left rows
+	for (int i = 0; i < 14; ++i)
+	{
+		// offsets
+		float x = -0.3 * i;
+		float y = 0.32 * i;
+		float z = -1 * i;
+
+		float extX = -0.01 * i;
+
+		// To account for shorter rows at top and bottom
+		if(i == 0)
+			extX = -0.85;
+
+		if (i == 13)
+			x -= 1;
+
+		// To acount for diamond shape of rows
+		if (i > 7)
+			x += 0.325 * (i-7);
+
+		objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(1.35 + extX, 0.55, 0.20));
+		objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(8.0 + x, 0.1 + y, -7.75 + z));
+		objectManager.GetObject(Colliders)->Start();
+		objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.991, 0, 0.131, 0));
+	}
+
+	// Right rows
+	for (int i = 0; i < 14; ++i)
+	{
+		// offsets
+		float x = +0.3 * i;
+		float y = 0.32 * i;
+		float z = -1 * i;
+
+		float extX = -0.01 * i;
+
+		// To account for shorter rows at top and bottom
+		if (i == 0)
+			extX = -0.85;
+
+		if (i == 13)
+			x += 1;
+
+		// To acount for diamond shape of rows
+		if (i > 7)
+			x -= 0.325 * (i - 7);
+
+		objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(1.35 + extX, 0.55, 0.20));
+		objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(18.25 + x, 0.1 + y, -7.75 + z));
+		objectManager.GetObject(Colliders)->Start();
+		objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.991, 0, -0.131, 0));
+
+		// Floor
+		objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20, 0.4, 1.5));
+		objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(15, 3.8, -22.125));
+		objectManager.GetObject(Colliders)->Start();
 	}
 }
