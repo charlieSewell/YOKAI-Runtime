@@ -12,12 +12,10 @@ PlayerScript::PlayerScript(GameObject* parent)
 	Awake();
 }
 
+
 void PlayerScript::Awake()
 {
-	//camera->m_position = glm::vec3(8, 20, 5);
-	transform->setPosition(glm::vec3(16, 2, -5));
-	//sphereCollider->NewVelocity = transform->getPosition();
-	//camera->m_position = glm::vec3(11, 20, 21);
+	
 	movementSpeed = 3.05f;
 	lookSensitivity = 0.05f;
 	sprintMultiplyer = 4;
@@ -25,14 +23,13 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-	
+	transform->setPosition(glm::vec3(0, 8, 0));
     
 }
 
 void PlayerScript::Update(float deltaTime)
 {
 	UpdateMovement();
-	//std::cout << camera->m_position.x << ", " << camera->m_position.y << ", " << camera->m_position.z << ", \n";
 }
 
 void PlayerScript::Draw()
@@ -94,11 +91,9 @@ void PlayerScript::UpdateMovement()
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	camera->m_frontDirection = glm::normalize(direction);
 
-
-	//sphereCollider->NewPosition = transform->getPosition() + tempPosition;
 	tempPosition.y -= movementSpeed / 4; //(gravity)
 	sphereCollider->NewVelocity = tempPosition;
-	//transform->setPosition(transform->getPosition() + tempPosition);
+
 	camera->m_position = transform->getPosition();
 	camera->m_position.y += 0.75;
 }

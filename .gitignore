@@ -9,6 +9,7 @@
 **/.idea
 **/logs
 **.vs/
+**.vscode/
 .swp
 imgui.ini
 desktop.ini

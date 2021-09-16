@@ -1,8 +1,7 @@
 #include "DemoScene.hpp"
-#include "ScuffedPhysicsComponent.hpp"
 #include "PlayerScript.hpp"
-#include "Model/Components/SphereCollider.hpp"
-#include "Model/Components/BoxCollider.hpp"
+#include "Components/SphereCollider.hpp"
+#include "Components/BoxCollider.hpp"
 
 DemoScene::DemoScene()
 {
@@ -16,21 +15,22 @@ void DemoScene::Init()
 	objectManager.GetObject(Player)->Start();
 
 	LectureTheatre = objectManager.CreateObject();
-	LectureTheatreCeiling = objectManager.CreateObject();
-	LectureTheatreExtras = objectManager.CreateObject();
-	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
-	//LectureTheatre.AddComponent<ConcaveCollider>();
-	objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
-	objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
-	//LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
+	//LectureTheatreCeiling = objectManager.CreateObject();
+	//LectureTheatreExtras = objectManager.CreateObject();
+	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
+	//objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
+	//objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
+	//objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
 
-	objectManager.GetObject(LectureTheatreCeiling)->Start();
-	objectManager.GetObject(LectureTheatreExtras)->Start();
-	//LectureTheatre.AddComponent<ScuffedPhysicsComponent>();
+	//objectManager.GetObject(LectureTheatreCeiling)->Start();
+	//objectManager.GetObject(LectureTheatreExtras)->Start();
 	objectManager.GetObject(LectureTheatre)->Start();	// This line only exists to add a transform. Should come up with a better solution
-
+	objectManager.GetObject(LectureTheatre)->GetComponent<Transform>()->scale(0.1);
+	//unsigned int obj = objectManager.CreateObject();
+	//objectManager.GetObject(obj)->AddComponent<DrawableEntity>()->LoadModel("content/Zombie/ZombieSmooth.gltf");
+	//objectManager.GetObject(obj)->Start();
 	// COLLIDERS
-	InitColliders();
+	//InitColliders();
 	UIInputObject = objectManager.CreateObject();
 	UIinput = objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
@@ -38,9 +38,6 @@ void DemoScene::Init()
 void DemoScene::Update(float frameRate)
 {
     objectManager.Update(frameRate);
-	//LectureTheatre.GetComponent<ScuffedPhysicsComponent>()->UpdateTransform.setPosition(Player.GetComponent<Camera>()->m_position);
-	//LectureTheatre.GetComponent<ScuffedPhysicsComponent>()->UpdateTransform.setPosition(Player.GetComponent<Camera>()->m_position);
-
 	PhysicsSystem::getInstance().RendererUpdate();
 	m_physicsOn = UIinput->GetKeyState('f');
 
