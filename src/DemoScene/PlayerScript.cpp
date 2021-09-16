@@ -30,7 +30,7 @@ void PlayerScript::Start()
 void PlayerScript::Update(float deltaTime)
 {
 	UpdateMovement();
-	std::cout << transform->getPosition().x << ", " << transform->getPosition().y << ", " << transform->getPosition().z << "\n";
+	//std::cout << transform->getPosition().x << ", " << transform->getPosition().y << ", " << transform->getPosition().z << "\n";
 }
 
 void PlayerScript::Draw()
