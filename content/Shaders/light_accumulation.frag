@@ -13,26 +13,37 @@ struct PointLight {
 	vec4 position;
 	vec4 paddingAndRadius;
 };
-
-struct VisibleIndex {
-	int index;
+struct LightGrid{
+    uint offset;
+    uint count;
 };
-
 // Shader storage buffer objects
-layout(std430, binding = 0) readonly buffer LightBuffer {
-	PointLight data[];
+layout (std430, binding = 2) buffer screenToView{
+    mat4 inverseProjection;
+    uvec4 tileSizes;
+    uvec2 screenDimensions;
+    float scale;
+    float bias;
+} screen2View;
+layout (std430, binding = 3) buffer lightSSBO{
+    PointLight data[];
 } lightBuffer;
 
-layout(std430, binding = 1) readonly buffer VisibleLightIndicesBuffer {
-	VisibleIndex data[];
+layout (std430, binding = 4) buffer lightIndexSSBO{
+    uint data[];
 } visibleLightIndicesBuffer;
+
+layout (std430, binding = 5) buffer lightGridSSBO{
+    LightGrid lightGrid[];
+} lightGrid;
 
 // Uniforms
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_specular1;
 uniform sampler2D texture_normal1;
-uniform int numberOfTilesX;
-uniform int numberOfLights;
+
+uniform float zNear;
+uniform float zFar;
 
 out vec4 fragColor;
 
@@ -45,12 +56,21 @@ float attenuate(vec3 lightDirection, float radius) {
 
 	return clamp(attenuation, 0.0, 1.0);
 }
+float linearDepth(float depthSample){
+    float depthRange = 2.0 * depthSample - 1.0;
+    // Near... Far... wherever you are...
+    float linear = 2.0 * zNear * zFar / (zFar + zNear - depthRange * (zFar - zNear));
+    return linear;
+}
 
 void main() {
 	// Determine which tile this pixel belongs to
-	ivec2 location = ivec2(gl_FragCoord.xy);
-	ivec2 tileID = location / ivec2(16, 16);
-	uint index = tileID.y * numberOfTilesX + tileID.x;
+	//Locating which cluster you are a part of
+    uint zTile     = uint(max(log2(linearDepth(gl_FragCoord.z)) * screen2View.scale + screen2View.bias, 0.0));
+    uvec3 tiles    = uvec3( uvec2( gl_FragCoord.xy / screen2View.tileSizes[3] ), zTile);
+    uint tileIndex = tiles.x +
+                     screen2View.tileSizes.x * tiles.y +
+                     (screen2View.tileSizes.x * screen2View.tileSizes.y) * tiles.z;  
 
 	// Get color and normal components from texture maps
 	vec4 base_diffuse = texture(texture_diffuse1, fragment_in.textureCoordinates);
@@ -64,9 +84,11 @@ void main() {
 	// The offset is this tile's position in the global array of valid light indices.
 	// Loop through all these indices until we hit max number of lights or the end (indicated by an index of -1)
 	// Calculate the lighting contribution from each visible point light
-	uint offset = index * numberOfLights;
-	for (uint i = 0; i < numberOfLights && visibleLightIndicesBuffer.data[offset + i].index != -1; i++) {
-		uint lightIndex = visibleLightIndicesBuffer.data[offset + i].index;
+	uint lightCount       = lightGrid.lightGrid[tileIndex].count;
+    uint lightIndexOffset = lightGrid.lightGrid[tileIndex].offset;
+	
+	for (uint i = 0; i < lightCount; i++) {
+		uint lightIndex = visibleLightIndicesBuffer.data[lightIndexOffset + i];
 		PointLight light = lightBuffer.data[lightIndex];
 		
 		vec4 lightColor = light.color;
