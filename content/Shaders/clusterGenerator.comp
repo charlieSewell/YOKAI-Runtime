@@ -7,7 +7,7 @@ struct VolumeTileAABB{
     vec4 maxPoint;
 };
 layout (std430, binding = 1) buffer clusterAABB{
-    VolumeTileAABB cluster[];
+    VolumeTileAABB cluster[ ];
 };
 layout (std430, binding = 2) buffer screenToView{
     mat4 inverseProjection;
@@ -19,6 +19,7 @@ layout (std430, binding = 2) buffer screenToView{
 uniform float zNear;
 uniform float zFar;
 
+//Function prototypes
 vec4 clipToView(vec4 clip);
 vec4 screen2View(vec4 screen);
 vec3 lineIntersectionToZPlane(vec3 A, vec3 B, float zDistance);
@@ -91,6 +92,7 @@ vec4 screen2View(vec4 screen){
     vec2 texCoord = screen.xy / screenDimensions.xy;
 
     //Convert to clipSpace
+    // vec4 clip = vec4(vec2(texCoord.x, 1.0 - texCoord.y)* 2.0 - 1.0, screen.z, screen.w);
     vec4 clip = vec4(vec2(texCoord.x, texCoord.y)* 2.0 - 1.0, screen.z, screen.w);
     //Not sure which of the two it is just yet
 
