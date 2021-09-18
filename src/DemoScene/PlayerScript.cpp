@@ -57,10 +57,10 @@ void PlayerScript::UpdateMovement()
 	if (input->GetKeyState(' '))
 		tempPosition += camera->m_upDirection * movementSpeed;
 
-	if (input->GetKeyState(SPECIAL::LEFT_CONTROL))
+	if (input->GetKeyState(YOKAI_INPUT::LEFT_CONTROL))
 		tempPosition -= camera->m_upDirection * movementSpeed;
 
-	if (input->GetKeyState(SPECIAL::LEFT_SHIFT))
+	if (input->GetKeyState(YOKAI_INPUT::LEFT_SHIFT))
 	{
 		if(!sprintActive)
 			movementSpeed *= sprintMultiplyer;
