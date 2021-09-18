@@ -8,6 +8,7 @@
 **/debug
 **/.idea
 **.vs/
+**.vscode/
 .swp
 imgui.ini
 desktop.ini
