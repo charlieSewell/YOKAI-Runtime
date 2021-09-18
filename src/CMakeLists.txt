@@ -1,8 +1,8 @@
 # Add source files.
 target_sources(${PROJECT_NAME} PRIVATE
         main.cpp
-
-	DemoScene/DemoScene.cpp
+		DemoScene/DemoScene.cpp
+		DemoScene/PlayerScript.cpp
 )
 
 # Include project header files.

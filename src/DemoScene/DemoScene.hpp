@@ -1,17 +1,16 @@
 #pragma once
 
-#include "Controller/Layer.hpp"
-#include "Model/GameObject.hpp"
-#include "Model/Components/DrawableEntity.hpp"
-#include "Model/Components/PlayerControlledMotion.hpp"
-
-//#include "Controller/UIManager.hpp"
+#include "Engine/Scene.hpp"
+#include "Engine/GameObject.hpp"
+#include "Components/DrawableEntity.hpp"
+#include "Components/InputComponent.hpp"
+//#include "Engine/UIManager.hpp"
 
 /**
  * @class DemoScene
  * @brief A demo Scene for Assignment 1
  */
-class DemoScene : public Layer
+class DemoScene : public Scene
 {
   public:
 
@@ -37,10 +36,21 @@ class DemoScene : public Layer
      */
     void Disable() override;
   private:
-
+	
+	void InitColliders();
     ///Is this scene active
     bool isEnabled = true;
 
-	GameObject Player;
-	GameObject LectureTheatre;
+	bool m_physicsOn;
+
+	unsigned int Player;
+	unsigned int LectureTheatre;
+  unsigned int LectureTheatreCeiling;
+  unsigned int LectureTheatreExtras;
+	unsigned int UIInputObject;
+	std::shared_ptr<Input> UIinput;
+
+	//colliders
+	unsigned int Colliders;
+
 };
