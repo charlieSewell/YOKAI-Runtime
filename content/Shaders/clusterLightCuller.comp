@@ -44,7 +44,7 @@ layout (std430, binding = 6) buffer globalIndexCountSSBO{
 };
 
 //Shared variables 
-shared PointLight sharedLights[16*9*5];
+shared PointLight sharedLights[16*9*4];
 
 uniform mat4 view;
 
@@ -60,27 +60,31 @@ void main(){
     uint tileIndex = gl_LocalInvocationIndex + gl_WorkGroupSize.x * gl_WorkGroupSize.y * gl_WorkGroupSize.z * gl_WorkGroupID.z;
     
     uint visibleLightCount = 0;
-    uint visibleLightIndices[50];
+    uint visibleLightIndices[100];
+    uint lightOffset = 0;
+    while(lightOffset < lightCount)
+    {
+        uint batchSize = min(16*9*24,lightCount -lightOffset);
+        if(uint(gl_LocalInvocationIndex) < batchSize)
+        {
+            uint lightIndex = lightOffset + gl_LocalInvocationIndex;
+            //Prevent overflow by clamping to last light which is always null
+            lightIndex = min(lightIndex, lightCount);
+            //Populating shared light array
+            sharedLights[gl_LocalInvocationIndex] = pointLight[lightIndex];
+        }
 
-    for( uint batch = 0; batch < numBatches; ++batch){
-        uint lightIndex = batch * threadCount + gl_LocalInvocationIndex;
-
-        //Prevent overflow by clamping to last light which is always null
-        lightIndex = min(lightIndex, lightCount);
-
-        //Populating shared light array
-        sharedLights[gl_LocalInvocationIndex] = pointLight[lightIndex];
         barrier();
 
-        //Iterating within the current batch of lights
         for( uint light = 0; light < threadCount; ++light){
-            if( testSphereAABB(light, tileIndex) ){
-                visibleLightIndices[visibleLightCount] = batch * threadCount + light;
-                visibleLightCount += 1;
+            if( testSphereAABB(light, tileIndex) && visibleLightCount < 100){
+                visibleLightIndices[visibleLightCount] = lightOffset + light;
+                visibleLightCount++;
             }
         }
+        lightOffset += batchSize;
     }
-
+    
     //We want all thread groups to have completed the light tests before continuing
     barrier();
 

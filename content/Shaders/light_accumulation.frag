@@ -37,6 +37,11 @@ layout (std430, binding = 5) buffer lightGridSSBO{
     LightGrid lightGrid[];
 } lightGrid;
 
+vec3 colors[8] = vec3[](
+   vec3(0, 0, 0),    vec3( 0,  0,  1), vec3( 0, 1, 0),  vec3(0, 1,  1),
+   vec3(1,  0,  0),  vec3( 1,  0,  1), vec3( 1, 1, 0),  vec3(1, 1, 1)
+);
+
 // Uniforms
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_specular1;
