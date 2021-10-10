@@ -2,7 +2,9 @@
 target_sources(${PROJECT_NAME} PRIVATE
         main.cpp
 		DemoScene/DemoScene.cpp
-		DemoScene/PlayerScript.cpp
+		Common/PlayerScript.cpp
+
+		AIScene/AIScene.cpp
 )
 
 # Include project header files.
