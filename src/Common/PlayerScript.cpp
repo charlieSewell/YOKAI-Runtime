@@ -24,18 +24,21 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-	transform->setPosition(glm::vec3(16, 2, -5));
-    
+	transform->setPosition(glm::vec3(16, 2, -5));    
 }
 
 void PlayerScript::Update(float deltaTime)
 {
 	UpdateMovement();
 	//std::cout << transform->getPosition().x << ", " << transform->getPosition().y << ", " << transform->getPosition().z << "\n";
+	
+	// Ray caster Test
+	/*
 	if(rayCaster->CastRay(camera->m_position, camera->m_frontDirection, 50) != -1 )
 		std::cout << "Hit!\n";
 	else
 		std::cout << "Miss!\n";
+	*/		
 }
 
 void PlayerScript::Draw()
