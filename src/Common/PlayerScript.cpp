@@ -7,7 +7,8 @@ PlayerScript::PlayerScript(GameObject* parent)
 	transform(gameObject->AddComponent<Transform>()),
 	camera(gameObject->AddComponent<Camera>()),
 	input(gameObject->AddComponent<Input>()),
-	sphereCollider(gameObject->AddComponent<SphereCollider>())
+	sphereCollider(gameObject->AddComponent<SphereCollider>()),
+	rayCaster(gameObject->AddComponent<RayCaster>())
 {
 	Awake();
 }
@@ -31,6 +32,10 @@ void PlayerScript::Update(float deltaTime)
 {
 	UpdateMovement();
 	//std::cout << transform->getPosition().x << ", " << transform->getPosition().y << ", " << transform->getPosition().z << "\n";
+	if(rayCaster->CastRay(camera->m_position, camera->m_frontDirection, 50) != -1 )
+		std::cout << "Hit!\n";
+	else
+		std::cout << "Miss!\n";
 }
 
 void PlayerScript::Draw()

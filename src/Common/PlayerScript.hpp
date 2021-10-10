@@ -7,6 +7,7 @@
 #include "Components/SphereCollider.hpp"
 #include "Components/InputComponent.hpp"
 #include "Components/ConcaveCollider.hpp"
+#include "Components/RayCaster.hpp"
 
 class GameObject;
 
@@ -27,6 +28,7 @@ private:
 	std::shared_ptr<Camera> camera;
 	std::shared_ptr<Input> input;
 	std::shared_ptr<SphereCollider> sphereCollider;
+	std::shared_ptr<RayCaster> rayCaster;
 
 	float movementSpeed = 0;
 	float lookSensitivity =	0;

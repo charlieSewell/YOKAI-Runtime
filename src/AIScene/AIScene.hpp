@@ -44,9 +44,7 @@ class AIScene : public Scene
 	bool m_physicsOn;
 
 	unsigned int Player;
-	unsigned int LectureTheatre;
-	unsigned int LectureTheatreCeiling;
-	unsigned int LectureTheatreExtras;
+	unsigned int Zombies;
 	unsigned int UIInputObject;
 
 	std::shared_ptr<Input> UIinput;

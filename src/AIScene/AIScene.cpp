@@ -14,21 +14,10 @@ void AIScene::Init()
 	objectManager.GetObject(Player)->AddComponent<PlayerScript>();
 	objectManager.GetObject(Player)->Start();
 
-	LectureTheatre = objectManager.CreateObject();
-	LectureTheatreCeiling = objectManager.CreateObject();
-	LectureTheatreExtras = objectManager.CreateObject();
-	//objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
-	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
-objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
+	Zombies = objectManager.CreateObject();
+	objectManager.GetObject(Zombies)->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Zombie/ZombieSmooth.gltf");
+	objectManager.GetObject(Zombies)->Start();
 
-	objectManager.GetObject(LectureTheatreCeiling)->Start();
-	objectManager.GetObject(LectureTheatreExtras)->Start();
-	objectManager.GetObject(LectureTheatre)->Start();	// This line only exists to add a transform. Should come up with a better solution
-	//objectManager.GetObject(LectureTheatre)->GetComponent<Transform>()->scale(0.1);
-	
-	//unsigned int obj = objectManager.CreateObject();
-	//objectManager.GetObject(obj)->AddComponent<DrawableEntity>()->LoadModel("content/Zombie/ZombieSmooth.gltf");
-	//objectManager.GetObject(obj)->Start();
 	// COLLIDERS
 	InitColliders();
 	UIInputObject = objectManager.CreateObject();
@@ -62,5 +51,9 @@ void AIScene::Disable()
 
 void AIScene::InitColliders()
 {
-
+	Colliders = objectManager.CreateObject();
+	// Floor
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20, 0.4, 20));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(15, 0, -15));
+	objectManager.GetObject(Colliders)->Start();
 }
