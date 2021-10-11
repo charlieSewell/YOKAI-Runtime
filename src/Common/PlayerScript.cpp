@@ -34,7 +34,7 @@ void PlayerScript::Update(float deltaTime)
 	
 	// Ray caster Test
 	/*
-	if(rayCaster->CastRay(camera->m_position, camera->m_frontDirection, 50) != -1 )
+	if(rayCaster->CastRay(camera->m_position, camera->m_frontDirection, 10) != -1 )
 		std::cout << "Hit!\n";
 	else
 		std::cout << "Miss!\n";
