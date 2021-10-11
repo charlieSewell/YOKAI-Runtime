@@ -10,11 +10,11 @@
  * @class DemoScene
  * @brief A demo Scene for Assignment 1
  */
-class DemoScene : public Scene
+class AIScene : public Scene
 {
   public:
 
-	DemoScene();
+	  AIScene();
     /**
      * @brief Initialised the Scene
      */
@@ -44,10 +44,9 @@ class DemoScene : public Scene
 	bool m_physicsOn;
 
 	unsigned int Player;
-	unsigned int LectureTheatre;
-	unsigned int LectureTheatreCeiling;
-	unsigned int LectureTheatreExtras;
+	unsigned int Zombies;
 	unsigned int UIInputObject;
+
 	std::shared_ptr<Input> UIinput;
 
 	//colliders
