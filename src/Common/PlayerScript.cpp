@@ -17,7 +17,7 @@ PlayerScript::PlayerScript(GameObject* parent)
 void PlayerScript::Awake()
 {
 	
-	movementSpeed = 3.05f;
+	movementSpeed = 0.1f;
 	lookSensitivity = 0.05f;
 	sprintMultiplyer = 4;
 }
@@ -83,7 +83,7 @@ void PlayerScript::UpdateMovement()
 		sprintActive = false;
 	}
 		
-
+	transform->setPosition(transform->getPosition() + tempPosition);
 
 	yaw += input->GetMouseState().offset.x * lookSensitivity;
 	pitch -= input->GetMouseState().offset.y * lookSensitivity;
@@ -100,9 +100,8 @@ void PlayerScript::UpdateMovement()
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	camera->m_frontDirection = glm::normalize(direction);
 
-	tempPosition.y -= movementSpeed / 4; //(gravity)
-	sphereCollider->NewVelocity = tempPosition;
 
+	sphereCollider->SetPosition(transform->getPosition());
 	camera->m_position = transform->getPosition();
 	camera->m_position.y += 0.75;
 }
