@@ -1,5 +1,5 @@
 #include "DemoScene.hpp"
-#include "PlayerScript.hpp"
+#include "Common/PlayerScript.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/BoxCollider.hpp"
 
