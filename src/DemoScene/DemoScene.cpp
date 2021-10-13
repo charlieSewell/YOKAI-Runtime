@@ -17,14 +17,40 @@ void DemoScene::Init()
 	LectureTheatre = objectManager.CreateObject();
 	LectureTheatreCeiling = objectManager.CreateObject();
 	LectureTheatreExtras = objectManager.CreateObject();
+	Bullet = objectManager.CreateObject();
+	Plank = objectManager.CreateObject();
+	Plank2 = objectManager.CreateObject();
+
 	//objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
 	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
 	objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
 	objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
+	objectManager.GetObject(Bullet)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/physicsbullet.gltf");
+	objectManager.GetObject(Plank)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/physicsblock.gltf");
+	objectManager.GetObject(Plank2)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/physicsblock.gltf");
 
 	objectManager.GetObject(LectureTheatreCeiling)->Start();
 	objectManager.GetObject(LectureTheatreExtras)->Start();
 	objectManager.GetObject(LectureTheatre)->Start();	// This line only exists to add a transform. Should come up with a better solution
+
+	///////////////////////////////////////////////////////////////////////////////////
+	// PHYSICS TESTING
+
+	objectManager.GetObject(Bullet)->Start();
+	objectManager.GetObject(Bullet)->AddComponent<Transform>()->setPosition(glm::vec3(13, 0.675, -4));
+	objectManager.GetObject(Bullet)->Start();
+
+	objectManager.GetObject(Plank)->Start();
+	objectManager.GetObject(Plank)->AddComponent<Transform>()->setPosition(glm::vec3(12.5, 0.675, -4));
+	objectManager.GetObject(Plank)->Start();
+
+	objectManager.GetObject(Plank2)->Start();
+	objectManager.GetObject(Plank2)->AddComponent<Transform>()->setPosition(glm::vec3(13, 0.675, -4));
+	objectManager.GetObject(Plank2)->Start();
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+
 	//objectManager.GetObject(LectureTheatre)->GetComponent<Transform>()->scale(0.1);
 	
 	//unsigned int obj = objectManager.CreateObject();
