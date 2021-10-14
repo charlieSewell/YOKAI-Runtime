@@ -17,6 +17,7 @@ void DemoScene::Init()
 	LectureTheatre = objectManager.CreateObject();
 	LectureTheatreCeiling = objectManager.CreateObject();
 	LectureTheatreExtras = objectManager.CreateObject();
+	//ClearDesk = objectManager.CreateObject();
 	Bullet = objectManager.CreateObject();
 	Plank = objectManager.CreateObject();
 	Plank2 = objectManager.CreateObject();
@@ -25,6 +26,7 @@ void DemoScene::Init()
 	objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/please.gltf");
 	objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
 	objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
+	//objectManager.GetObject(ClearDesk)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/cleardesk.gltf");
 	objectManager.GetObject(Bullet)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/physicsbullet.gltf");
 	objectManager.GetObject(Plank)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/physicsblock.gltf");
 	objectManager.GetObject(Plank2)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/physicsblock.gltf");
@@ -35,6 +37,18 @@ void DemoScene::Init()
 
 	///////////////////////////////////////////////////////////////////////////////////
 	// PHYSICS TESTING
+
+	/*
+	objectManager.GetObject(ClearDesk)->Start();
+	objectManager.GetObject(ClearDesk)->AddComponent<Transform>()->setPosition(glm::vec3(5, 0.65, 12));
+	objectManager.GetObject(ClearDesk)->Start();
+	objectManager.GetObject(ClearDesk)->GetComponent<Transform>()->rotate(90, glm::vec3(0, 1, 0));
+	objectManager.GetObject(ClearDesk)->Start();
+	*/
+
+	objectManager.GetObject(Bullet)->Start();
+	objectManager.GetObject(Bullet)->AddComponent<Transform>()->setPosition(glm::vec3(13, 0.675, -4));
+	objectManager.GetObject(Bullet)->Start();
 
 	objectManager.GetObject(Bullet)->Start();
 	objectManager.GetObject(Bullet)->AddComponent<Transform>()->setPosition(glm::vec3(13, 0.675, -4));

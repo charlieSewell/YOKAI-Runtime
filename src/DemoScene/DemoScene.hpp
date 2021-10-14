@@ -38,6 +38,7 @@ class DemoScene : public Scene
   private:
 	
 	void InitColliders();
+
     ///Is this scene active
     bool isEnabled = true;
 
@@ -47,6 +48,7 @@ class DemoScene : public Scene
 	unsigned int LectureTheatre;
 	unsigned int LectureTheatreCeiling;
 	unsigned int LectureTheatreExtras;
+    //unsigned int ClearDesk;
     unsigned int Bullet;
     unsigned int Plank;
     unsigned int Plank2;
