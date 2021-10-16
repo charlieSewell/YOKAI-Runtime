@@ -3,6 +3,8 @@
 #include "NPCScript.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/BoxCollider.hpp"
+#include "AIComponents/AffordanceSystem.hpp"
+#include "AIComponents/PickupAffordance.hpp"
 
 AIScene::AIScene()
 {
@@ -20,12 +22,14 @@ void AIScene::Init()
 	objectManager.GetObject(Cube)->Start();
 	objectManager.GetObject(Cube)->GetComponent<Transform>()->setScale(0.5);
 	objectManager.GetObject(Cube)->GetComponent<Transform>()->setPosition(glm::vec3(5, 0, 20));
+	std::function<void(glm::vec3)> setCubePosition = [&](glm::vec3 newPosition) { objectManager.GetObject(Cube)->GetComponent<Transform>()->setPosition(newPosition); };
+	objectManager.GetObject(Cube)->AddComponent<AffordanceSystem>()->AddAffordance<PickupAffordance>()->EnableAffordance(setCubePosition);
 
-	Cube = objectManager.CreateObject();
-	objectManager.GetObject(Cube)->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/house/house.gltf");
-	objectManager.GetObject(Cube)->Start();
-	objectManager.GetObject(Cube)->GetComponent<Transform>()->setScale(2.0);
-	objectManager.GetObject(Cube)->GetComponent<Transform>()->setPosition(glm::vec3(0, 0, 0));
+	House = objectManager.CreateObject();
+	objectManager.GetObject(House)->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/house/house.gltf");
+	objectManager.GetObject(House)->Start();
+	objectManager.GetObject(House)->GetComponent<Transform>()->setScale(2.0);
+	objectManager.GetObject(House)->GetComponent<Transform>()->setPosition(glm::vec3(0, 0, 0));
 
 	for(int i=0; i<10; ++i)
 	{
@@ -45,7 +49,8 @@ void AIScene::Update(float frameRate)
 {
     objectManager.Update(frameRate);
 	PhysicsSystem::getInstance().RendererUpdate();
-	m_physicsOn = UIinput->GetKeyState('f');
+	m_physicsOn = UIinput->GetKeyState(YOKAI_INPUT::F);
+	objectManager.GetObject(Player)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>()->Interact(objectManager.GetObject(Cube)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>());
 }
 
 void AIScene::Draw()

@@ -1,26 +1,50 @@
 #pragma once
 
+#include "IAffordance.hpp"
 #include "Components/Component.hpp"
-#include <map>
+#include <vector>
+#include <memory>
 
 class GameObject;
-
-enum class AFFORDANCE_TYPE
-{
-	PICKUPABLE = 0
-};
 
 class AffordanceSystem : public Component
 {
 public:
 	AffordanceSystem(GameObject* parent);
 
-	void AddAffordance(AFFORDANCE_TYPE type);
-	void CheckIsAvailable(AFFORDANCE_TYPE type);
-	void Interact(AFFORDANCE_TYPE type);
+	template <typename T> std::shared_ptr<T> AddAffordance()
+	{
+		static_assert(std::is_base_of<Affordance, T>::value, "T must derive from Affordance");
+
+		// Check that we don't already have an affordance of this type.
+		for (auto& exisitingAffordance : m_affordances)
+		{
+			if (std::dynamic_pointer_cast<T>(exisitingAffordance))
+			{
+				return std::dynamic_pointer_cast<T>(exisitingAffordance);
+			}
+		}
+		std::shared_ptr<T> newAffordance = std::make_shared<T>();
+		m_affordances.push_back(newAffordance);
+
+		return newAffordance;
+	};
+
+	template <typename T> std::shared_ptr<T> GetAffordance()
+	{
+		static_assert(std::is_base_of<Affordance, T>::value, "T must derive from Affordance");
+		for (auto& exisitingAffordance : m_affordances)
+		{
+			if (std::dynamic_pointer_cast<T>(exisitingAffordance))
+			{
+				return std::dynamic_pointer_cast<T>(exisitingAffordance);
+			}
+		}
+		return nullptr;
+	};
 
 private:
 
-	std::map<AFFORDANCE_TYPE, bool> m_activeAffordances;
+	std::vector<std::shared_ptr<Affordance>> m_affordances;
 
 };

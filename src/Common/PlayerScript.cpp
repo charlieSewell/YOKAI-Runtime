@@ -1,4 +1,5 @@
 #include "PlayerScript.hpp"
+#include "AIScene/AIComponents/PickupAffordance.hpp"
 
 PlayerScript::PlayerScript(GameObject* parent)
 	:
@@ -8,7 +9,8 @@ PlayerScript::PlayerScript(GameObject* parent)
 	camera(gameObject->AddComponent<Camera>()),
 	input(gameObject->AddComponent<Input>()),
 	sphereCollider(gameObject->AddComponent<SphereCollider>()),
-	rayCaster(gameObject->AddComponent<RayCaster>())
+	rayCaster(gameObject->AddComponent<RayCaster>()),
+	affordanceSystem(gameObject->AddComponent<AffordanceSystem>())
 {
 	Awake();
 }
@@ -20,6 +22,9 @@ void PlayerScript::Awake()
 	movementSpeed = 0.1f;
 	lookSensitivity = 0.05f;
 	sprintMultiplyer = 4;
+	std::function<glm::vec3()> getPlayerPosition = [&]() { return transform->getPosition(); };
+	std::function<glm::vec3()> getPlayerDirection = [&]() { return camera->m_frontDirection; };
+	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPlayerPosition, getPlayerDirection);
 }
 
 void PlayerScript::Start()

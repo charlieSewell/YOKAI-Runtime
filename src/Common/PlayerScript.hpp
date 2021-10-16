@@ -8,6 +8,8 @@
 #include "Components/InputComponent.hpp"
 #include "Components/ConcaveCollider.hpp"
 #include "Components/RayCaster.hpp"
+#include "AIScene/AIComponents/AffordanceSystem.hpp"
+
 
 class GameObject;
 
@@ -29,6 +31,7 @@ private:
 	std::shared_ptr<Input> input;
 	std::shared_ptr<SphereCollider> sphereCollider;
 	std::shared_ptr<RayCaster> rayCaster;
+	std::shared_ptr<AffordanceSystem> affordanceSystem;
 
 	float movementSpeed = 0;
 	float lookSensitivity =	0;
