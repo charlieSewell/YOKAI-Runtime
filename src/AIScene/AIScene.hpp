@@ -46,6 +46,8 @@ class AIScene : public Scene
 	unsigned int Player;
 	unsigned int Zombies;
 	unsigned int UIInputObject;
+	unsigned int Cube;
+	unsigned int House;
 
 	std::shared_ptr<Input> UIinput;
 
