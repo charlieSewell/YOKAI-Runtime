@@ -22,7 +22,7 @@ public:
 	void Update(float deltaTime);
 	void Draw();
 
-	glm::vec3 Test;
+	std::function<std::shared_ptr<GameObject>(int)> GetAISceneObject;
 
 private:
 	GameObject* gameObject;
@@ -45,4 +45,5 @@ private:
 	double yoffset = 0;
 
 	void UpdateMovement();
+	void CheckPickup(std::shared_ptr<GameObject> otherObject);
 };

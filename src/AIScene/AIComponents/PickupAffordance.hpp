@@ -17,9 +17,12 @@ public:
 	void Interact(std::shared_ptr<PickupAffordance> other);
 	void Afford();
 
-//private:
+	std::function<glm::vec3()> GetPosition;
+	std::function<glm::vec3()> GetDirection;
+	std::function<void(glm::vec3)> SetPosition;
 
-	std::function<glm::vec3()> m_getPosition;
-	std::function<glm::vec3()> m_getDirection;
-	std::function<void(glm::vec3)> m_setPosition;
+	float PickUpOffset = 5.0f;	// The distance in front of the actor the object is placed
+
+private:
+
 };

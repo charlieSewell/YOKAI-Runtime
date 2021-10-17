@@ -44,6 +44,22 @@ void PlayerScript::Update(float deltaTime)
 	else
 		std::cout << "Miss!\n";
 	*/		
+	std::shared_ptr<GameObject> otherObject;
+	int objectID = rayCaster->CastRay(camera->m_position, camera->m_frontDirection, 10);
+	if(objectID != -1)
+	{
+		otherObject = GetAISceneObject(objectID);
+		if(otherObject->GetComponent<AffordanceSystem>() != nullptr)
+		{
+			if(otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
+			{
+				CheckPickup(otherObject);
+			}
+		}
+	}
+	
+	
+
 }
 
 void PlayerScript::Draw()
@@ -55,19 +71,19 @@ void PlayerScript::UpdateMovement()
 {
 	glm::vec3 tempPosition = glm::vec3(0, 0, 0);
 
-	if(input->GetKeyState('w'))
+	if(input->GetKeyState(YOKAI_INPUT::W))
 		tempPosition += glm::vec3(camera->m_frontDirection.x, 0, camera->m_frontDirection.z) * movementSpeed;
 
-	if (input->GetKeyState('s'))
+	if (input->GetKeyState(YOKAI_INPUT::S))
 		tempPosition -= glm::vec3(camera->m_frontDirection.x, 0, camera->m_frontDirection.z) * movementSpeed;
 
-	if (input->GetKeyState('a'))
+	if (input->GetKeyState(YOKAI_INPUT::A))
 		tempPosition -= glm::normalize(glm::cross(camera->m_frontDirection, camera->m_upDirection)) * movementSpeed;
 
-	if (input->GetKeyState('d'))
+	if (input->GetKeyState(YOKAI_INPUT::D))
 		tempPosition += glm::normalize(glm::cross(camera->m_frontDirection, camera->m_upDirection)) * movementSpeed;
 
-	if (input->GetKeyState(' '))
+	if (input->GetKeyState(YOKAI_INPUT::SPACE))
 		tempPosition += camera->m_upDirection * movementSpeed;
 
 	if (input->GetKeyState(YOKAI_INPUT::LEFT_CONTROL))
@@ -109,4 +125,34 @@ void PlayerScript::UpdateMovement()
 	sphereCollider->SetPosition(transform->getPosition());
 	camera->m_position = transform->getPosition();
 	camera->m_position.y += 0.75;
+}
+
+void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
+{
+	std::shared_ptr<PickupAffordance> pickupAffordance = affordanceSystem->GetAffordance<PickupAffordance>();
+	std::shared_ptr<PickupAffordance> otherPickupAffordance = otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>();
+
+	if(otherPickupAffordance != nullptr)
+	{
+		if(pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
+		{
+			if(glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 5)
+			{
+				if (input->GetKeyState(YOKAI_INPUT::E))
+				{
+					pickupAffordance->IsActive = true;
+				}
+			}
+		}
+		else if(pickupAffordance->IsActive)
+		{
+			pickupAffordance->Interact(otherPickupAffordance);
+			if (input->GetKeyState(YOKAI_INPUT::R))
+			{
+				pickupAffordance->IsActive = false;
+				otherPickupAffordance->IsAvailable = true;
+			}
+		}
+	}
+
 }
