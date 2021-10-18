@@ -39,18 +39,14 @@ void DemoScene::Init()
 void DemoScene::Update(float frameRate)
 {
     objectManager.Update(frameRate);
-	PhysicsSystem::getInstance().RendererUpdate();
 	m_physicsOn = UIinput->GetKeyState('f');
-
+	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 }
 
 void DemoScene::Draw()
 {
 	objectManager.Draw();
-	if(m_physicsOn)
-		PhysicsSystem::getInstance().Draw();
 }
-
 void DemoScene::Enable()
 {
     isEnabled = true;
