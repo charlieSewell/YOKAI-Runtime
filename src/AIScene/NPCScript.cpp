@@ -7,7 +7,8 @@ NPCScript::NPCScript(GameObject* parent)
 	transform(gameObject->AddComponent<Transform>()),
 	sphereCollider(gameObject->AddComponent<SphereCollider>()),
 	rayCaster(gameObject->AddComponent<RayCaster>()),
-	automatedBehaviours(gameObject->AddComponent<AutomatedBehaviours>())
+	automatedBehaviours(gameObject->AddComponent<AutomatedBehaviours>()),
+	affordanceSystem(gameObject->AddComponent<AffordanceSystem>())
 {
 	Awake();
 }
@@ -19,6 +20,9 @@ void NPCScript::Awake()
 	transform->setScale(0.25);
 	sphereCollider->SetRadius(1.0);
 	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
+
+	std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
+	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
 }
 
 void NPCScript::Start()

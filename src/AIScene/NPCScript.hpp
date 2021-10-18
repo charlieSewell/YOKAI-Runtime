@@ -9,6 +9,8 @@
 #include "Components/ConcaveCollider.hpp"
 #include "Components/RayCaster.hpp"
 #include "Components/AutomatedBehaviours.hpp"
+#include "AIComponents/AffordanceSystem.hpp"
+#include "AIComponents/PickupAffordance.hpp"
 
 class GameObject;
 
@@ -27,4 +29,5 @@ private:
 	std::shared_ptr<SphereCollider> sphereCollider;
 	std::shared_ptr<RayCaster> rayCaster;
 	std::shared_ptr<AutomatedBehaviours> automatedBehaviours;
+	std::shared_ptr<AffordanceSystem> affordanceSystem;
 };

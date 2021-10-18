@@ -20,7 +20,16 @@ void AIScene::Init()
 	objectManager.GetObject(Player)->GetComponent<PlayerScript>()->GetAISceneObject = getAISceneObject;
 	objectManager.GetObject(Player)->Start();
 
-	// Cube
+	// Zombies
+	for (int i = 0; i < 10; ++i)
+	{
+		Zombies[i] = objectManager.CreateObject();
+		objectManager.GetObject(Zombies[i])->AddComponent<NPCScript>();
+		objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i * 3, 0, 30));
+		objectManager.GetObject(Zombies[i])->Start();
+	}
+
+	// Cube - can get it's own script later
 	Cube = objectManager.CreateObject();
 	objectManager.GetObject(Cube)->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/shay/shay.gltf");
 	objectManager.GetObject(Cube)->AddComponent<Transform>()->setScale(0.5);
@@ -37,14 +46,6 @@ void AIScene::Init()
 	objectManager.GetObject(House)->GetComponent<Transform>()->setScale(2.0);
 	objectManager.GetObject(House)->GetComponent<Transform>()->setPosition(glm::vec3(0, 0, 0));
 
-	for(int i=0; i<10; ++i)
-	{
-		Zombies = objectManager.CreateObject();
-		objectManager.GetObject(Zombies)->AddComponent<NPCScript>();
-		objectManager.GetObject(Zombies)->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*3, 0, 30));
-		objectManager.GetObject(Zombies)->Start();
-	}
-
 	// COLLIDERS
 	InitColliders();
 	UIInputObject = objectManager.CreateObject();
@@ -55,7 +56,12 @@ void AIScene::Update(float frameRate)
 {
     objectManager.Update(frameRate);
 	PhysicsSystem::getInstance().RendererUpdate();
-	m_physicsOn = UIinput->GetKeyState(YOKAI_INPUT::F);
+
+	if(UIinput->GetKeyToggle(YOKAI_INPUT::F))
+	{
+		m_physicsOn = !m_physicsOn;
+	}
+
 	objectManager.GetObject(Cube)->GetComponent<BoxCollider>()->SetPosition(objectManager.GetObject(Cube)->GetComponent<Transform>()->getPosition());
 	//objectManager.GetObject(Player)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>()->Interact(objectManager.GetObject(Cube)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>());
 }

@@ -21,13 +21,22 @@ void PickupAffordance::EnableAffordance(std::function<void(glm::vec3)> setPositi
 
 void PickupAffordance::Interact(std::shared_ptr<PickupAffordance> other)
 {
-	other->IsAvailable = false;
+	m_otherPickupAffordance = other;
+	m_otherPickupAffordance->IsAvailable = false;
 	IsActive = true;
-	other->SetPosition(GetPosition() + GetDirection() * PickUpOffset);
-	other->Afford();
 }
  
-void PickupAffordance::Afford()
+void PickupAffordance::Stop()
 {
+	IsActive = false;
+	m_otherPickupAffordance->IsAvailable = true;
+	m_otherPickupAffordance = nullptr;
+}
 
+void PickupAffordance::Update(float deltaTime)
+{
+	if(IsActive)
+	{
+		m_otherPickupAffordance->SetPosition(GetPosition() + GetDirection() * PickUpOffset);
+	}
 }

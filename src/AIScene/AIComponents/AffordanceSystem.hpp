@@ -12,6 +12,8 @@ class AffordanceSystem : public Component
 public:
 	AffordanceSystem(GameObject* parent);
 
+	void Update(float deltaTime) override;
+
 	template <typename T> std::shared_ptr<T> AddAffordance()
 	{
 		static_assert(std::is_base_of<Affordance, T>::value, "T must derive from Affordance");

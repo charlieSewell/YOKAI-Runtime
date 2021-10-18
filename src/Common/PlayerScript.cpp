@@ -12,7 +12,7 @@ PlayerScript::PlayerScript(GameObject* parent)
 	rayCaster(gameObject->AddComponent<RayCaster>()),
 	affordanceSystem(gameObject->AddComponent<AffordanceSystem>())
 {
-	Awake();
+	
 }
 
 
@@ -43,7 +43,8 @@ void PlayerScript::Update(float deltaTime)
 		std::cout << "Hit!\n";
 	else
 		std::cout << "Miss!\n";
-	*/		
+	*/
+
 	std::shared_ptr<GameObject> otherObject;
 	int objectID = rayCaster->CastRay(camera->m_position, camera->m_frontDirection, 10);
 	if(objectID != -1)
@@ -123,8 +124,8 @@ void PlayerScript::UpdateMovement()
 
 
 	sphereCollider->SetPosition(transform->getPosition());
-	camera->m_position = transform->getPosition();
-	camera->m_position.y += 0.75;
+	//camera->m_position = transform->getPosition();
+	//camera->m_position.y += 0.75;
 }
 
 void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
@@ -138,19 +139,17 @@ void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 		{
 			if(glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 5)
 			{
-				if (input->GetKeyState(YOKAI_INPUT::E))
+				if (input->GetKeyToggle(YOKAI_INPUT::E))
 				{
-					pickupAffordance->IsActive = true;
+					pickupAffordance->Interact(otherPickupAffordance);
 				}
 			}
 		}
 		else if(pickupAffordance->IsActive)
 		{
-			pickupAffordance->Interact(otherPickupAffordance);
-			if (input->GetKeyState(YOKAI_INPUT::R))
+			if (input->GetKeyToggle(YOKAI_INPUT::E))
 			{
-				pickupAffordance->IsActive = false;
-				otherPickupAffordance->IsAvailable = true;
+				pickupAffordance->Stop();
 			}
 		}
 	}

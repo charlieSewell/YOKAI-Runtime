@@ -8,6 +8,8 @@ public:
 
 	Affordance(){}
 
+	virtual void Update(float deltaTime) {};
+
 	bool HasAffordance = false;
 	bool HasAbility = false;
 	bool IsAvailable = false;
@@ -15,7 +17,7 @@ public:
 	
 	template <typename T> void Interact(std::shared_ptr<T> otherAffordance) = 0;
 
-	virtual void Afford() = 0;
+	virtual void Stop() = 0;
 
 protected:
 

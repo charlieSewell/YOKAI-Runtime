@@ -17,10 +17,10 @@ class PlayerScript : public Component
 {
 public:
 	PlayerScript(GameObject* parent);
-	void Awake();
-	void Start();
-	void Update(float deltaTime);
-	void Draw();
+	void Awake() override;
+	void Start() override;
+	void Update(float deltaTime) override;
+	void Draw() override;
 
 	std::function<std::shared_ptr<GameObject>(int)> GetAISceneObject;
 
