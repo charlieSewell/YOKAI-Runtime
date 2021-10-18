@@ -7,7 +7,8 @@ PlayerScript::PlayerScript(GameObject* parent)
 	transform(gameObject->AddComponent<Transform>()),
 	camera(gameObject->AddComponent<Camera>()),
 	input(gameObject->AddComponent<Input>()),
-	sphereCollider(gameObject->AddComponent<SphereCollider>())
+	sphereCollider(gameObject->AddComponent<SphereCollider>()),
+	rayCaster(gameObject->AddComponent<RayCaster>())
 {
 	Awake();
 }
@@ -16,20 +17,28 @@ PlayerScript::PlayerScript(GameObject* parent)
 void PlayerScript::Awake()
 {
 	
-	movementSpeed = 3.05f;
+	movementSpeed = 0.1f;
 	lookSensitivity = 0.05f;
 	sprintMultiplyer = 4;
 }
 
 void PlayerScript::Start()
 {
-	transform->setPosition(glm::vec3(0, 8, 0));
-    
+	transform->setPosition(glm::vec3(16, 2, -5));    
 }
 
 void PlayerScript::Update(float deltaTime)
 {
 	UpdateMovement();
+	//std::cout << transform->getPosition().x << ", " << transform->getPosition().y << ", " << transform->getPosition().z << "\n";
+	
+	// Ray caster Test
+	/*
+	if(rayCaster->CastRay(camera->m_position, camera->m_frontDirection, 10) != -1 )
+		std::cout << "Hit!\n";
+	else
+		std::cout << "Miss!\n";
+	*/		
 }
 
 void PlayerScript::Draw()
@@ -56,10 +65,10 @@ void PlayerScript::UpdateMovement()
 	if (input->GetKeyState(' '))
 		tempPosition += camera->m_upDirection * movementSpeed;
 
-	if (input->GetKeyState(SPECIAL::LEFT_CONTROL))
+	if (input->GetKeyState(YOKAI_INPUT::LEFT_CONTROL))
 		tempPosition -= camera->m_upDirection * movementSpeed;
 
-	if (input->GetKeyState(SPECIAL::LEFT_SHIFT))
+	if (input->GetKeyState(YOKAI_INPUT::LEFT_SHIFT))
 	{
 		if(!sprintActive)
 			movementSpeed *= sprintMultiplyer;
@@ -74,7 +83,7 @@ void PlayerScript::UpdateMovement()
 		sprintActive = false;
 	}
 		
-
+	transform->setPosition(transform->getPosition() + tempPosition);
 
 	yaw += input->GetMouseState().offset.x * lookSensitivity;
 	pitch -= input->GetMouseState().offset.y * lookSensitivity;
@@ -91,9 +100,8 @@ void PlayerScript::UpdateMovement()
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	camera->m_frontDirection = glm::normalize(direction);
 
-	tempPosition.y -= movementSpeed / 4; //(gravity)
-	sphereCollider->NewVelocity = tempPosition;
 
+	sphereCollider->SetPosition(transform->getPosition());
 	camera->m_position = transform->getPosition();
 	camera->m_position.y += 0.75;
 }
