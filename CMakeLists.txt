@@ -48,7 +48,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG    ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE  ${PROJECT_BINARY_DIR}/lib)
 
 # Define the executable.
-add_executable(${PROJECT_NAME} src/main.cpp  "src/AIScene/AIComponents/EmotionSystem.cpp" "src/AIScene/AIComponents/EmotionSystem.hpp" "src/AIScene/AIComponents/AffordanceSystem.cpp" "src/AIScene/AIComponents/AffordanceSystem.hpp"  "src/AIScene/AIComponents/IAffordance.hpp" "src/AIScene/AIComponents/PickupAffordance.hpp")
+add_executable(${PROJECT_NAME} src/main.cpp)
 
 # Set C++ standard.
 set_target_properties(${PROJECT_NAME} PROPERTIES
