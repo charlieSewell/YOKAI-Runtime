@@ -77,7 +77,10 @@ bool NPCScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 	{
 		if (pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
 		{
-			automatedBehaviours->frontFeelerHit = -1;	// Object directly in front so set this to avoid collision detection
+			// Object we want is directly in front so set this to avoid front collision detection
+			automatedBehaviours->frontFeelerHit = -1;
+			automatedBehaviours->feelerLeftHit = -1;
+			automatedBehaviours->feelerRightHit = -1;
 			automatedBehaviours->seek(otherObject->GetComponent<Transform>()->getPosition());
 
 			if (glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
@@ -100,6 +103,8 @@ bool NPCScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 		else if (pickupAffordance->IsActive)
 		{
 			// logic to drop box
+			//pickupAffordance->Stop();
+			//rayCaster->setExcludedColliderID(-1);
 		}
 	}
 
