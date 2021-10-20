@@ -1,10 +1,5 @@
 #include "PickupAffordance.hpp"
 
-PickupAffordance::PickupAffordance()
-{
-
-}
-
 void PickupAffordance::EnableAbility(std::function<glm::vec3()> getPosition, std::function<glm::vec3()> getDirection)
 {
 	GetPosition = getPosition;

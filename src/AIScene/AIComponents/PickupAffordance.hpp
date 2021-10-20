@@ -5,11 +5,11 @@
 #include <memory>
 #include <functional>
 
-class PickupAffordance : public Affordance
+class PickupAffordance : public IAffordance
 {
 public:
 
-	PickupAffordance();
+	PickupAffordance() = default;
 
 	void Update(float deltaTime) override;
 

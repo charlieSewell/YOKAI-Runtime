@@ -2,11 +2,11 @@
 
 #include <memory>
 
-class Affordance
+class IAffordance
 {
 public:
 
-	Affordance(){}
+	IAffordance() = default;
 
 	virtual void Update(float deltaTime) {};
 

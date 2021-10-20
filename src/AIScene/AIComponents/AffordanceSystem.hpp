@@ -16,7 +16,7 @@ public:
 
 	template <typename T> std::shared_ptr<T> AddAffordance()
 	{
-		static_assert(std::is_base_of<Affordance, T>::value, "T must derive from Affordance");
+		static_assert(std::is_base_of<IAffordance, T>::value, "T must derive from IAffordance");
 
 		// Check that we don't already have an affordance of this type.
 		for (auto& exisitingAffordance : m_affordances)
@@ -34,7 +34,7 @@ public:
 
 	template <typename T> std::shared_ptr<T> GetAffordance()
 	{
-		static_assert(std::is_base_of<Affordance, T>::value, "T must derive from Affordance");
+		static_assert(std::is_base_of<IAffordance, T>::value, "T must derive from IAffordance");
 		for (auto& exisitingAffordance : m_affordances)
 		{
 			if (std::dynamic_pointer_cast<T>(exisitingAffordance))
@@ -47,6 +47,6 @@ public:
 
 private:
 
-	std::vector<std::shared_ptr<Affordance>> m_affordances;
+	std::vector<std::shared_ptr<IAffordance>> m_affordances;
 
 };
