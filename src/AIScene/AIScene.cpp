@@ -1,6 +1,7 @@
 #include "AIScene.hpp"
 #include "Common/PlayerScript.hpp"
 #include "NPCScript.hpp"
+#include "CubeScript.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/BoxCollider.hpp"
 #include "AIComponents/AffordanceSystem.hpp"
@@ -25,19 +26,18 @@ void AIScene::Init()
 	{
 		Zombies[i] = objectManager.CreateObject();
 		objectManager.GetObject(Zombies[i])->AddComponent<NPCScript>();
-		objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i * 3, 0, 30));
+		objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 4, 0, 30 - i));
 		objectManager.GetObject(Zombies[i])->Start();
 	}
 
 	// Cube - can get it's own script later
-	Cube = objectManager.CreateObject();
-	objectManager.GetObject(Cube)->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/shay/shay.gltf");
-	objectManager.GetObject(Cube)->AddComponent<Transform>()->setScale(0.5);
-	objectManager.GetObject(Cube)->GetComponent<Transform>()->setPosition(glm::vec3(5, 0, 20));
-	std::function<void(glm::vec3)> setCubePosition = [&](glm::vec3 newPosition) { objectManager.GetObject(Cube)->GetComponent<Transform>()->setPosition(newPosition); };
-	objectManager.GetObject(Cube)->AddComponent<AffordanceSystem>()->AddAffordance<PickupAffordance>()->EnableAffordance(setCubePosition);
-	objectManager.GetObject(Cube)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(0.75, 1.25, 0.75));
-	objectManager.GetObject(Cube)->Start();
+	for(int i=0; i < 5; ++i)
+	{
+		Cube[i] = objectManager.CreateObject();
+		objectManager.GetObject(Cube[i])->AddComponent<CubeScript>();
+		objectManager.GetObject(Cube[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0, 20));
+		objectManager.GetObject(Cube[i])->Start();
+	}
 
 	// House
 	House = objectManager.CreateObject();
@@ -62,8 +62,6 @@ void AIScene::Update(float frameRate)
 		m_physicsOn = !m_physicsOn;
 	}
 
-	objectManager.GetObject(Cube)->GetComponent<BoxCollider>()->SetPosition(objectManager.GetObject(Cube)->GetComponent<Transform>()->getPosition());
-	//objectManager.GetObject(Player)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>()->Interact(objectManager.GetObject(Cube)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>());
 }
 
 void AIScene::Draw()

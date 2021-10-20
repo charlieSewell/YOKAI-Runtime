@@ -43,10 +43,11 @@ class AIScene : public Scene
 
 	bool m_physicsOn = false;
 
+	// Object sizes will not be hard coded in later
 	unsigned int Player;
-	unsigned int Zombies[10];
+	unsigned int Zombies[100];
 	unsigned int UIInputObject;
-	unsigned int Cube;
+	unsigned int Cube[5];
 	unsigned int House;
 
 	std::shared_ptr<Input> UIinput;

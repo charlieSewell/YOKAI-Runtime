@@ -3,20 +3,18 @@
 #include "Engine/GameObject.hpp"
 #include "Components/Transform.hpp"
 #include "Components/Component.hpp"
-#include "Components/SphereCollider.hpp"
 #include "Components/InputComponent.hpp"
-#include "Components/RayCaster.hpp"
-#include "Components/AutomatedBehaviours.hpp"
+#include "Components/BoxCollider.hpp"
 #include "Components/DrawableEntity.hpp"
 #include "AIComponents/AffordanceSystem.hpp"
 #include "AIComponents/PickupAffordance.hpp"
 
 class GameObject;
 
-class NPCScript : public Component
+class CubeScript : public Component
 {
 public:
-	NPCScript(GameObject* parent);
+	CubeScript(GameObject* parent);
 	void Awake();
 	void Start();
 	void Update(float deltaTime);
@@ -25,8 +23,6 @@ public:
 private:
 	GameObject* gameObject;
 	std::shared_ptr<Transform> transform;
-	std::shared_ptr<SphereCollider> sphereCollider;
-	std::shared_ptr<RayCaster> rayCaster;
-	std::shared_ptr<AutomatedBehaviours> automatedBehaviours;
+	std::shared_ptr<BoxCollider> boxCollider;
 	std::shared_ptr<AffordanceSystem> affordanceSystem;
 };
