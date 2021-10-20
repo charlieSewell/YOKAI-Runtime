@@ -8,6 +8,8 @@
 #include "Components/InputComponent.hpp"
 #include "Components/ConcaveCollider.hpp"
 #include "Components/RayCaster.hpp"
+#include "AIScene/AIComponents/AffordanceSystem.hpp"
+
 
 class GameObject;
 
@@ -15,12 +17,12 @@ class PlayerScript : public Component
 {
 public:
 	PlayerScript(GameObject* parent);
-	void Awake();
-	void Start();
-	void Update(float deltaTime);
-	void Draw();
+	void Awake() override;
+	void Start() override;
+	void Update(float deltaTime) override;
+	void Draw() override;
 
-	glm::vec3 Test;
+	std::function<std::shared_ptr<GameObject>(int)> GetAISceneObject;
 
 private:
 	GameObject* gameObject;
@@ -29,6 +31,7 @@ private:
 	std::shared_ptr<Input> input;
 	std::shared_ptr<SphereCollider> sphereCollider;
 	std::shared_ptr<RayCaster> rayCaster;
+	std::shared_ptr<AffordanceSystem> affordanceSystem;
 
 	float movementSpeed = 0;
 	float lookSensitivity =	0;
@@ -42,4 +45,5 @@ private:
 	double yoffset = 0;
 
 	void UpdateMovement();
+	void CheckPickup(std::shared_ptr<GameObject> otherObject);
 };

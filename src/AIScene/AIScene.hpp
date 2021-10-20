@@ -41,11 +41,13 @@ class AIScene : public Scene
     ///Is this scene active
     bool isEnabled = true;
 
-	bool m_physicsOn;
+	bool m_physicsOn = false;
 
 	unsigned int Player;
-	unsigned int Zombies;
+	unsigned int Zombies[10];
 	unsigned int UIInputObject;
+	unsigned int Cube;
+	unsigned int House;
 
 	std::shared_ptr<Input> UIinput;
 

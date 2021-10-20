@@ -3,9 +3,12 @@ target_sources(${PROJECT_NAME} PRIVATE
         main.cpp
 		DemoScene/DemoScene.cpp
 		Common/PlayerScript.cpp
-		AIScene/NPCScript.cpp
 
+		AIScene/NPCScript.cpp
 		AIScene/AIScene.cpp
+		AIScene/AIComponents/EmotionSystem.cpp
+		AIScene/AIComponents/AffordanceSystem.cpp
+		AIScene/AIComponents/PickupAffordance.cpp
 )
 
 # Include project header files.

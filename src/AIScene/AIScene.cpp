@@ -3,6 +3,8 @@
 #include "NPCScript.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/BoxCollider.hpp"
+#include "AIComponents/AffordanceSystem.hpp"
+#include "AIComponents/PickupAffordance.hpp"
 
 AIScene::AIScene()
 {
@@ -11,16 +13,38 @@ AIScene::AIScene()
 
 void AIScene::Init()
 {
+	// Player
 	Player = objectManager.CreateObject();
 	objectManager.GetObject(Player)->AddComponent<PlayerScript>();
+	std::function<std::shared_ptr<GameObject>(int)> getAISceneObject = [&](int colliderID) { return objectManager.GetObject(colliderID); };
+	objectManager.GetObject(Player)->GetComponent<PlayerScript>()->GetAISceneObject = getAISceneObject;
 	objectManager.GetObject(Player)->Start();
 
-	for(int i=0; i<10; ++i)
+	// Zombies
+	for (int i = 0; i < 10; ++i)
 	{
-		Zombies = objectManager.CreateObject();
-		objectManager.GetObject(Zombies)->AddComponent<NPCScript>();
-		objectManager.GetObject(Zombies)->Start();
+		Zombies[i] = objectManager.CreateObject();
+		objectManager.GetObject(Zombies[i])->AddComponent<NPCScript>();
+		objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i * 3, 0, 30));
+		objectManager.GetObject(Zombies[i])->Start();
 	}
+
+	// Cube - can get it's own script later
+	Cube = objectManager.CreateObject();
+	objectManager.GetObject(Cube)->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/shay/shay.gltf");
+	objectManager.GetObject(Cube)->AddComponent<Transform>()->setScale(0.5);
+	objectManager.GetObject(Cube)->GetComponent<Transform>()->setPosition(glm::vec3(5, 0, 20));
+	std::function<void(glm::vec3)> setCubePosition = [&](glm::vec3 newPosition) { objectManager.GetObject(Cube)->GetComponent<Transform>()->setPosition(newPosition); };
+	objectManager.GetObject(Cube)->AddComponent<AffordanceSystem>()->AddAffordance<PickupAffordance>()->EnableAffordance(setCubePosition);
+	objectManager.GetObject(Cube)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(0.75, 1.25, 0.75));
+	objectManager.GetObject(Cube)->Start();
+
+	// House
+	House = objectManager.CreateObject();
+	objectManager.GetObject(House)->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/house/house.gltf");
+	objectManager.GetObject(House)->Start();
+	objectManager.GetObject(House)->GetComponent<Transform>()->setScale(2.0);
+	objectManager.GetObject(House)->GetComponent<Transform>()->setPosition(glm::vec3(0, 0, 0));
 
 	// COLLIDERS
 	InitColliders();
@@ -32,8 +56,14 @@ void AIScene::Update(float frameRate)
 {
     objectManager.Update(frameRate);
 	PhysicsSystem::getInstance().RendererUpdate();
-	m_physicsOn = UIinput->GetKeyState('f');
 
+	if(UIinput->GetKeyToggle(YOKAI_INPUT::F))
+	{
+		m_physicsOn = !m_physicsOn;
+	}
+
+	objectManager.GetObject(Cube)->GetComponent<BoxCollider>()->SetPosition(objectManager.GetObject(Cube)->GetComponent<Transform>()->getPosition());
+	//objectManager.GetObject(Player)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>()->Interact(objectManager.GetObject(Cube)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>());
 }
 
 void AIScene::Draw()
@@ -57,24 +87,40 @@ void AIScene::InitColliders()
 {
 	Colliders = objectManager.CreateObject();
 	// Floor
-	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20, 0.4, 20));
-	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(15, 0, -15));
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 0.4, 20.5));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, 0, 14.0));
 	objectManager.GetObject(Colliders)->Start();
 
-	// Left Wall
-	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(0.10, 5.0, 5.0));
-	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(7.0, 0.25, -6.5));
+	// Back fence
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 5.0, 0.10));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-9.75 , 0.25, 34.5));
 	objectManager.GetObject(Colliders)->Start();
-	objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, 0.259, 0));
 
-	// Right Wall
-	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(0.10, 5.0, 5.0));
-	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(18.5, 0.25, -6.5));
+	// Left fence
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20.5, 5.0, 0.10));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(18.0, 0.25, 14.0));
 	objectManager.GetObject(Colliders)->Start();
-	objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, -0.259, 0));
+	objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.707, 0, 0.707, 0));
 
-	// Back Wall
-	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(5.0, 5.0, 0.10));
-	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(12, 0.25, -1.775));
+	// Right fence
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20.5, 5.0, 0.10));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-37.25, 0.25, 14.0));
 	objectManager.GetObject(Colliders)->Start();
+	objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.707, 0, 0.707, 0));
+
+	// Front of house
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 5.0, 0.10));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, 0.25, -6.25));
+	objectManager.GetObject(Colliders)->Start();
+
+	// House
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(17.85, 5.0, 6.0));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-5.85, 0.25, 0.0));
+	objectManager.GetObject(Colliders)->Start();
+
+	// Pool - temporary
+	objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(5.25, 5.0, 3.0));
+	objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(4.25, 0.25, 15.5));
+	objectManager.GetObject(Colliders)->Start();
+
 }

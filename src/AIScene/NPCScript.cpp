@@ -7,7 +7,8 @@ NPCScript::NPCScript(GameObject* parent)
 	transform(gameObject->AddComponent<Transform>()),
 	sphereCollider(gameObject->AddComponent<SphereCollider>()),
 	rayCaster(gameObject->AddComponent<RayCaster>()),
-	automatedBehaviours(gameObject->AddComponent<AutomatedBehaviours>())
+	automatedBehaviours(gameObject->AddComponent<AutomatedBehaviours>()),
+	affordanceSystem(gameObject->AddComponent<AffordanceSystem>())
 {
 	Awake();
 }
@@ -16,9 +17,12 @@ NPCScript::NPCScript(GameObject* parent)
 void NPCScript::Awake()
 {
 	gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Zombie/ZombieSmooth.gltf");
-	transform->setScale(0.15);
-	transform->setPosition(glm::vec3(16, 0.5, -5));
-	sphereCollider->SetRadius(0.5);
+	transform->setScale(0.25);
+	sphereCollider->SetRadius(1.0);
+	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
+
+	std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
+	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
 }
 
 void NPCScript::Start()
@@ -30,7 +34,7 @@ void NPCScript::Update(float deltaTime)
 {
 	automatedBehaviours->wander();
 	automatedBehaviours->accelerate(0.015);
-	sphereCollider->SetPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y +0.5, transform->getPosition().z));
+	sphereCollider->SetPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y + 1, transform->getPosition().z));
 }
 
 void NPCScript::Draw()
