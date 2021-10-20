@@ -14,10 +14,12 @@ AIScene::AIScene()
 
 void AIScene::Init()
 {
+	// expose object function to objects (used for resolving raycast)
+	std::function<std::shared_ptr<GameObject>(int)> getAISceneObject = [&](int colliderID) { return objectManager.GetObject(colliderID); };
+
 	// Player
 	Player = objectManager.CreateObject();
 	objectManager.GetObject(Player)->AddComponent<PlayerScript>();
-	std::function<std::shared_ptr<GameObject>(int)> getAISceneObject = [&](int colliderID) { return objectManager.GetObject(colliderID); };
 	objectManager.GetObject(Player)->GetComponent<PlayerScript>()->GetAISceneObject = getAISceneObject;
 	objectManager.GetObject(Player)->Start();
 
@@ -27,6 +29,7 @@ void AIScene::Init()
 		Zombies[i] = objectManager.CreateObject();
 		objectManager.GetObject(Zombies[i])->AddComponent<NPCScript>();
 		objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 4, 0, 30 - i));
+		objectManager.GetObject(Zombies[i])->GetComponent<NPCScript>()->GetAISceneObject = getAISceneObject;
 		objectManager.GetObject(Zombies[i])->Start();
 	}
 

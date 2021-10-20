@@ -45,7 +45,7 @@ class AIScene : public Scene
 
 	// Object sizes will not be hard coded in later
 	unsigned int Player;
-	unsigned int Zombies[100];
+	unsigned int Zombies[10];
 	unsigned int UIInputObject;
 	unsigned int Cube[5];
 	unsigned int House;

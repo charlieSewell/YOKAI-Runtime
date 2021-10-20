@@ -1,4 +1,5 @@
 #include "NPCScript.hpp"
+#include "Components/BoxCollider.hpp"
 
 NPCScript::NPCScript(GameObject* parent)
 	:
@@ -21,8 +22,13 @@ void NPCScript::Awake()
 	sphereCollider->SetRadius(1.0);
 	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
 
-	std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
-	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
+	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
+	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
+
+	std::function<glm::vec3()> getPosition = [&]() { return transform->getPosition(); };
+	std::function<glm::vec3()> getHeading = [&]() { return automatedBehaviours->Heading; };
+	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
+	affordanceSystem->GetAffordance<PickupAffordance>()->PickUpOffset = 1;
 }
 
 void NPCScript::Start()
@@ -32,7 +38,27 @@ void NPCScript::Start()
 
 void NPCScript::Update(float deltaTime)
 {
-	automatedBehaviours->wander();
+	int fakeState = 0;
+
+	std::shared_ptr<GameObject> otherObject;
+	int objectID = automatedBehaviours->frontFeelerHit;
+	if (objectID != -1)
+	{
+		otherObject = GetAISceneObject(objectID);
+		if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
+		{
+			if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
+			{
+				fakeState = CheckPickup(otherObject);
+			}
+		}
+	}
+
+	if(!fakeState)
+	{
+		automatedBehaviours->wander();
+	}
+
 	automatedBehaviours->accelerate(0.015);
 	sphereCollider->SetPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y + 1, transform->getPosition().z));
 }
@@ -40,4 +66,42 @@ void NPCScript::Update(float deltaTime)
 void NPCScript::Draw()
 {
 
+}
+
+bool NPCScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
+{
+	std::shared_ptr<PickupAffordance> pickupAffordance = affordanceSystem->GetAffordance<PickupAffordance>();
+	std::shared_ptr<PickupAffordance> otherPickupAffordance = otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>();
+
+	if (otherPickupAffordance != nullptr)
+	{
+		if (pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
+		{
+			automatedBehaviours->frontFeelerHit = -1;	// Object directly in front so set this to avoid collision detection
+			automatedBehaviours->seek(otherObject->GetComponent<Transform>()->getPosition());
+
+			if (glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
+			{
+				pickupAffordance->Interact(otherPickupAffordance);
+
+				int otherColliderID = 0;
+				if(otherObject->GetComponent<BoxCollider>() != nullptr)
+				{
+					rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
+				}
+				else if(otherObject->GetComponent<SphereCollider>() != nullptr)
+				{
+					rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
+				}
+			}
+
+			return true;
+		}
+		else if (pickupAffordance->IsActive)
+		{
+			// logic to drop box
+		}
+	}
+
+	return false;
 }

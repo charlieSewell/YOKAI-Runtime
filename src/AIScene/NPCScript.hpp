@@ -22,6 +22,8 @@ public:
 	void Update(float deltaTime);
 	void Draw();
 
+	std::function<std::shared_ptr<GameObject>(int)> GetAISceneObject;
+
 private:
 	GameObject* gameObject;
 	std::shared_ptr<Transform> transform;
@@ -29,4 +31,6 @@ private:
 	std::shared_ptr<RayCaster> rayCaster;
 	std::shared_ptr<AutomatedBehaviours> automatedBehaviours;
 	std::shared_ptr<AffordanceSystem> affordanceSystem;
+
+	bool CheckPickup(std::shared_ptr<GameObject> otherObject);
 };
