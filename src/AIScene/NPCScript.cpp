@@ -21,6 +21,7 @@ void NPCScript::Awake()
 	transform->setScale(0.25);
 	sphereCollider->SetRadius(1.0);
 	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
+	automatedBehaviours->TopSpeed = 0.015;
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
@@ -39,6 +40,15 @@ void NPCScript::Start()
 void NPCScript::Update(float deltaTime)
 {
 	int fakeState = 0;
+
+	if(automatedBehaviours->Acceleration < automatedBehaviours->TopSpeed * 0.10)	// stand still if moving at 10% speed
+	{
+		gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieIdle");
+	}
+	else
+	{
+		gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieWalk");
+	}
 
 	std::shared_ptr<GameObject> otherObject;
 	int objectID = automatedBehaviours->frontFeelerHit;
@@ -59,7 +69,7 @@ void NPCScript::Update(float deltaTime)
 		automatedBehaviours->wander();
 	}
 
-	automatedBehaviours->accelerate(0.015);
+	automatedBehaviours->accelerate();
 	sphereCollider->SetPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y + 1, transform->getPosition().z));
 }
 

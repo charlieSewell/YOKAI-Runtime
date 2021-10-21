@@ -4,17 +4,18 @@
 #include "Engine/GameObject.hpp"
 #include "Components/DrawableEntity.hpp"
 #include "Components/InputComponent.hpp"
+#include <random>
 //#include "Engine/UIManager.hpp"
 
 /**
- * @class DemoScene
+ * @class LightingScene
  * @brief A demo Scene for Assignment 1
  */
-class AIScene : public Scene
+class LightingScene : public Scene
 {
   public:
 
-	  AIScene();
+	LightingScene();
     /**
      * @brief Initialised the Scene
      */
@@ -22,7 +23,7 @@ class AIScene : public Scene
 	/**
 	 * @brief Updates the Scene
 	 */
-    void Update(float deltaTime) override;
+    void Update(float frameRate) override;
     /**
      * @brief Draws the Scene
      */
@@ -36,22 +37,16 @@ class AIScene : public Scene
      */
     void Disable() override;
   private:
-	
-	void InitColliders();
     ///Is this scene active
     bool isEnabled = true;
 
-	bool m_physicsOn = false;
+	bool m_physicsOn;
 
-	// Object sizes will not be hard coded in later
 	unsigned int Player;
-	unsigned int Zombies[10];
+	unsigned int Scene;
 	unsigned int UIInputObject;
-	unsigned int Cube[5];
-	unsigned int House;
 
 	std::shared_ptr<Input> UIinput;
-	//colliders
-	 std::vector<unsigned int> Colliders;
+    glm::vec3 RandomPosition(std::uniform_real_distribution<> dis, std::mt19937 gen);
 
 };
