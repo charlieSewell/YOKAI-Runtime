@@ -50,6 +50,6 @@ class AIScene : public Scene
 
 	std::shared_ptr<Input> UIinput;
 	//colliders
-	unsigned int Colliders;
+	 std::vector<unsigned int> Colliders;
 
 };

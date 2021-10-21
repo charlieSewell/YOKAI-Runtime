@@ -57,13 +57,13 @@ void AIScene::Update(float frameRate)
 {
     m_objectManager.Update(frameRate);
 	m_lightManager.UpdateLights();
-	PhysicsSystem::getInstance().RendererUpdate();
 
 	if(UIinput->GetKeyToggle(YOKAI_INPUT::F))
 	{
+		
 		m_physicsOn = !m_physicsOn;
 	}
-
+	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 	m_objectManager.GetObject(Cube)->GetComponent<BoxCollider>()->SetPosition(m_objectManager.GetObject(Cube)->GetComponent<Transform>()->getPosition());
 	//m_objectManager.GetObject(Player)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>()->Interact(m_objectManager.GetObject(Cube)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>());
 }
@@ -85,42 +85,46 @@ void AIScene::Disable()
 
 void AIScene::InitColliders()
 {
-	Colliders = m_objectManager.CreateObject();
+	for(int i=0; i < 7;i++)
+	{
+		Colliders.push_back(m_objectManager.CreateObject());
+	}
 	// Floor
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 0.4, 20.5));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, 0, 14.0));
-	m_objectManager.GetObject(Colliders)->Start();
+	m_objectManager.GetObject(Colliders[0])->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, 0, 14.0));
+	m_objectManager.GetObject(Colliders[0])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 0.4, 20.5));
+	m_objectManager.GetObject(Colliders[0])->Start();
+	
 
 	// Back fence
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 5.0, 0.10));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-9.75 , 0.25, 34.5));
-	m_objectManager.GetObject(Colliders)->Start();
+	m_objectManager.GetObject(Colliders[1])->AddComponent<Transform>()->setPosition(glm::vec3(-9.75 , 0.25, 34.5));
+	m_objectManager.GetObject(Colliders[1])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 5.0, 0.10));
+	m_objectManager.GetObject(Colliders[1])->Start();
 
 	// Left fence
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20.5, 5.0, 0.10));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(18.0, 0.25, 14.0));
-	m_objectManager.GetObject(Colliders)->Start();
-	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.707, 0, 0.707, 0));
-
+	m_objectManager.GetObject(Colliders[2])->AddComponent<Transform>()->setPosition(glm::vec3(18.0, 0.25, 14.0));
+	m_objectManager.GetObject(Colliders[2])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20.5, 5.0, 0.10));
+	m_objectManager.GetObject(Colliders[2])->Start();
+	m_objectManager.GetObject(Colliders[2])->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.707, 0, 0.707, 0));
+	
 	// Right fence
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20.5, 5.0, 0.10));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-37.25, 0.25, 14.0));
-	m_objectManager.GetObject(Colliders)->Start();
-	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.707, 0, 0.707, 0));
-
+	m_objectManager.GetObject(Colliders[3])->AddComponent<Transform>()->setPosition(glm::vec3(-37.25, 0.25, 14.0));
+	m_objectManager.GetObject(Colliders[3])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(20.5, 5.0, 0.10));
+	m_objectManager.GetObject(Colliders[3])->Start();
+	m_objectManager.GetObject(Colliders[3])->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.707, 0, 0.707, 0));
+	
 	// Front of house
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 5.0, 0.10));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, 0.25, -6.25));
-	m_objectManager.GetObject(Colliders)->Start();
+	m_objectManager.GetObject(Colliders[4])->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, 0.25, -6.25));
+	m_objectManager.GetObject(Colliders[4])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 5.0, 0.10));
+	m_objectManager.GetObject(Colliders[4])->Start();
 
 	// House
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(17.85, 5.0, 6.0));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(-5.85, 0.25, 0.0));
-	m_objectManager.GetObject(Colliders)->Start();
+	m_objectManager.GetObject(Colliders[5])->AddComponent<Transform>()->setPosition(glm::vec3(-5.85, 0.25, 0.0));
+	m_objectManager.GetObject(Colliders[5])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(17.85, 5.0, 6.0));
+	m_objectManager.GetObject(Colliders[5])->Start();
 
 	// Pool - temporary
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(5.25, 5.0, 3.0));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::vec3(4.25, 0.25, 15.5));
-	m_objectManager.GetObject(Colliders)->Start();
+	m_objectManager.GetObject(Colliders[6])->AddComponent<Transform>()->setPosition(glm::vec3(4.25, 0.25, 15.5));
+	m_objectManager.GetObject(Colliders[6])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(5.25, 5.0, 3.0));
+	m_objectManager.GetObject(Colliders[6])->Start();
 
 }
