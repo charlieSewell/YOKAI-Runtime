@@ -1,6 +1,7 @@
 #include "AIScene.hpp"
 #include "Common/PlayerScript.hpp"
 #include "NPCScript.hpp"
+#include "CubeScript.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/BoxCollider.hpp"
 #include "AIComponents/AffordanceSystem.hpp"
@@ -13,11 +14,12 @@ AIScene::AIScene()
 
 void AIScene::Init()
 {
+	// expose object function to objects (used for resolving raycast)
+	std::function<std::shared_ptr<GameObject>(int)> getAISceneObject = [&](int colliderID) { return m_objectManager.GetObject(colliderID); };
 
 	// Player
 	Player = m_objectManager.CreateObject();
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
-	std::function<std::shared_ptr<GameObject>(int)> getAISceneObject = [&](int colliderID) { return m_objectManager.GetObject(colliderID); };
 	m_objectManager.GetObject(Player)->GetComponent<PlayerScript>()->GetAISceneObject = getAISceneObject;
 	m_objectManager.GetObject(Player)->Start();
 
@@ -26,19 +28,19 @@ void AIScene::Init()
 	{
 		Zombies[i] = m_objectManager.CreateObject();
 		m_objectManager.GetObject(Zombies[i])->AddComponent<NPCScript>();
-		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i * 3, 0, 30));
+		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 4, 0, 30 - i));
+		m_objectManager.GetObject(Zombies[i])->GetComponent<NPCScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Zombies[i])->Start();
 	}
 
 	// Cube - can get it's own script later
-	Cube = m_objectManager.CreateObject();
-	m_objectManager.GetObject(Cube)->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/shay/shay.gltf");
-	m_objectManager.GetObject(Cube)->AddComponent<Transform>()->setScale(0.5);
-	m_objectManager.GetObject(Cube)->GetComponent<Transform>()->setPosition(glm::vec3(5, 0, 20));
-	std::function<void(glm::vec3)> setCubePosition = [&](glm::vec3 newPosition) { m_objectManager.GetObject(Cube)->GetComponent<Transform>()->setPosition(newPosition); };
-	m_objectManager.GetObject(Cube)->AddComponent<AffordanceSystem>()->AddAffordance<PickupAffordance>()->EnableAffordance(setCubePosition);
-	m_objectManager.GetObject(Cube)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(0.75, 1.25, 0.75));
-	m_objectManager.GetObject(Cube)->Start();
+	for(int i=0; i < 5; ++i)
+	{
+		Cube[i] = m_objectManager.CreateObject();
+		m_objectManager.GetObject(Cube[i])->AddComponent<CubeScript>();
+		m_objectManager.GetObject(Cube[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0, 20));
+		m_objectManager.GetObject(Cube[i])->Start();
+	}
 
 	// House
 	House = m_objectManager.CreateObject();
@@ -53,19 +55,18 @@ void AIScene::Init()
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
 
-void AIScene::Update(float frameRate)
+void AIScene::Update(float deltaTime)
 {
-    m_objectManager.Update(frameRate);
+    m_objectManager.Update(deltaTime);
 	m_lightManager.UpdateLights();
 
 	if(UIinput->GetKeyToggle(YOKAI_INPUT::F))
 	{
-		
 		m_physicsOn = !m_physicsOn;
 	}
+
 	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
-	m_objectManager.GetObject(Cube)->GetComponent<BoxCollider>()->SetPosition(m_objectManager.GetObject(Cube)->GetComponent<Transform>()->getPosition());
-	//m_objectManager.GetObject(Player)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>()->Interact(m_objectManager.GetObject(Cube)->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>());
+	//m_objectManager.GetObject(Cube)->GetComponent<BoxCollider>()->SetPosition(m_objectManager.GetObject(Cube)->GetComponent<Transform>()->getPosition());
 }
 
 void AIScene::Draw()

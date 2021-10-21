@@ -5,6 +5,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 		Common/PlayerScript.cpp
 
 		AIScene/NPCScript.cpp
+		AIScene/CubeScript.cpp
 		AIScene/AIScene.cpp
 		AIScene/AIComponents/EmotionSystem.cpp
 		AIScene/AIComponents/AffordanceSystem.cpp

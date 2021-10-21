@@ -22,7 +22,7 @@ class AIScene : public Scene
 	/**
 	 * @brief Updates the Scene
 	 */
-    void Update(float frameRate) override;
+    void Update(float deltaTime) override;
     /**
      * @brief Draws the Scene
      */
@@ -42,10 +42,12 @@ class AIScene : public Scene
     bool isEnabled = true;
 
 	bool m_physicsOn = false;
+
+	// Object sizes will not be hard coded in later
 	unsigned int Player;
 	unsigned int Zombies[10];
 	unsigned int UIInputObject;
-	unsigned int Cube;
+	unsigned int Cube[5];
 	unsigned int House;
 
 	std::shared_ptr<Input> UIinput;

@@ -30,8 +30,10 @@ void DemoScene::Init()
 	//unsigned int obj = objectManager.CreateObject();
 	//objectManager.GetObject(obj)->AddComponent<DrawableEntity>()->LoadModel("content/Zombie/ZombieSmooth.gltf");
 	//objectManager.GetObject(obj)->Start();
+
 	// COLLIDERS
 	//InitColliders();
+
 	UIInputObject = m_objectManager.CreateObject();
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
@@ -39,7 +41,7 @@ void DemoScene::Init()
 void DemoScene::Update(float frameRate)
 {
     m_objectManager.Update(frameRate);
-	m_physicsOn = UIinput->GetKeyState('f');
+	m_physicsOn = UIinput->GetKeyToggle(YOKAI_INPUT::F);
 	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 }
 

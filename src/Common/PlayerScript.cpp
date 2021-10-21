@@ -30,7 +30,7 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-	transform->setPosition(glm::vec3(11, 3, 30));    
+	transform->setPosition(glm::vec3(11, 3, 30));
 }
 
 void PlayerScript::Update(float deltaTime)
@@ -47,9 +47,8 @@ void PlayerScript::Update(float deltaTime)
 	*/
 
 	std::shared_ptr<GameObject> otherObject;
-	//THIS WILL ALWAYS HIT PLAYER WHEN HE IS PRESSING W
 	int objectID = rayCaster->CastRay(camera->getPosition(), camera->m_frontDirection, 10);
-	if(objectID != -1)
+	if(objectID != -1 && GetAISceneObject != nullptr)
 	{
 		otherObject = GetAISceneObject(objectID);
 		if(otherObject->GetComponent<AffordanceSystem>() != nullptr)
@@ -60,9 +59,6 @@ void PlayerScript::Update(float deltaTime)
 			}
 		}
 	}
-	
-	
-
 }
 
 void PlayerScript::Draw()
