@@ -4,8 +4,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 		DemoScene/DemoScene.cpp
 		Common/PlayerScript.cpp
 		AIScene/NPCScript.cpp
-
 		AIScene/AIScene.cpp
+		LightingScene/LightingScene.cpp
 )
 
 # Include project header files.

@@ -61,7 +61,7 @@ void main(){
     uint tileIndex = gl_LocalInvocationIndex + gl_WorkGroupSize.x * gl_WorkGroupSize.y * gl_WorkGroupSize.z * gl_WorkGroupID.z;
 
     for( uint light = 0; light < lightCount; ++light)
-    {   
+    {  
         if(testSphereAABB(light, tileIndex))
         {
             visibleLightIndices[visibleLightCount] = light;
@@ -69,6 +69,7 @@ void main(){
         }
     }
     barrier();
+    
 
     uint offset = atomicAdd(globalIndexCount, visibleLightCount);
 
