@@ -75,10 +75,22 @@ void DemoScene::Init()
 	//Physics testing
 	//objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getCollisionBody()->setLinearVelocity(glm::vec3(0.001, 0, 0));
 	objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setLinearVelocity(glm::dvec3(0.001, 0, 0));
-	objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setLinearVelocity(glm::dvec3(-0.001, 0, 0));
-
+	objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setAngularVelocity(glm::dvec3(0, 0, 0));
+	objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setMass(2);
+	objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setCentreOfMass(objectManager.GetObject(Plank)->GetComponent<Transform>()->getPosition());
 	objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setIsStaticObject(false);
+	objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setInertiaTensor();
+	//glm::mat3x3 temp1 = YokaiPhysics::RectangleInertiaTensor(objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getExtents(), objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getMass());
+	//objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setInertiaTensor(temp1);
+
+	objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setLinearVelocity(glm::dvec3(-0.001, 0, 0));
+	objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setAngularVelocity(glm::dvec3(0, 0, 0));
+	objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setMass(2);
+	objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setCentreOfMass(objectManager.GetObject(Plank2)->GetComponent<Transform>()->getPosition());
 	objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setIsStaticObject(false);
+	objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setInertiaTensor();
+	//glm::mat3x3 temp2 = YokaiPhysics::RectangleInertiaTensor(objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->getExtents(), objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getMass());
+	//objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setInertiaTensor(temp2);
 }
 
 void DemoScene::Update(float frameRate)
