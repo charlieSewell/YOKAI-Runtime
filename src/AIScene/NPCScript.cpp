@@ -18,6 +18,7 @@ void NPCScript::Awake()
 {
 	gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Zombie/ZombieSmooth.gltf");
 	transform->setScale(0.25);
+	gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieWalk");
 	sphereCollider->SetRadius(1.0);
 	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
 

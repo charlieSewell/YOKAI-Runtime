@@ -25,6 +25,7 @@ void PlayerScript::Awake()
 	std::function<glm::vec3()> getPlayerPosition = [&]() { return transform->getPosition(); };
 	std::function<glm::vec3()> getPlayerDirection = [&]() { return camera->m_frontDirection; };
 	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPlayerPosition, getPlayerDirection);
+	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
 }
 
 void PlayerScript::Start()
@@ -46,7 +47,8 @@ void PlayerScript::Update(float deltaTime)
 	*/
 
 	std::shared_ptr<GameObject> otherObject;
-	int objectID = rayCaster->CastRay(camera->m_position, camera->m_frontDirection, 10);
+	//THIS WILL ALWAYS HIT PLAYER WHEN HE IS PRESSING W
+	int objectID = rayCaster->CastRay(camera->getPosition(), camera->m_frontDirection, 10);
 	if(objectID != -1)
 	{
 		otherObject = GetAISceneObject(objectID);
@@ -121,7 +123,6 @@ void PlayerScript::UpdateMovement()
 	direction.y = sin(glm::radians(pitch));
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	camera->m_frontDirection = glm::normalize(direction);
-
 
 	sphereCollider->SetPosition(transform->getPosition());
 	//camera->m_position = transform->getPosition();
