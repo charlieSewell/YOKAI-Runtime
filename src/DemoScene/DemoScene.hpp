@@ -58,5 +58,7 @@ class DemoScene : public Scene
 
 	//colliders
 	unsigned int Colliders;
+    
+    //GameObjectManager m_objectManager;
 
 };
