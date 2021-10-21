@@ -7,8 +7,8 @@ int main()
 {
 	auto& engine = Yokai::getInstance();
 	//engine.addScene(std::shared_ptr<Scene>(new DemoScene()));
-	//engine.addScene(std::shared_ptr<Scene>(new AIScene()));
-	engine.addScene(std::shared_ptr<Scene>(new LightingScene()));
+	engine.addScene(std::shared_ptr<Scene>(new AIScene()));
+	//engine.addScene(std::shared_ptr<Scene>(new LightingScene()));
 	//engine.getLayer()[0]->Disable();	// Disable Demo Scene
 	//engine.getLayer()[1]->Disable();	// Disable AI Scene
 
