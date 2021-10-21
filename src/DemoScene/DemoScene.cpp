@@ -31,7 +31,7 @@ void DemoScene::Init()
 	//objectManager.GetObject(obj)->AddComponent<DrawableEntity>()->LoadModel("content/Zombie/ZombieSmooth.gltf");
 	//objectManager.GetObject(obj)->Start();
 	// COLLIDERS
-	InitColliders();
+	//InitColliders();
 	UIInputObject = objectManager.CreateObject();
 	UIinput = objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
