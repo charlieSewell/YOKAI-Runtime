@@ -30,7 +30,7 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-	transform->setPosition(glm::vec3(11, 3, 30));
+	transform->setPosition(glm::vec3(11, 3, 0));
 }
 
 void PlayerScript::Update(float deltaTime)

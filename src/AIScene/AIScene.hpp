@@ -22,7 +22,7 @@ class AIScene : public Scene
 	/**
 	 * @brief Updates the Scene
 	 */
-    void Update(float deltaTime) override;
+    void Update(double deltaTime) override;
     /**
      * @brief Draws the Scene
      */

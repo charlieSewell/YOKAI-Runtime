@@ -55,7 +55,7 @@ void AIScene::Init()
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
 
-void AIScene::Update(float deltaTime)
+void AIScene::Update(double deltaTime)
 {
     m_objectManager.Update(deltaTime);
 	m_lightManager.UpdateLights();
