@@ -75,26 +75,19 @@ void DemoScene::Init()
 
 	//Physics testing
 	//m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setLinearVelocity(glm::dvec3(0.001, 0, 0));
-	m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setLinearVelocity(glm::dvec3(0, 0, 0));
+	m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setLinearVelocity(glm::dvec3(0.4, 0, 0));
 	m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setAngularVelocity(glm::dvec3(0, 0, 0));
-	m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setMass(10.0);
+	m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setMass(100.0);
 	//m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setCentreOfMass(m_objectManager.GetObject(Plank)->GetComponent<Transform>()->getPosition());
 	//m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setCentreOfMass(m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->GetPosition());
 	//std::cout << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->GetPosition().x << ", " << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->GetPosition().y << ", " << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->GetPosition().z << std::endl;
 	m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setIsStaticObject(false);
 	m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setInertiaTensor();
-	//std::cout << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getInertiaTensor()[0][0] << std::endl;
-	//std::cout << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getInertiaTensor()[1][1] << std::endl;
-	//std::cout << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getInertiaTensor()[2][2] << std::endl;
-	//std::cout << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getInverseInertiaTensor()[0][0] << std::endl;
-	//std::cout << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getInverseInertiaTensor()[1][1] << std::endl;
-	//std::cout << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getInverseInertiaTensor()[2][2] << std::endl;
-	//glm::mat3x3 temp1 = YokaiPhysics::RectangleInertiaTensor(objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getExtents(), objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getMass());
 	//objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setInertiaTensor(temp1);
 
-	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setLinearVelocity(glm::dvec3(-0.75, 0, 0));
+	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setLinearVelocity(glm::dvec3(-0.2, 0, 0));
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setAngularVelocity(glm::dvec3(0, 0, 0));
-	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setMass(10.0);
+	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setMass(100.0);
 	//m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setCentreOfMass(m_objectManager.GetObject(Plank2)->GetComponent<Transform>()->getPosition());
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setIsStaticObject(false);
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setInertiaTensor();
@@ -111,7 +104,7 @@ void DemoScene::Update(double frameRate)
 		//std::cout << something->GetComponent<BoxCollider>()->getCentreOfMass().x << std::endl;
 	}
 	
-	std::cout << "TEST " << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getCentreOfMass().x << std::endl;
+	//std::cout << "TEST " << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getCentreOfMass().x << std::endl;
 	m_objectManager.Update(frameRate);
 	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 	//PhysicsSystem::getInstance().RendererUpdate();
