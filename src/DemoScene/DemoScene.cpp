@@ -56,8 +56,8 @@ void DemoScene::Init()
 	//objectManager.GetObject(Plank)->AddComponent<Transform>()->setPosition(glm::vec3(12.5, 0.675 + 0.5, -4 + 0.009));
 	m_objectManager.GetObject(Plank)->Start();
 
-	//m_objectManager.GetObject(Plank2)->AddComponent<Transform>()->setPosition(glm::dvec3(14, 1.74, -4));
-	m_objectManager.GetObject(Plank2)->AddComponent<Transform>()->setPosition(glm::dvec3(12.08, 1.74, -4));
+	m_objectManager.GetObject(Plank2)->AddComponent<Transform>()->setPosition(glm::dvec3(14, 1.5, -4));
+	//m_objectManager.GetObject(Plank2)->AddComponent<Transform>()->setPosition(glm::dvec3(12.08, 1.74, -4));
 	m_objectManager.GetObject(Plank2)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
 	m_objectManager.GetObject(Plank2)->Start();
 	
@@ -87,9 +87,9 @@ void DemoScene::Init()
 	m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(1.0, 0, 0, 0));
 	//objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->setInertiaTensor(temp1);
 
-	//m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetLinearVelocity(glm::dvec3(-0.2, 0, 0));
-	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetLinearVelocity(glm::dvec3(0, 0, 0));
-	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetAngularVelocity(glm::dvec3(0, 0, -0.2));
+	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetLinearVelocity(glm::dvec3(-0.2, 0, 0));
+	//m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetLinearVelocity(glm::dvec3(0, 0, 0));
+	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetAngularVelocity(glm::dvec3(0, -2, 0));
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetMass(2.0);
 	//m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setCentreOfMass(m_objectManager.GetObject(Plank2)->GetComponent<Transform>()->getPosition());
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetIsStaticObject(false);
