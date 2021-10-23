@@ -32,6 +32,9 @@ void PickupAffordance::Update(float deltaTime)
 {
 	if(IsActive)
 	{
-		m_otherPickupAffordance->SetPosition(GetPosition() + GetDirection() * PickUpOffset);
+		glm::vec3 offset;
+		offset = GetDirection() * PickupFrontOffset;
+		offset.y += PickupHeightOffset;
+		m_otherPickupAffordance->SetPosition(GetPosition() + offset);
 	}
 }

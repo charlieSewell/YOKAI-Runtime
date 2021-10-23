@@ -38,7 +38,7 @@ void DemoScene::Init()
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
 
-void DemoScene::Update(float frameRate)
+void DemoScene::Update(double frameRate)
 {
     m_objectManager.Update(frameRate);
 	m_physicsOn = UIinput->GetKeyToggle(YOKAI_INPUT::F);

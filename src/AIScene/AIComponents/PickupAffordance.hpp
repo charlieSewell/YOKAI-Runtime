@@ -23,7 +23,8 @@ public:
 	std::function<glm::vec3()> GetDirection;
 	std::function<void(glm::vec3)> SetPosition;
 
-	float PickUpOffset = 5.0f;	// The distance in front of the actor the object is placed
+	float PickupFrontOffset = 5.0f;	// The distance in front of the actor the object is placed
+	float PickupHeightOffset = 0.0f;
 
 private:
 

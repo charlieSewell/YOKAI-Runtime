@@ -4,6 +4,15 @@
 
 class GameObject;
 
+enum class EMOTION
+{
+	FEAR,
+	FRUSTRATION,
+	BORED,
+	EXCITED,
+	CALM
+};
+
 class EmotionSystem : public Component
 {
 public:

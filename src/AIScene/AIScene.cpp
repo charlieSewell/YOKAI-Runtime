@@ -1,7 +1,9 @@
 #include "AIScene.hpp"
 #include "Common/PlayerScript.hpp"
-#include "NPCScript.hpp"
-#include "CubeScript.hpp"
+#include "AIScripts/ZombieScript.hpp"
+#include "AIScripts/DogScript.hpp"
+#include "AIScripts/BlakeScript.hpp"
+#include "AIScripts/CubeScript.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/BoxCollider.hpp"
 #include "AIComponents/AffordanceSystem.hpp"
@@ -24,22 +26,42 @@ void AIScene::Init()
 	m_objectManager.GetObject(Player)->Start();
 
 	// Zombies
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < NUM_ZOMBIES; ++i)
 	{
-		Zombies[i] = m_objectManager.CreateObject();
-		m_objectManager.GetObject(Zombies[i])->AddComponent<NPCScript>();
-		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 4, 0, 30 - i));
-		m_objectManager.GetObject(Zombies[i])->GetComponent<NPCScript>()->GetAISceneObject = getAISceneObject;
+		Zombies.push_back(m_objectManager.CreateObject());
+		m_objectManager.GetObject(Zombies[i])->AddComponent<ZombieScript>();
+		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 8, 0, 32.5));
+		m_objectManager.GetObject(Zombies[i])->GetComponent<ZombieScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Zombies[i])->Start();
 	}
 
-	// Cube - can get it's own script later
-	for(int i=0; i < 5; ++i)
+	// Dogs
+	for (int i = 0; i < NUM_DOGS; ++i)
 	{
-		Cube[i] = m_objectManager.CreateObject();
-		m_objectManager.GetObject(Cube[i])->AddComponent<CubeScript>();
-		m_objectManager.GetObject(Cube[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0, 20));
-		m_objectManager.GetObject(Cube[i])->Start();
+		Dogs.push_back(m_objectManager.CreateObject());
+		m_objectManager.GetObject(Dogs[i])->AddComponent<DogScript>();
+		m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->setPosition(glm::vec3(-25 + i * 8, 0, 25));
+		m_objectManager.GetObject(Dogs[i])->GetComponent<DogScript>()->GetAISceneObject = getAISceneObject;
+		m_objectManager.GetObject(Dogs[i])->Start();
+	}
+
+	// Blakes
+	for (int i = 0; i < NUM_BLAKES; ++i)
+	{
+		Blakes.push_back(m_objectManager.CreateObject());
+		m_objectManager.GetObject(Blakes[i])->AddComponent<BlakeScript>();
+		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 8, -0, 20));
+		m_objectManager.GetObject(Blakes[i])->GetComponent<BlakeScript>()->GetAISceneObject = getAISceneObject;
+		m_objectManager.GetObject(Blakes[i])->Start();
+	}
+
+	// Cube - can get it's own script later
+	for(int i=0; i < NUM_CUBES; ++i)
+	{
+		Cubes.push_back(m_objectManager.CreateObject());
+		m_objectManager.GetObject(Cubes[i])->AddComponent<CubeScript>();
+		m_objectManager.GetObject(Cubes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0, 20));
+		m_objectManager.GetObject(Cubes[i])->Start();
 	}
 
 	// House
@@ -55,7 +77,7 @@ void AIScene::Init()
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
 
-void AIScene::Update(float deltaTime)
+void AIScene::Update(double deltaTime)
 {
     m_objectManager.Update(deltaTime);
 	m_lightManager.UpdateLights();
@@ -66,7 +88,6 @@ void AIScene::Update(float deltaTime)
 	}
 
 	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
-	//m_objectManager.GetObject(Cube)->GetComponent<BoxCollider>()->SetPosition(m_objectManager.GetObject(Cube)->GetComponent<Transform>()->getPosition());
 }
 
 void AIScene::Draw()

@@ -22,7 +22,7 @@ class AIScene : public Scene
 	/**
 	 * @brief Updates the Scene
 	 */
-    void Update(float deltaTime) override;
+    void Update(double deltaTime) override;
     /**
      * @brief Draws the Scene
      */
@@ -45,10 +45,19 @@ class AIScene : public Scene
 
 	// Object sizes will not be hard coded in later
 	unsigned int Player;
-	unsigned int Zombies[10];
 	unsigned int UIInputObject;
-	unsigned int Cube[5];
 	unsigned int House;
+
+	std::vector<unsigned int> Zombies;
+	std::vector<unsigned int> Dogs;
+	std::vector<unsigned int> Blakes;
+	std::vector<unsigned int> Cubes;
+
+	const int NUM_ZOMBIES = 5;
+	const int NUM_DOGS = 5;
+	const int NUM_BLAKES = 5;
+	const int NUM_CUBES = 5;
+
 
 	std::shared_ptr<Input> UIinput;
 	//colliders
