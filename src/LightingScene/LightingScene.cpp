@@ -19,7 +19,7 @@ void LightingScene::Init()
 
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
 	m_objectManager.GetObject(Player)->Start();
-	for (int i = 0; i < 2000; i++) 
+	for (int i = 0; i < 30; i++) 
 	{
 		m_lightManager.AddLight(glm::vec4(1.0f + dis(gen), 1.0f + dis(gen), 1.0f + dis(gen), 1.0f),glm::vec4(RandomPosition(dis, gen), 1.0f),glm::vec4(glm::vec3(0.0f), 40.0f));
 	}

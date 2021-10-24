@@ -55,9 +55,8 @@ class DemoScene : public Scene
     unsigned int Plank2;
 	unsigned int UIInputObject;
 	std::shared_ptr<Input> UIinput;
-
+    unsigned int Colliders;
 	//colliders
-	unsigned int Colliders;
     
     //GameObjectManager m_objectManager;
 

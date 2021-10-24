@@ -2,7 +2,7 @@
 #include "Common/PlayerScript.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/BoxCollider.hpp"
-
+#include "Physics/Physics.hpp"
 DemoScene::DemoScene()
 {
 
@@ -10,20 +10,22 @@ DemoScene::DemoScene()
 
 void DemoScene::Init() 
 {
-	Player = m_objectManager.CreateObject();
+	m_lightManager.AddLight(glm::vec4{4.0f,3.0f,1.0f,1.0f},glm::vec4{0.0f},glm::vec4{0.0f,0.0f,0.0f,30.0f});
+	m_lightManager.AddLight(glm::vec4{4.0f,3.0f,1.0f,1.0f},glm::vec4{0.0f},glm::vec4{0.0f,0.0f,0.0f,30.0f});
+	Player = m_objectManager.CreateObject("Player");
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
 	m_objectManager.GetObject(Player)->Start();
 
-	LectureTheatre = m_objectManager.CreateObject();
+	LectureTheatre = m_objectManager.CreateObject("LectureTheatre");
 	LectureTheatreCeiling = m_objectManager.CreateObject();
 	LectureTheatreExtras = m_objectManager.CreateObject();
 	//ClearDesk = objectManager.CreateObject();
-	Bullet = m_objectManager.CreateObject();
-	Plank = m_objectManager.CreateObject();
-	Plank2 = m_objectManager.CreateObject();
+	Bullet = m_objectManager.CreateObject("Bullet");
+	Plank = m_objectManager.CreateObject("Plank 1");
+	Plank2 = m_objectManager.CreateObject("Plank 2");
 
-	//objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
-	m_objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/Theatre/LectureTheatre.gltf");
+	m_objectManager.GetObject(LectureTheatre)->SetName("TEST");
+	m_objectManager.GetObject(LectureTheatre)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/LectureTheatreFinal/LectureTheatre.gltf");
 	//m_objectManager.GetObject(LectureTheatreCeiling)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/ceiling.gltf");
 	//m_objectManager.GetObject(LectureTheatreExtras)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/extras.gltf");
 	//objectManager.GetObject(ClearDesk)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/cleardesk.gltf");
@@ -45,7 +47,7 @@ void DemoScene::Init()
 	objectManager.GetObject(ClearDesk)->GetComponent<Transform>()->rotate(90, glm::vec3(0, 1, 0));
 	objectManager.GetObject(ClearDesk)->Start();
 	*/
-
+	m_objectManager.GetObject(LectureTheatre)->AddComponent<Transform>()->setPosition(glm::dvec3(18.92, 0.0, -8.580));
 	m_objectManager.GetObject(Bullet)->AddComponent<Transform>()->setPosition(glm::dvec3(13, 0.675, -4));
 	m_objectManager.GetObject(Bullet)->Start();
 
@@ -93,6 +95,7 @@ void DemoScene::Init()
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setInertiaTensor();
 	//glm::mat3x3 temp2 = YokaiPhysics::RectangleInertiaTensor(objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->getExtents(), objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getMass());
 	//objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->setInertiaTensor(temp2);
+	InitColliders();
 }
 
 void DemoScene::Update(double frameRate)
@@ -103,7 +106,6 @@ void DemoScene::Update(double frameRate)
 	if (random != something->GetComponent<BoxCollider>()->getCentreOfMass().x) {
 		//std::cout << something->GetComponent<BoxCollider>()->getCentreOfMass().x << std::endl;
 	}
-	
 	//std::cout << "TEST " << m_objectManager.GetObject(Plank)->GetComponent<BoxCollider>()->getCentreOfMass().x << std::endl;
 	m_objectManager.Update(frameRate);
 	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
@@ -135,6 +137,8 @@ void DemoScene::InitColliders()
 	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(15, 0, -15));
 	m_objectManager.GetObject(Colliders)->Start();
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);
 
 	// Desk
 	//objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(1.00, 0.75, 0.5));
@@ -142,15 +146,17 @@ void DemoScene::InitColliders()
 	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(13.125, 0.5, -4.25));
 	m_objectManager.GetObject(Colliders)->Start();
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);
 
 	// Left Stairs
 	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20.00, 0.5, 11.0));
 	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(9.75, 0.25, -10));
 	m_objectManager.GetObject(Colliders)->Start();
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
-
-	//FloorCollider.GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.970, 0.171, 0.171, 0.030));
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.986, 0.165, 0.0, 0.0));
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);
 
 	// Left Wall
 	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.10, 5.0, 5.0));
@@ -158,6 +164,8 @@ void DemoScene::InitColliders()
 	m_objectManager.GetObject(Colliders)->Start();
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, 0.259, 0));
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);
 
 	// Right Wall
 	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.10, 5.0, 5.0));
@@ -165,12 +173,16 @@ void DemoScene::InitColliders()
 	m_objectManager.GetObject(Colliders)->Start();
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, -0.259, 0));
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);
 
 	// Back Wall
 	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(5.0, 5.0, 0.10));
 	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(12, 0.25, -1.775));
 	m_objectManager.GetObject(Colliders)->Start();
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);
 
 	// Middle rows
 	for(int i=0; i<14; ++i)
@@ -183,11 +195,12 @@ void DemoScene::InitColliders()
 		// To acount for diamond shape of rows
 		if(i > 7)
 			extX -= (0.21 * (i-7)) * 1.5;	// don't think about it lol
-
 		m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(2.2 + extX, 0.55, 0.20));
 		m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(13.125, 0.1 + y, -8.75 + z));
 		m_objectManager.GetObject(Colliders)->Start();
 		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
+		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);
 
 	}
 
@@ -211,12 +224,13 @@ void DemoScene::InitColliders()
 		// To acount for diamond shape of rows
 		if (i > 7)
 			x += 0.325 * (i-7);
-
 		m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(1.35 + extX, 0.55, 0.20));
 		m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(8.0 + x, 0.1 + y, -7.75 + z));
 		m_objectManager.GetObject(Colliders)->Start();
 		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
 		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.991, 0, 0.131, 0));
+		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);
 	}
 
 	// Right rows
@@ -239,19 +253,23 @@ void DemoScene::InitColliders()
 		// To acount for diamond shape of rows
 		if (i > 7)
 			x -= 0.325 * (i - 7);
-
+		Colliders = m_objectManager.CreateObject();
 		m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(1.35 + extX, 0.55, 0.20));
 		m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(18.25 + x, 0.1 + y, -7.75 + z));
 		m_objectManager.GetObject(Colliders)->Start();
 		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
 		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.991, 0, -0.131, 0));
+		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);
 
+		Colliders = m_objectManager.CreateObject();
 		// Floor
 		m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20, 0.4, 1.5));
 		m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(15, 3.8, -22.125));
 		m_objectManager.GetObject(Colliders)->Start();
 		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setIsStaticObject(true);
-
+		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY3);
+		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 ||Physics::CATEGORY2);	
 		//Physics testing
 		//objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->setS(true);
 	}
