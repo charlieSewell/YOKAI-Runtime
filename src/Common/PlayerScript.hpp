@@ -9,6 +9,7 @@
 #include "Components/ConcaveCollider.hpp"
 #include "Components/RayCaster.hpp"
 #include "AIScene/AIComponents/AffordanceSystem.hpp"
+#include "AIScene/AIComponents/EmotionSystem.hpp"
 
 
 class GameObject;
@@ -32,6 +33,8 @@ private:
 	std::shared_ptr<SphereCollider> sphereCollider;
 	std::shared_ptr<RayCaster> rayCaster;
 	std::shared_ptr<AffordanceSystem> affordanceSystem;
+
+	std::shared_ptr<EmotionSystem> emotionSystem;
 
 	float movementSpeed = 0;
 	float lookSensitivity =	0;

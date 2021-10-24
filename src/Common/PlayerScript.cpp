@@ -10,7 +10,8 @@ PlayerScript::PlayerScript(GameObject* parent)
 	input(gameObject->AddComponent<Input>()),
 	sphereCollider(gameObject->AddComponent<SphereCollider>()),
 	rayCaster(gameObject->AddComponent<RayCaster>()),
-	affordanceSystem(gameObject->AddComponent<AffordanceSystem>())
+	affordanceSystem(gameObject->AddComponent<AffordanceSystem>()),
+	emotionSystem(gameObject->AddComponent<EmotionSystem>())
 {
 	
 }
@@ -123,6 +124,30 @@ void PlayerScript::UpdateMovement()
 	sphereCollider->SetPosition(transform->getPosition());
 	//camera->m_position = transform->getPosition();
 	//camera->m_position.y += 0.75;
+
+	//// TEST EMOTION SYSTEM ////
+
+	if (input->GetKeyState(YOKAI_INPUT::P))
+	{
+		// good
+		emotionSystem->TriggerEmotionalResponse(1, 0.9);
+	}
+
+	if (input->GetKeyState(YOKAI_INPUT::L))
+	{
+		// Meh
+		emotionSystem->TriggerEmotionalResponse(-0.5, 0.3);
+	}
+
+	if (input->GetKeyState(YOKAI_INPUT::M))
+	{
+		// Scary
+		emotionSystem->TriggerEmotionalResponse(-1, 1);
+	}
+		
+
+	////	  END TEST		////
+
 }
 
 void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
