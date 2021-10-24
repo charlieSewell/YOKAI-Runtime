@@ -46,7 +46,7 @@ void DemoScene::Init()
 	objectManager.GetObject(ClearDesk)->Start();
 	*/
 
-	m_objectManager.GetObject(Plank1)->AddComponent<Transform>()->setPosition(glm::dvec3(12.5, 2.5, -4));
+	m_objectManager.GetObject(Plank1)->AddComponent<Transform>()->setPosition(glm::dvec3(10.5, 2.66, -4));
 	m_objectManager.GetObject(Plank1)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
 	m_objectManager.GetObject(Plank1)->Start();
 
@@ -54,17 +54,9 @@ void DemoScene::Init()
 	m_objectManager.GetObject(Plank2)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
 	m_objectManager.GetObject(Plank2)->Start();
 
-	/*
-	m_objectManager.GetObject(Plank2)->AddComponent<Transform>()->setPosition(glm::dvec3(14, 1.5, -4));
-	m_objectManager.GetObject(Plank2)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
-	m_objectManager.GetObject(Plank2)->Start();
-	*/
-
 	m_objectManager.GetObject(Ball)->AddComponent<Transform>()->setPosition(glm::dvec3(16, 2.66, -4));
 	m_objectManager.GetObject(Ball)->AddComponent<SphereCollider>()->SetRadius(0.05);
 	m_objectManager.GetObject(Ball)->Start();
-
-
 
 	///////////////////////////////////////////////////////////////////////////////////
 
@@ -80,7 +72,7 @@ void DemoScene::Init()
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 
 	//Physics testing
-	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetLinearVelocity(glm::dvec3(0, 0, 0));
+	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetLinearVelocity(glm::dvec3(-0.5, 0, 0));
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetAngularVelocity(glm::dvec3(0, 0, 0));
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetMass(2.0);
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetIsStaticObject(false);
@@ -95,17 +87,17 @@ void DemoScene::Init()
 	m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetMass(2.0);
 	m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetIsStaticObject(false);
 	m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetInertiaTensor();
-	//m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(1, 0, 0, 0));
-	m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.707, 0, 0, 0.707));
-	m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetGravityAffected(true);
+	m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(1, 0, 0, 0));
+	//m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.707, 0, 0, 0.707));
+	//m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetGravityAffected(true);
 
-	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetLinearVelocity(glm::dvec3(-0.5, 0, 0));
+	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetLinearVelocity(glm::dvec3(0, 0, 0));
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetAngularVelocity(glm::dvec3(0, 0, 0));
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetMass(2.0);
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetIsStaticObject(false);
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetInertiaTensor();
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetOrientation(glm::quat(1, 0, 0, 0));
-	//m_objectManager.GetObject(Plank2)->GetComponent<SphereCollider>()->SetGravityAffected(true);
+	//m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetGravityAffected(true);
 }
 
 void DemoScene::Update(double frameRate)
@@ -136,7 +128,7 @@ void DemoScene::InitColliders()
 	Colliders = m_objectManager.CreateObject();
 	
 	// Floor
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20, 0.4, 20));
+	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20, 0.2, 20));
 	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(15, 0, -15));
 	m_objectManager.GetObject(Colliders)->Start();
 	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->StaticSet();

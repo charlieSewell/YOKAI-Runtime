@@ -18,7 +18,6 @@ PlayerScript::PlayerScript(GameObject* parent)
 
 void PlayerScript::Awake()
 {
-	
 	movementSpeed = 0.1f;
 	lookSensitivity = 0.05f;
 	sprintMultiplyer = 4;
@@ -31,6 +30,16 @@ void PlayerScript::Awake()
 void PlayerScript::Start()
 {
 	transform->setPosition(glm::vec3(11, 3, 0));
+	sphereCollider->Start();
+	///*
+	//sphereCollider->SetLinearVelocity(glm::dvec3(0, 0, 0));
+	//sphereCollider->SetAngularVelocity(glm::dvec3(0, 0, 0));
+	sphereCollider->SetMass(2.0);
+	//sphereCollider->SetIsStaticObject(false);
+	//sphereCollider->SetInertiaTensor();
+	//sphereCollider->SetOrientation(glm::quat(1, 0, 0, 0));
+	//sphereCollider->SetGravityAffected(true);
+	//*/
 }
 
 void PlayerScript::Update(float deltaTime)
