@@ -21,8 +21,8 @@ public:
 	void Draw();
 
 private:
-	GameObject* gameObject;
-	std::shared_ptr<Transform> transform;
-	std::shared_ptr<BoxCollider> boxCollider;
-	std::shared_ptr<AffordanceSystem> affordanceSystem;
+	GameObject* m_gameObject;
+	std::shared_ptr<Transform> m_transform;
+	std::shared_ptr<BoxCollider> m_boxCollider;
+	std::shared_ptr<AffordanceSystem> m_affordanceSystem;
 };

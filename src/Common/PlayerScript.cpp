@@ -11,7 +11,7 @@ PlayerScript::PlayerScript(GameObject* parent)
 	sphereCollider(gameObject->AddComponent<SphereCollider>()),
 	rayCaster(gameObject->AddComponent<RayCaster>()),
 	affordanceSystem(gameObject->AddComponent<AffordanceSystem>()),
-	emotionSystem(gameObject->AddComponent<EmotionSystem>())
+	m_emotionSystem(gameObject->AddComponent<EmotionSystem>())
 {
 	
 }
@@ -133,19 +133,19 @@ void PlayerScript::UpdateMovement()
 	if (input->GetKeyState(YOKAI_INPUT::P))
 	{
 		// good
-		emotionSystem->TriggerEmotionalResponse(1, 0.9);
+		m_emotionSystem->TriggerEmotionalResponse(1, 0.9);
 	}
 
 	if (input->GetKeyState(YOKAI_INPUT::L))
 	{
 		// Meh
-		emotionSystem->TriggerEmotionalResponse(-0.5, 0.3);
+		m_emotionSystem->TriggerEmotionalResponse(-0.5, 0.3);
 	}
 
 	if (input->GetKeyState(YOKAI_INPUT::M))
 	{
 		// Scary
-		emotionSystem->TriggerEmotionalResponse(-1, 1);
+		m_emotionSystem->TriggerEmotionalResponse(-1, 1);
 	}
 		
 

@@ -3,10 +3,10 @@
 CubeScript::CubeScript(GameObject* parent)
 	:
 	Component(parent),
-	gameObject(parent),
-	transform(gameObject->AddComponent<Transform>()),
-	boxCollider(gameObject->AddComponent<BoxCollider>()),
-	affordanceSystem(gameObject->AddComponent<AffordanceSystem>())
+	m_gameObject(parent),
+	m_transform(m_gameObject->AddComponent<Transform>()),
+	m_boxCollider(m_gameObject->AddComponent<BoxCollider>()),
+	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>())
 {
 	Awake();
 }
@@ -14,12 +14,12 @@ CubeScript::CubeScript(GameObject* parent)
 
 void CubeScript::Awake()
 {
-	gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/shay/shay.gltf");
-	transform->setScale(0.25);
-	boxCollider->SetExtents(glm::vec3(0.5, 0.5, 0.5));
+	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/shay/shay.gltf");
+	m_transform->setScale(0.25);
+	m_boxCollider->SetExtents(glm::vec3(0.5, 0.5, 0.5));
 
-	std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
-	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
+	std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { m_transform->setPosition(newPosition); };
+	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
 }
 
 void CubeScript::Start()
@@ -29,7 +29,7 @@ void CubeScript::Start()
 
 void CubeScript::Update(float deltaTime)
 {
-	boxCollider->SetPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y + 0.5, transform->getPosition().z));
+	m_boxCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y + 0.5, m_transform->getPosition().z));
 }
 
 void CubeScript::Draw()

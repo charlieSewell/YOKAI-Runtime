@@ -25,12 +25,12 @@ public:
 	std::function<std::shared_ptr<GameObject>(int)> GetAISceneObject;
 
 private:
-	GameObject* gameObject;
-	std::shared_ptr<Transform> transform;
-	std::shared_ptr<SphereCollider> sphereCollider;
-	std::shared_ptr<RayCaster> rayCaster;
-	std::shared_ptr<AutomatedBehaviours> automatedBehaviours;
-	std::shared_ptr<AffordanceSystem> affordanceSystem;
+	GameObject* m_gameObject;
+	std::shared_ptr<Transform> m_transform;
+	std::shared_ptr<SphereCollider> m_sphereCollider;
+	std::shared_ptr<RayCaster> m_rayCaster;
+	std::shared_ptr<AutomatedBehaviours> m_automatedBehaviours;
+	std::shared_ptr<AffordanceSystem> m_affordanceSystem;
 
 	bool CheckPickup(std::shared_ptr<GameObject> otherObject);
 };

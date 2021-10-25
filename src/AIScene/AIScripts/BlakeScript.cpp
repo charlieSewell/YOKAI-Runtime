@@ -4,13 +4,13 @@
 BlakeScript::BlakeScript(GameObject* parent)
 	:
 	Component(parent),
-	gameObject(parent),
-	transform(gameObject->AddComponent<Transform>()),
-	sphereCollider(gameObject->AddComponent<SphereCollider>()),
-	rayCaster(gameObject->AddComponent<RayCaster>()),
-	automatedBehaviours(gameObject->AddComponent<AutomatedBehaviours>()),
-	emotionSystem(gameObject->AddComponent<EmotionSystem>()),
-	affordanceSystem(gameObject->AddComponent<AffordanceSystem>())
+	m_gameObject(parent),
+	m_transform(m_gameObject->AddComponent<Transform>()),
+	m_sphereCollider(m_gameObject->AddComponent<SphereCollider>()),
+	m_rayCaster(m_gameObject->AddComponent<RayCaster>()),
+	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
+	m_emotionSystem(m_gameObject->AddComponent<EmotionSystem>()),
+	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>())
 {
 	Awake();
 }
@@ -18,42 +18,42 @@ BlakeScript::BlakeScript(GameObject* parent)
 
 void BlakeScript::Awake()
 {
-	gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/blake/blake.gltf");
-	transform->setScale(1.1);
-	sphereCollider->SetRadius(1.0);
-	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
-	automatedBehaviours->TopSpeed = 0.020;
+	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/blake/blake.gltf");
+	m_transform->setScale(1.1);
+	m_sphereCollider->SetRadius(1.0);
+	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
+	m_automatedBehaviours->TopSpeed = 0.020;
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
-	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
+	//m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
 
-	std::function<glm::vec3()> getPosition = [&]() { return transform->getPosition(); };
-	std::function<glm::vec3()> getHeading = [&]() { return automatedBehaviours->Heading; };
-	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
-	affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
-	affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 1;
+	std::function<glm::vec3()> getPosition = [&]() { return m_transform->getPosition(); };
+	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
+	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
+	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
+	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 1;
 }
 
 void BlakeScript::Start()
 {
-	automatedBehaviours->RotationSpeed = 0.05;
+	m_automatedBehaviours->RotationSpeed = 0.05;
 }
 
 void BlakeScript::Update(float deltaTime)
 {
 	int fakeState = 0;
 
-	if(automatedBehaviours->Acceleration < automatedBehaviours->TopSpeed * 0.10)	// stand still if moving at 10% speed
+	if(m_automatedBehaviours->Acceleration < m_automatedBehaviours->TopSpeed * 0.10)	// stand still if moving at 10% speed
 	{
-		gameObject->GetComponent<DrawableEntity>()->SetAnimation("idle");
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("idle");
 	}
 	else
 	{
-		gameObject->GetComponent<DrawableEntity>()->SetAnimation("walk");
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("walk");
 	}
 
 	std::shared_ptr<GameObject> otherObject;
-	int objectID = automatedBehaviours->frontFeelerHit;
+	int objectID = m_automatedBehaviours->frontFeelerHit;
 	if (objectID != -1)
 	{
 		otherObject = GetAISceneObject(objectID);
@@ -68,11 +68,11 @@ void BlakeScript::Update(float deltaTime)
 
 	if(!fakeState)
 	{
-		automatedBehaviours->wander();
+		m_automatedBehaviours->wander();
 	}
 
-	automatedBehaviours->accelerate();
-	sphereCollider->SetPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y + 1, transform->getPosition().z));
+	m_automatedBehaviours->accelerate();
+	m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y + 1, m_transform->getPosition().z));
 }
 
 void BlakeScript::Draw()
@@ -82,7 +82,7 @@ void BlakeScript::Draw()
 
 bool BlakeScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 {
-	std::shared_ptr<PickupAffordance> pickupAffordance = affordanceSystem->GetAffordance<PickupAffordance>();
+	std::shared_ptr<PickupAffordance> pickupAffordance = m_affordanceSystem->GetAffordance<PickupAffordance>();
 	std::shared_ptr<PickupAffordance> otherPickupAffordance = otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>();
 
 	if (otherPickupAffordance != nullptr)
@@ -90,23 +90,23 @@ bool BlakeScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 		if (pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
 		{
 			// Object we want is directly in front so set this to avoid front collision detection
-			automatedBehaviours->frontFeelerHit = -1;
-			automatedBehaviours->feelerLeftHit = -1;
-			automatedBehaviours->feelerRightHit = -1;
-			automatedBehaviours->seek(otherObject->GetComponent<Transform>()->getPosition());
+			m_automatedBehaviours->frontFeelerHit = -1;
+			m_automatedBehaviours->feelerLeftHit = -1;
+			m_automatedBehaviours->feelerRightHit = -1;
+			m_automatedBehaviours->seek(otherObject->GetComponent<Transform>()->getPosition());
 
-			if (glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
+			if (glm::distance(m_transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
 			{
 				pickupAffordance->Interact(otherPickupAffordance);
 
 				int otherColliderID = 0;
 				if(otherObject->GetComponent<BoxCollider>() != nullptr)
 				{
-					rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
+					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
 				}
 				else if(otherObject->GetComponent<SphereCollider>() != nullptr)
 				{
-					rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
+					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
 				}
 			}
 

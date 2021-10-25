@@ -34,7 +34,7 @@ private:
 	std::shared_ptr<RayCaster> rayCaster;
 	std::shared_ptr<AffordanceSystem> affordanceSystem;
 
-	std::shared_ptr<EmotionSystem> emotionSystem;
+	std::shared_ptr<EmotionSystem> m_emotionSystem;
 
 	float movementSpeed = 0;
 	float lookSensitivity =	0;
