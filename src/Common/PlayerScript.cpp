@@ -30,11 +30,11 @@ void PlayerScript::Awake()
 void PlayerScript::Start()
 {
 	transform->setPosition(glm::vec3(11, 3, 0));
-	sphereCollider->Start();
+	//sphereCollider->Start();
 	///*
 	//sphereCollider->SetLinearVelocity(glm::dvec3(0, 0, 0));
 	//sphereCollider->SetAngularVelocity(glm::dvec3(0, 0, 0));
-	sphereCollider->SetMass(2.0);
+	//sphereCollider->SetMass(2.0);
 	//sphereCollider->SetIsStaticObject(false);
 	//sphereCollider->SetInertiaTensor();
 	//sphereCollider->SetOrientation(glm::quat(1, 0, 0, 0));
