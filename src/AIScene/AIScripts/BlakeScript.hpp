@@ -9,6 +9,7 @@
 #include "Components/AutomatedBehaviours.hpp"
 #include "Components/DrawableEntity.hpp"
 #include "../AIComponents/AffordanceSystem.hpp"
+#include "../AIComponents/EmotionSystem.hpp"
 #include "../AIComponents/PickupAffordance.hpp"
 
 class GameObject;
@@ -30,6 +31,7 @@ private:
 	std::shared_ptr<SphereCollider> sphereCollider;
 	std::shared_ptr<RayCaster> rayCaster;
 	std::shared_ptr<AutomatedBehaviours> automatedBehaviours;
+	std::shared_ptr<EmotionSystem> emotionSystem;
 	std::shared_ptr<AffordanceSystem> affordanceSystem;
 
 	bool CheckPickup(std::shared_ptr<GameObject> otherObject);

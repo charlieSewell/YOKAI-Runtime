@@ -32,10 +32,13 @@ void PlayerScript::Awake()
 void PlayerScript::Start()
 {
 	transform->setPosition(glm::vec3(11, 3, 30));
+	sphereCollider->Start();
+	sphereCollider->setMass(10.5);
 }
 
 void PlayerScript::Update(float deltaTime)
 {
+
 	UpdateMovement();
 	//std::cout << transform->getPosition().x << ", " << transform->getPosition().y << ", " << transform->getPosition().z << "\n";
 	

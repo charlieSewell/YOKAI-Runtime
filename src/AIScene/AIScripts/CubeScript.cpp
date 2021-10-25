@@ -15,8 +15,8 @@ CubeScript::CubeScript(GameObject* parent)
 void CubeScript::Awake()
 {
 	gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/shay/shay.gltf");
-	transform->setScale(0.5);
-	boxCollider->SetExtents(glm::vec3(0.75, 0.75, 0.75));
+	transform->setScale(0.25);
+	boxCollider->SetExtents(glm::vec3(0.5, 0.5, 0.5));
 
 	std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
@@ -29,7 +29,7 @@ void CubeScript::Start()
 
 void CubeScript::Update(float deltaTime)
 {
-	boxCollider->SetPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y + 1, transform->getPosition().z));
+	boxCollider->SetPosition(glm::vec3(transform->getPosition().x, transform->getPosition().y + 0.5, transform->getPosition().z));
 }
 
 void CubeScript::Draw()

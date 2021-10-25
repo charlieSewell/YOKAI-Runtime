@@ -52,6 +52,7 @@ class AIScene : public Scene
 	std::vector<unsigned int> Dogs;
 	std::vector<unsigned int> Blakes;
 	std::vector<unsigned int> Cubes;
+	std::map<unsigned int, unsigned int> Emotions;
 
 	const int NUM_ZOMBIES = 5;
 	const int NUM_DOGS = 5;

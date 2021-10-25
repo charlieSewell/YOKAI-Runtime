@@ -17,7 +17,7 @@ DogScript::DogScript(GameObject* parent)
 
 void DogScript::Awake()
 {
-	gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/dog/Husky2.gltf");
+	gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/dog/husky.gltf");
 	transform->setScale(0.35);
 	sphereCollider->SetRadius(1.0);
 	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());

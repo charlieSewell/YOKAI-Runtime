@@ -19,9 +19,9 @@ void ZombieScript::Awake()
 {
 	gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Zombie/ZombieSmooth.gltf");
 	transform->setScale(0.25);
-	sphereCollider->SetRadius(0.25);
+	sphereCollider->SetRadius(1.0);
 	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
-	automatedBehaviours->TopSpeed = 0.015;
+	automatedBehaviours->TopSpeed = 0.010;
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);

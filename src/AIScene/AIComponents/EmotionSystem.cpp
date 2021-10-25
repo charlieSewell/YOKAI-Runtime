@@ -11,7 +11,7 @@ void EmotionSystem::TriggerEmotionalResponse(double stimuliValence, double stimu
 {
 	m_mood.Valence = stimuliValence;
 
-	if(m_mood.Valence > 0)
+	if(m_mood.Valence >= 0)
 	{
 		m_mood.Arousal += stimuliArousal * (m_traits.Enthusiasm * 2);
 
@@ -65,7 +65,7 @@ void EmotionSystem::UpdateEmotionalState()
 		m_mood.Arousal -= moodDecay;
 	}
 
-	if (m_mood.Valence > 0)
+	if (m_mood.Valence >= 0)
 	{
 		if (m_mood.Arousal > EXCITED_MIN)
 		{
@@ -93,10 +93,30 @@ void EmotionSystem::UpdateEmotionalState()
 	}
 }
 
-#include <iostream>
+//#include <iostream>
 void EmotionSystem::Update(float deltaTime)
 {
 	UpdateEmotionalState();
+	/*std::string emotion;
 
-	std::cout << "Emotion: " << int(m_currentEmotion) << "  |  Valence: " << m_mood.Valence << ", Arousal: " << m_mood.Arousal << "\n";
+	switch(m_currentEmotion)
+	{
+	case(EMOTION::FEAR) :
+		emotion = "FEAR";
+		break;
+	case(EMOTION::FRUSTRATED):
+		emotion = "FRUSTRATED";
+		break;
+	case(EMOTION::BORED):
+		emotion = "BORED";
+		break;
+	case(EMOTION::EXCITED):
+		emotion = "EXCITED";
+		break;
+	case(EMOTION::CALM):
+		emotion = "CALM";
+		break;
+	}*/
+
+	//std::cout << emotion << "  |  Valence: " << m_mood.Valence << ", Arousal: " << m_mood.Arousal << "\n";
 }

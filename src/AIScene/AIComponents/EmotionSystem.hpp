@@ -12,11 +12,11 @@ constexpr double CALM_MIN =			0;
 
 enum class EMOTION
 {
-	FEAR = 1,
-	FRUSTRATED = 2,
-	BORED = 3,
-	EXCITED = 4,
-	CALM = 5
+	FEAR,
+	FRUSTRATED,
+	BORED,
+	EXCITED,
+	CALM
 };
 
 class EmotionSystem : public Component

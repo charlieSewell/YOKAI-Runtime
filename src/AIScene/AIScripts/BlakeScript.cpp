@@ -9,6 +9,7 @@ BlakeScript::BlakeScript(GameObject* parent)
 	sphereCollider(gameObject->AddComponent<SphereCollider>()),
 	rayCaster(gameObject->AddComponent<RayCaster>()),
 	automatedBehaviours(gameObject->AddComponent<AutomatedBehaviours>()),
+	emotionSystem(gameObject->AddComponent<EmotionSystem>()),
 	affordanceSystem(gameObject->AddComponent<AffordanceSystem>())
 {
 	Awake();
@@ -21,7 +22,7 @@ void BlakeScript::Awake()
 	transform->setScale(1.1);
 	sphereCollider->SetRadius(1.0);
 	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
-	automatedBehaviours->TopSpeed = 0.015;
+	automatedBehaviours->TopSpeed = 0.020;
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);

@@ -33,6 +33,10 @@ void AIScene::Init()
 		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 8, 0, 32.5));
 		m_objectManager.GetObject(Zombies[i])->GetComponent<ZombieScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Zombies[i])->Start();
+
+		Emotions[Zombies[i]] = m_objectManager.CreateObject();
+		m_objectManager.GetObject(Emotions[Zombies[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/frustration/frustration.gltf");
+		m_objectManager.GetObject(Emotions[Zombies[i]])->Start();
 	}
 
 	// Dogs
@@ -43,6 +47,10 @@ void AIScene::Init()
 		m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->setPosition(glm::vec3(-25 + i * 8, 0, 25));
 		m_objectManager.GetObject(Dogs[i])->GetComponent<DogScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Dogs[i])->Start();
+
+		Emotions[Dogs[i]] = m_objectManager.CreateObject();
+		m_objectManager.GetObject(Emotions[Dogs[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/excited/excited.gltf");
+		m_objectManager.GetObject(Emotions[Dogs[i]])->Start();
 	}
 
 	// Blakes
@@ -53,9 +61,13 @@ void AIScene::Init()
 		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 8, -0, 20));
 		m_objectManager.GetObject(Blakes[i])->GetComponent<BlakeScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Blakes[i])->Start();
+
+		Emotions[Blakes[i]] = m_objectManager.CreateObject();
+		m_objectManager.GetObject(Emotions[Blakes[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/calm/calm.gltf");
+		m_objectManager.GetObject(Emotions[Blakes[i]])->Start();
 	}
 
-	// Cube - can get it's own script later
+	// Cube
 	for(int i=0; i < NUM_CUBES; ++i)
 	{
 		Cubes.push_back(m_objectManager.CreateObject());
@@ -88,6 +100,46 @@ void AIScene::Update(double deltaTime)
 	}
 
 	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
+
+	//emotions - will move out later
+	Transform tempTransform;
+	glm::vec3 tempPosition;
+
+	for (int i = 0; i < NUM_ZOMBIES; ++i)
+	{
+		tempTransform = Transform(glm::inverse(m_objectManager.GetObject(Player)->GetComponent<Camera>()->getViewMatrix()));	// set the object transform to the view matrix
+		tempPosition = m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->getPosition();							// get the ai position
+		tempPosition.y = 2.5;																									// raise abvove head
+		tempTransform.setScale(0.25);
+		tempTransform.rotate(glm::pi<float>(), glm::vec3(0, 1, 0));																// rotate 180 degrees to face player
+		tempTransform.rotate(glm::pi<float>() / 2, glm::vec3(0, 0, 1));															// rotate 90 degrees so not sideways
+		tempTransform.setPosition(tempPosition);
+		*m_objectManager.GetObject(Emotions[Zombies[i]])->GetComponent<Transform>() = tempTransform;
+	}
+
+	for (int i = 0; i < NUM_DOGS; ++i)
+	{
+		tempTransform = Transform(glm::inverse(m_objectManager.GetObject(Player)->GetComponent<Camera>()->getViewMatrix()));	// set the object transform to the view matrix
+		tempPosition = m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->getPosition();							// get the ai position
+		tempPosition.y = 1.5;																									// raise abvove head
+		tempTransform.setScale(0.25);
+		tempTransform.rotate(glm::pi<float>(), glm::vec3(0, 1, 0));																// rotate 180 degrees to face player
+		tempTransform.rotate(glm::pi<float>() / 2, glm::vec3(0, 0, 1));															// rotate 90 degrees so not sideways
+		tempTransform.setPosition(tempPosition);
+		*m_objectManager.GetObject(Emotions[Dogs[i]])->GetComponent<Transform>() = tempTransform;
+	}
+
+	for (int i = 0; i < NUM_BLAKES; ++i)
+	{
+		tempTransform = Transform(glm::inverse(m_objectManager.GetObject(Player)->GetComponent<Camera>()->getViewMatrix()));	// set the object transform to the view matrix
+		tempPosition = m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->getPosition();							// get the ai position
+		tempPosition.y = 2.5;																									// raise abvove head
+		tempTransform.setScale(0.25);
+		tempTransform.rotate(glm::pi<float>(), glm::vec3(0, 1, 0));																// rotate 180 degrees to face player
+		tempTransform.rotate(glm::pi<float>() / 2, glm::vec3(0, 0, 1));															// rotate 90 degrees so not sideways
+		tempTransform.setPosition(tempPosition);
+		*m_objectManager.GetObject(Emotions[Blakes[i]])->GetComponent<Transform>() = tempTransform;
+	}
 }
 
 void AIScene::Draw()
