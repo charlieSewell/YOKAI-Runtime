@@ -18,8 +18,8 @@ void CubeScript::Awake()
 	m_transform->setScale(0.25);
 	m_boxCollider->SetExtents(glm::vec3(0.5, 0.5, 0.5));
 
-	std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { m_transform->setPosition(newPosition); };
-	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
+	//std::function<void(Transform)> setTransform = [&](Transform newTransform) { *transform = newTransform; };
+	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(m_transform);
 }
 
 void CubeScript::Start()
