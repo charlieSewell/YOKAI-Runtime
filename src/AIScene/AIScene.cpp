@@ -22,6 +22,7 @@ void AIScene::Init()
 	// Player
 	Player = m_objectManager.CreateObject();
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
+	m_objectManager.GetObject(Player)->GetComponent<Transform>()->setPosition(11, 3, 30);
 	m_objectManager.GetObject(Player)->GetComponent<PlayerScript>()->GetAISceneObject = getAISceneObject;
 	m_objectManager.GetObject(Player)->Start();
 

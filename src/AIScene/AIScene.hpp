@@ -23,11 +23,8 @@ class AIScene : public Scene
 	 * @brief Updates the Scene
 	 */
     void Update(double deltaTime) override;
-<<<<<<< HEAD
 
 	void UpdateEmotionIcons(std::vector<unsigned int> actors, const int SIZE);
-=======
->>>>>>> 3093e0bb5f78190e63c37a869c8a1ebd12cb0abf
     /**
      * @brief Draws the Scene
      */
