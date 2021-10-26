@@ -30,7 +30,6 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-	transform->setPosition(glm::vec3(11, 3, 0));
 	//sphereCollider->Start();
 	///*
 	//sphereCollider->SetLinearVelocity(glm::dvec3(0, 0, 0));

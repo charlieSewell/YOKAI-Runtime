@@ -105,6 +105,8 @@ void AIScene::Update(double deltaTime)
 	UpdateEmotionIcons(Zombies, NUM_ZOMBIES);
 	UpdateEmotionIcons(Dogs, NUM_DOGS);
 	UpdateEmotionIcons(Blakes, NUM_BLAKES);
+
+	//std::cout << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().x << ", " << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().y << ", " << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().z << std::endl;
 }
 
 void AIScene::UpdateEmotionIcons(std::vector<unsigned int> actors, const int SIZE)
