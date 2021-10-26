@@ -101,44 +101,26 @@ void AIScene::Update(double deltaTime)
 
 	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 
-	//emotions - will move out later
+	UpdateEmotionIcons(Zombies, NUM_ZOMBIES);
+	UpdateEmotionIcons(Dogs, NUM_DOGS);
+	UpdateEmotionIcons(Blakes, NUM_BLAKES);
+}
+
+void AIScene::UpdateEmotionIcons(std::vector<unsigned int> actors, const int SIZE)
+{
 	Transform tempTransform;
 	glm::vec3 tempPosition;
 
-	for (int i = 0; i < NUM_ZOMBIES; ++i)
+	for (int i = 0; i < SIZE; ++i)
 	{
 		tempTransform = Transform(glm::inverse(m_objectManager.GetObject(Player)->GetComponent<Camera>()->getViewMatrix()));	// set the object transform to the view matrix
-		tempPosition = m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->getPosition();							// get the ai position
+		tempPosition = m_objectManager.GetObject(actors[i])->GetComponent<Transform>()->getPosition();							// get the ai position
 		tempPosition.y = 2.5;																									// raise abvove head
 		tempTransform.setScale(0.25);
 		tempTransform.rotate(glm::pi<float>(), glm::vec3(0, 1, 0));																// rotate 180 degrees to face player
 		tempTransform.rotate(glm::pi<float>() / 2, glm::vec3(0, 0, 1));															// rotate 90 degrees so not sideways
 		tempTransform.setPosition(tempPosition);
-		*m_objectManager.GetObject(Emotions[Zombies[i]])->GetComponent<Transform>() = tempTransform;
-	}
-
-	for (int i = 0; i < NUM_DOGS; ++i)
-	{
-		tempTransform = Transform(glm::inverse(m_objectManager.GetObject(Player)->GetComponent<Camera>()->getViewMatrix()));	// set the object transform to the view matrix
-		tempPosition = m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->getPosition();							// get the ai position
-		tempPosition.y = 1.5;																									// raise abvove head
-		tempTransform.setScale(0.25);
-		tempTransform.rotate(glm::pi<float>(), glm::vec3(0, 1, 0));																// rotate 180 degrees to face player
-		tempTransform.rotate(glm::pi<float>() / 2, glm::vec3(0, 0, 1));															// rotate 90 degrees so not sideways
-		tempTransform.setPosition(tempPosition);
-		*m_objectManager.GetObject(Emotions[Dogs[i]])->GetComponent<Transform>() = tempTransform;
-	}
-
-	for (int i = 0; i < NUM_BLAKES; ++i)
-	{
-		tempTransform = Transform(glm::inverse(m_objectManager.GetObject(Player)->GetComponent<Camera>()->getViewMatrix()));	// set the object transform to the view matrix
-		tempPosition = m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->getPosition();							// get the ai position
-		tempPosition.y = 2.5;																									// raise abvove head
-		tempTransform.setScale(0.25);
-		tempTransform.rotate(glm::pi<float>(), glm::vec3(0, 1, 0));																// rotate 180 degrees to face player
-		tempTransform.rotate(glm::pi<float>() / 2, glm::vec3(0, 0, 1));															// rotate 90 degrees so not sideways
-		tempTransform.setPosition(tempPosition);
-		*m_objectManager.GetObject(Emotions[Blakes[i]])->GetComponent<Transform>() = tempTransform;
+		*m_objectManager.GetObject(Emotions[actors[i]])->GetComponent<Transform>() = tempTransform;
 	}
 }
 
