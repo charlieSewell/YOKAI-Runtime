@@ -22,7 +22,7 @@ void BlakeScript::Awake()
 	m_transform->setScale(1.1);
 	m_sphereCollider->SetRadius(1.0);
 	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
-	m_automatedBehaviours->TopSpeed = 0.020;
+	m_automatedBehaviours->TopSpeed = m_topSpeed;
 	m_automatedBehaviours->SetCastHeight(0.5f);
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
@@ -44,15 +44,6 @@ void BlakeScript::Update(float deltaTime)
 {
 	int fakeState = 0;
 
-	if(m_automatedBehaviours->Acceleration < m_automatedBehaviours->TopSpeed * 0.10)	// stand still if moving at 10% speed
-	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("idle");
-	}
-	else
-	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("walk");
-	}
-
 	std::shared_ptr<GameObject> otherObject;
 	int objectID = m_automatedBehaviours->frontFeelerHit;
 	if (objectID != -1)
@@ -67,10 +58,7 @@ void BlakeScript::Update(float deltaTime)
 		}
 	}
 
-	if(!fakeState)
-	{
-		m_automatedBehaviours->wander();
-	}
+	StateMachine();
 
 	m_automatedBehaviours->accelerate();
 	m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y + 1, m_transform->getPosition().z));
@@ -80,6 +68,60 @@ void BlakeScript::Draw()
 {
 
 }
+
+void BlakeScript::StateMachine()
+{
+	switch (m_emotionSystem->GetCurrentEmotion())
+	{
+	case EMOTION::CALM:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed;
+		break;
+	case EMOTION::EXCITED:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 1.5;
+		break;
+	case EMOTION::BORED:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 0.5;
+		break;
+	case EMOTION::FRUSTRATED:
+		if (!m_evadeActive)
+		{
+			m_evadePosition = m_transform->getPosition();
+			m_evadeActive = true;
+		}
+		m_automatedBehaviours->evade(m_evadePosition);
+		m_automatedBehaviours->TopSpeed = m_topSpeed;
+		break;
+	case EMOTION::FEAR:
+		if(!m_evadeActive)
+		{
+			m_evadePosition = m_transform->getPosition();
+			m_evadeActive = true;
+		}
+		m_automatedBehaviours->evade(m_evadePosition);
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 4 ;
+		break;
+	}
+
+	if (m_automatedBehaviours->Acceleration < m_topSpeed * 0.10)	// stand still if moving at 10% speed
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("idle");
+	}
+	else if(m_automatedBehaviours->Acceleration > m_topSpeed * 1.01)
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("run");
+	}
+	else
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("walk");
+	}
+}
+
 
 bool BlakeScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 {

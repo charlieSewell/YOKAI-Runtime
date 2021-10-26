@@ -52,4 +52,5 @@ private:
 
 	void UpdateMovement();
 	void CheckPickup(std::shared_ptr<GameObject> otherObject);
+	void TestEmotions(std::shared_ptr<GameObject> otherObject);
 };

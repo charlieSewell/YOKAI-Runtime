@@ -26,6 +26,14 @@ void AIScene::Init()
 	m_objectManager.GetObject(Player)->GetComponent<PlayerScript>()->GetAISceneObject = getAISceneObject;
 	m_objectManager.GetObject(Player)->Start();
 
+	unsigned int modelLoader = m_objectManager.CreateObject();
+	m_calmModel			= m_objectManager.GetObject(modelLoader)->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/calm/calm.gltf");
+	m_excitedModel		= m_objectManager.GetObject(modelLoader)->GetComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/excited/excited.gltf");
+	m_boredModel		= m_objectManager.GetObject(modelLoader)->GetComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/bored/bored.gltf");
+	m_frustrationModel	= m_objectManager.GetObject(modelLoader)->GetComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/frustration/frustration.gltf");
+	m_fearModel			= m_objectManager.GetObject(modelLoader)->GetComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/fear/fear.gltf");
+	m_objectManager.DeleteGameObject(modelLoader);
+
 	// Zombies
 	for (int i = 0; i < NUM_ZOMBIES; ++i)
 	{
@@ -36,7 +44,7 @@ void AIScene::Init()
 		m_objectManager.GetObject(Zombies[i])->Start();
 
 		Emotions[Zombies[i]] = m_objectManager.CreateObject();
-		m_objectManager.GetObject(Emotions[Zombies[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/frustration/frustration.gltf");
+		m_objectManager.GetObject(Emotions[Zombies[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/calm/calm.gltf");
 		m_objectManager.GetObject(Emotions[Zombies[i]])->Start();
 	}
 
@@ -50,7 +58,7 @@ void AIScene::Init()
 		m_objectManager.GetObject(Dogs[i])->Start();
 
 		Emotions[Dogs[i]] = m_objectManager.CreateObject();
-		m_objectManager.GetObject(Emotions[Dogs[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/excited/excited.gltf");
+		m_objectManager.GetObject(Emotions[Dogs[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/calm/calm.gltf");
 		m_objectManager.GetObject(Emotions[Dogs[i]])->Start();
 	}
 
@@ -61,6 +69,7 @@ void AIScene::Init()
 		m_objectManager.GetObject(Blakes[i])->AddComponent<BlakeScript>();
 		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 8, 0, 20));
 		m_objectManager.GetObject(Blakes[i])->GetComponent<BlakeScript>()->GetAISceneObject = getAISceneObject;
+		m_objectManager.GetObject(Blakes[i])->AddComponent<EmotionSystem>();
 		m_objectManager.GetObject(Blakes[i])->Start();
 
 		Emotions[Blakes[i]] = m_objectManager.CreateObject();
@@ -124,6 +133,25 @@ void AIScene::UpdateEmotionIcons(std::vector<unsigned int> actors, const int SIZ
 		tempTransform.rotate(glm::pi<float>() / 2, glm::vec3(0, 0, 1));															// rotate 90 degrees so not sideways
 		tempTransform.setPosition(tempPosition);
 		*m_objectManager.GetObject(Emotions[actors[i]])->GetComponent<Transform>() = tempTransform;
+
+		switch(m_objectManager.GetObject(actors[i])->GetComponent<EmotionSystem>()->GetCurrentEmotion())
+		{
+		case EMOTION::CALM :
+			m_objectManager.GetObject(Emotions[actors[i]])->GetComponent<DrawableEntity>()->SetModelID(m_calmModel);
+			break;
+		case EMOTION::EXCITED:
+			m_objectManager.GetObject(Emotions[actors[i]])->GetComponent<DrawableEntity>()->SetModelID(m_excitedModel);
+			break;
+		case EMOTION::BORED:
+			m_objectManager.GetObject(Emotions[actors[i]])->GetComponent<DrawableEntity>()->SetModelID(m_boredModel);
+			break;
+		case EMOTION::FRUSTRATED:
+			m_objectManager.GetObject(Emotions[actors[i]])->GetComponent<DrawableEntity>()->SetModelID(m_frustrationModel);
+			break;
+		case EMOTION::FEAR:
+			m_objectManager.GetObject(Emotions[actors[i]])->GetComponent<DrawableEntity>()->SetModelID(m_fearModel);
+			break;
+		}
 	}
 }
 

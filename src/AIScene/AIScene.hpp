@@ -62,6 +62,12 @@ class AIScene : public Scene
 	const int NUM_BLAKES = 5;
 	const int NUM_CUBES = 5;
 
+	// Models
+	unsigned int m_calmModel;
+	unsigned int m_excitedModel;
+	unsigned int m_boredModel;
+	unsigned int m_frustrationModel;
+	unsigned int m_fearModel;
 
 	std::shared_ptr<Input> UIinput;
 	//colliders

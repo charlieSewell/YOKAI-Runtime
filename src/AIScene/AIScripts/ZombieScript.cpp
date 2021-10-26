@@ -9,6 +9,7 @@ ZombieScript::ZombieScript(GameObject* parent)
 	m_sphereCollider(m_gameObject->AddComponent<SphereCollider>()),
 	m_rayCaster(m_gameObject->AddComponent<RayCaster>()),
 	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
+	m_emotionSystem(m_gameObject->AddComponent<EmotionSystem>()),
 	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>())
 {
 	Awake();

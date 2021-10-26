@@ -9,6 +9,7 @@ DogScript::DogScript(GameObject* parent)
 	m_sphereCollider(m_gameObject->AddComponent<SphereCollider>()),
 	m_rayCaster(m_gameObject->AddComponent<RayCaster>()),
 	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
+	m_emotionSystem(m_gameObject->AddComponent<EmotionSystem>()),
 	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>())
 {
 	Awake();
@@ -32,6 +33,8 @@ void DogScript::Awake()
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 0.5;
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
+
+	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(m_transform);
 }
 
 void DogScript::Start()
