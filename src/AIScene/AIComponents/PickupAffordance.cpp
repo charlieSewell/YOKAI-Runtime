@@ -35,12 +35,6 @@ void PickupAffordance::Update(float deltaTime)
 {
 	if(IsActive)
 	{
-		/*Transform transform = glm::inverse(glm::lookAt(GetPosition(), GetPosition() + GetDirection(), glm::vec3(0, 1, 0)));
-		glm::vec3 offset = GetDirection() * PickupFrontOffset;
-		offset.y += PickupHeightOffset;
-		transform.setPosition(GetPosition() + offset);
-		m_otherPickupAffordance->SetTransform(transform);*/
-
 		Transform transform = glm::inverse(glm::lookAt(GetPosition(), GetPosition() + GetDirection(), glm::vec3(0, 1, 0)));
 		glm::vec3 offset = GetDirection() * PickupFrontOffset;
 		offset.y += PickupHeightOffset;
