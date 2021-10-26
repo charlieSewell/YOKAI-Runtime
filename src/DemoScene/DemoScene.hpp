@@ -50,9 +50,9 @@ class DemoScene : public Scene
 	unsigned int LectureTheatreCeiling;
 	unsigned int LectureTheatreExtras;
     //unsigned int ClearDesk;
-    unsigned int Bullet;
-    unsigned int Plank;
+    unsigned int Plank1;
     unsigned int Plank2;
+    unsigned int Ball;
 	unsigned int UIInputObject;
 	std::shared_ptr<Input> UIinput;
 
