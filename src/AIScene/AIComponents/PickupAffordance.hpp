@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <functional>
+#include "Components/Transform.hpp"
 
 class PickupAffordance : public IAffordance
 {
@@ -14,16 +15,19 @@ public:
 	void Update(float deltaTime) override;
 
 	void EnableAbility(std::function<glm::vec3()> getPosition, std::function<glm::vec3()> getDirection);
-	void EnableAffordance(std::function<void(glm::vec3)> setPosition);
+	void EnableAffordance(std::shared_ptr<Transform> transform);
 
 	void Interact(std::shared_ptr<PickupAffordance> other);
 	void Stop();
 
 	std::function<glm::vec3()> GetPosition;
 	std::function<glm::vec3()> GetDirection;
-	std::function<void(glm::vec3)> SetPosition;
+	std::function<void(Transform)> SetTransform;
 
-	float PickUpOffset = 5.0f;	// The distance in front of the actor the object is placed
+	float PickupFrontOffset = 2.0f;	// The distance in front of the actor the object is placed
+	float PickupHeightOffset = 0.0f;
+
+	std::shared_ptr<Transform> transformPtr = nullptr;
 
 private:
 

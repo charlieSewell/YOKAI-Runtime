@@ -23,7 +23,7 @@ class LightingScene : public Scene
 	/**
 	 * @brief Updates the Scene
 	 */
-    void Update(double frameRate) override;
+    void Update(double deltaTime) override;
     /**
      * @brief Draws the Scene
      */

@@ -27,11 +27,11 @@ void LightingScene::Init()
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
 
-void LightingScene::Update(double frameRate)
+void LightingScene::Update(double deltaTime)
 {
-    m_objectManager.Update(frameRate);
+    m_objectManager.Update(deltaTime);
 	m_lightManager.UpdateLights();
-	m_physicsOn = UIinput->GetKeyState('f');
+	m_physicsOn = UIinput->GetKeyState(YOKAI_INPUT::F);
 	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 }
 

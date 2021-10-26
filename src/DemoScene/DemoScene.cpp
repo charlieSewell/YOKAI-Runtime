@@ -12,6 +12,7 @@ void DemoScene::Init()
 {
 	Player = m_objectManager.CreateObject();
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
+	m_objectManager.GetObject(Player)->GetComponent<Transform>()->setPosition(11, 3, 0);
 	m_objectManager.GetObject(Player)->Start();
 
 	LectureTheatre = m_objectManager.CreateObject();
