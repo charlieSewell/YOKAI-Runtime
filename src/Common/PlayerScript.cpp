@@ -131,8 +131,6 @@ void PlayerScript::UpdateMovement()
 	camera->m_frontDirection = glm::normalize(direction);
 
 	sphereCollider->SetPosition(transform->getPosition());
-	//camera->m_position = transform->getPosition();
-	//camera->m_position.y += 0.75;
 
 	//// TEST EMOTION SYSTEM ////
 

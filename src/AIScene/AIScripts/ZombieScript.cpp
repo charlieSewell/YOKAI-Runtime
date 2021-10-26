@@ -22,6 +22,7 @@ void ZombieScript::Awake()
 	m_sphereCollider->SetRadius(1.0);
 	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
 	m_automatedBehaviours->TopSpeed = 0.010;
+	m_automatedBehaviours->SetCastHeight(0.5f);
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);

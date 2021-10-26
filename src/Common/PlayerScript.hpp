@@ -10,6 +10,7 @@
 #include "Components/RayCaster.hpp"
 #include "AIScene/AIComponents/AffordanceSystem.hpp"
 #include "AIScene/AIComponents/EmotionSystem.hpp"
+#include "Renderer/Renderer.hpp"
 
 
 class GameObject;
@@ -24,6 +25,8 @@ public:
 	void Draw() override;
 
 	std::function<std::shared_ptr<GameObject>(int)> GetAISceneObject;
+
+	void PlayerScript::DrawText(std::string text);
 
 private:
 	GameObject* gameObject;

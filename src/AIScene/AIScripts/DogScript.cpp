@@ -21,6 +21,7 @@ void DogScript::Awake()
 	m_transform->setScale(0.35);
 	m_sphereCollider->SetRadius(1.0);
 	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
+	m_automatedBehaviours->SetCastHeight(0.5f);
 	m_automatedBehaviours->TopSpeed = 0.015;
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
@@ -29,6 +30,7 @@ void DogScript::Awake()
 	std::function<glm::vec3()> getPosition = [&]() { return m_transform->getPosition(); };
 	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
+	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 0.5;
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
 }
 

@@ -23,6 +23,7 @@ void BlakeScript::Awake()
 	m_sphereCollider->SetRadius(1.0);
 	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
 	m_automatedBehaviours->TopSpeed = 0.020;
+	m_automatedBehaviours->SetCastHeight(0.5f);
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	//m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
@@ -31,7 +32,7 @@ void BlakeScript::Awake()
 	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 0.5;
-	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 0.75;
+	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 1.25;
 }
 
 void BlakeScript::Start()

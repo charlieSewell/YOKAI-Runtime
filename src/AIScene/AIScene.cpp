@@ -59,7 +59,7 @@ void AIScene::Init()
 	{
 		Blakes.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Blakes[i])->AddComponent<BlakeScript>();
-		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 8, -0, 20));
+		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 8, 0, 20));
 		m_objectManager.GetObject(Blakes[i])->GetComponent<BlakeScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Blakes[i])->Start();
 
@@ -73,7 +73,7 @@ void AIScene::Init()
 	{
 		Cubes.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Cubes[i])->AddComponent<CubeScript>();
-		m_objectManager.GetObject(Cubes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0, 20));
+		m_objectManager.GetObject(Cubes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0.5, 20));
 		m_objectManager.GetObject(Cubes[i])->Start();
 	}
 
@@ -149,7 +149,7 @@ void AIScene::InitColliders()
 		Colliders.push_back(m_objectManager.CreateObject());
 	}
 	// Floor
-	m_objectManager.GetObject(Colliders[0])->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, 0, 14.0));
+	m_objectManager.GetObject(Colliders[0])->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, -0.2, 14.0));
 	m_objectManager.GetObject(Colliders[0])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 0.4, 20.5));
 	m_objectManager.GetObject(Colliders[0])->Start();
 	
