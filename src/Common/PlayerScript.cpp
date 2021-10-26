@@ -31,9 +31,13 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
+<<<<<<< HEAD
 	transform->setPosition(glm::vec3(11, 3, 30));
 	sphereCollider->Start();
 	sphereCollider->setMass(10.5);
+=======
+	transform->setPosition(glm::vec3(11, 3, 0));
+>>>>>>> 3093e0bb5f78190e63c37a869c8a1ebd12cb0abf
 }
 
 void PlayerScript::Update(float deltaTime)

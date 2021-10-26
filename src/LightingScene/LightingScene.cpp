@@ -27,7 +27,11 @@ void LightingScene::Init()
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();
 }
 
+<<<<<<< HEAD
 void LightingScene::Update(double deltaTime)
+=======
+void LightingScene::Update(double frameRate)
+>>>>>>> 3093e0bb5f78190e63c37a869c8a1ebd12cb0abf
 {
     m_objectManager.Update(deltaTime);
 	m_lightManager.UpdateLights();

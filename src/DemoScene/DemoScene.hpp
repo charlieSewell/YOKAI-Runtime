@@ -5,6 +5,7 @@
 #include "Components/DrawableEntity.hpp"
 #include "Components/InputComponent.hpp"
 //#include "Engine/UIManager.hpp"
+//#include "Physics/ResolutionFunctions.hpp"
 
 /**
  * @class DemoScene
@@ -22,7 +23,11 @@ class DemoScene : public Scene
 	/**
 	 * @brief Updates the Scene
 	 */
+<<<<<<< HEAD
     void Update(double deltaTime) override;
+=======
+    void Update(double frameRate) override;
+>>>>>>> 3093e0bb5f78190e63c37a869c8a1ebd12cb0abf
     /**
      * @brief Draws the Scene
      */
@@ -38,6 +43,7 @@ class DemoScene : public Scene
   private:
 	
 	void InitColliders();
+
     ///Is this scene active
     bool isEnabled = true;
 
@@ -47,10 +53,16 @@ class DemoScene : public Scene
 	unsigned int LectureTheatre;
 	unsigned int LectureTheatreCeiling;
 	unsigned int LectureTheatreExtras;
+    //unsigned int ClearDesk;
+    unsigned int Bullet;
+    unsigned int Plank;
+    unsigned int Plank2;
 	unsigned int UIInputObject;
 	std::shared_ptr<Input> UIinput;
 
 	//colliders
 	unsigned int Colliders;
+    
+    //GameObjectManager m_objectManager;
 
 };
