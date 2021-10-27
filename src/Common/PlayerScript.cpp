@@ -114,14 +114,18 @@ void PlayerScript::UpdateMovement()
 		
 	transform->setPosition(transform->getPosition() + tempPosition);
 
-	yaw += input->GetMouseState().offset.x * lookSensitivity;
-	pitch -= input->GetMouseState().offset.y * lookSensitivity;
+	if(!m_pauseMouse)
+	{
+		yaw += input->GetMouseState().offset.x * lookSensitivity;
+		pitch -= input->GetMouseState().offset.y * lookSensitivity;
 
-	// stops bad weird camera movement
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
+		// stops bad weird camera movement
+		if (pitch > 89.0f)
+			pitch = 89.0f;
+		if (pitch < -89.0f)
+			pitch = -89.0f;
+	}
+	
 
 	glm::vec3 direction;
 	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
@@ -160,4 +164,16 @@ void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 		}
 	}
 
+}
+void PlayerScript::ToggleMouse()
+{
+	m_pauseMouse = !m_pauseMouse;
+	if(m_pauseMouse)
+	{
+		input->ShowMouse();	
+	}
+	else
+	{
+		input->HideMouse();
+	}
 }

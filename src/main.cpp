@@ -9,6 +9,7 @@ int main()
 
 	engine.addScene(std::shared_ptr<Scene>(new DemoScene()));
 	//engine.addScene(std::shared_ptr<Scene>(new AIScene()));
+
 	//engine.addScene(std::shared_ptr<Scene>(new LightingScene()));
     engine.Run();
 	return 0;

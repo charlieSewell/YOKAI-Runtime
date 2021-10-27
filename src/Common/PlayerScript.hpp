@@ -21,7 +21,7 @@ public:
 	void Start() override;
 	void Update(float deltaTime) override;
 	void Draw() override;
-
+	void ToggleMouse();
 	std::function<std::shared_ptr<GameObject>(int)> GetAISceneObject;
 
 private:
@@ -43,7 +43,7 @@ private:
 	double pitch = 0.0f;
 	double xoffset = 0;
 	double yoffset = 0;
-
+	bool m_pauseMouse = false;
 	void UpdateMovement();
 	void CheckPickup(std::shared_ptr<GameObject> otherObject);
 };

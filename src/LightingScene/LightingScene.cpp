@@ -13,13 +13,13 @@ void LightingScene::Init()
 	std::uniform_real_distribution<> dis(0, 1);
 	Player = m_objectManager.CreateObject();
     Scene =  m_objectManager.CreateObject();
-    m_objectManager.GetObject(Scene)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
+    m_objectManager.GetObject(Scene)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/LectureTheatreFinal/LectureTheatre.gltf");
     m_objectManager.GetObject(Scene)->Start();	// This line only exists to add a transform. Should come up with a better solution
-	m_objectManager.GetObject(Scene)->GetComponent<Transform>()->scale(0.1);
+	m_objectManager.GetObject(Scene)->GetComponent<Transform>()->scale(4);
 
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
 	m_objectManager.GetObject(Player)->Start();
-	for (int i = 0; i < 2000; i++) 
+	for (int i = 0; i < 30; i++) 
 	{
 		m_lightManager.AddLight(glm::vec4(1.0f + dis(gen), 1.0f + dis(gen), 1.0f + dis(gen), 1.0f),glm::vec4(RandomPosition(dis, gen), 1.0f),glm::vec4(glm::vec3(0.0f), 40.0f));
 	}
