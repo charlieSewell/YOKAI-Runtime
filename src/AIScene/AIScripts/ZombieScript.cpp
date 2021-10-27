@@ -87,7 +87,7 @@ bool ZombieScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 	if (otherPickupAffordance != nullptr)
 	{
-		if (pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
+		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
 		{
 			// Object we want is directly in front so set this to avoid front collision detection
 			m_automatedBehaviours->frontFeelerHit = -1;
@@ -112,7 +112,7 @@ bool ZombieScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 			return true;
 		}
-		else if (pickupAffordance->IsActive)
+		else if (pickupAffordance->IsUsing)
 		{
 			// logic to drop box
 			//pickupAffordance->Stop();

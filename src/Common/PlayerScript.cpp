@@ -169,7 +169,7 @@ void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 	if(otherPickupAffordance != nullptr)
 	{
-		if(pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
+		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
 		{
 			if(glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 5)
 			{
@@ -179,7 +179,7 @@ void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 				}
 			}
 		}
-		else if(pickupAffordance->IsActive)
+		else if(pickupAffordance->IsUsing)
 		{
 			if (input->GetKeyToggle(YOKAI_INPUT::E))
 			{

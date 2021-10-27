@@ -23,7 +23,6 @@ void DogScript::Awake()
 	m_sphereCollider->SetRadius(1.0);
 	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
 	m_automatedBehaviours->SetCastHeight(0.5f);
-	m_automatedBehaviours->TopSpeed = 0.015;
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
@@ -44,43 +43,103 @@ void DogScript::Start()
 
 void DogScript::Update(float deltaTime)
 {
-	int fakeState = 0;
+	{
+		bool iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = false;
 
-	if(m_automatedBehaviours->Acceleration < m_automatedBehaviours->TopSpeed * 0.10)	// stand still if moving at 10% speed
+		std::shared_ptr<GameObject> otherObject;
+		int objectID = m_automatedBehaviours->frontFeelerHit;
+		if (objectID != -1)
+		{
+			otherObject = GetAISceneObject(objectID);
+			if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
+			{
+				if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
+				{
+					iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = CheckPickup(otherObject);
+				}
+			}
+		}
+
+		//if dog is picked turn into limp boi
+		if(m_affordanceSystem->GetAffordance<PickupAffordance>()->IsAffording)
+		{
+			m_automatedBehaviours->Acceleration = 0;
+			m_automatedBehaviours->Angle = 0;
+			iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = true;
+		}
+
+		if (!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
+		{
+			StateMachine();
+		}
+
+		SetAnimation();
+
+		m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y + 1, m_transform->getPosition().z));
+	}
+}
+
+void DogScript::SetAnimation()
+{
+	if (m_automatedBehaviours->Acceleration < m_topSpeed * 0.10)	// stand still if moving at 10% speed
 	{
 		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("Idle");
+	}
+	else if (m_automatedBehaviours->Acceleration > m_topSpeed * 1.01)
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("Gallop");
 	}
 	else
 	{
 		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("Walk");
 	}
-
-	std::shared_ptr<GameObject> otherObject;
-	int objectID = m_automatedBehaviours->frontFeelerHit;
-	if (objectID != -1)
-	{
-		otherObject = GetAISceneObject(objectID);
-		if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
-		{
-			if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
-			{
-				fakeState = CheckPickup(otherObject);
-			}
-		}
-	}
-
-	if(!fakeState)
-	{
-		m_automatedBehaviours->wander();
-	}
-
-	m_automatedBehaviours->accelerate();
-	m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y + 1, m_transform->getPosition().z));
 }
 
 void DogScript::Draw()
 {
 
+}
+
+void DogScript::StateMachine()
+{
+	switch (m_emotionSystem->GetCurrentEmotion())
+	{
+	case EMOTION::CALM:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed;
+		break;
+	case EMOTION::EXCITED:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 1.5;
+		break;
+	case EMOTION::BORED:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 0.5;
+		break;
+	case EMOTION::FRUSTRATED:
+		if (!m_evadeActive)
+		{
+			m_evadePosition = m_transform->getPosition();
+			m_evadeActive = true;
+		}
+		m_automatedBehaviours->evade(m_evadePosition);
+		m_automatedBehaviours->TopSpeed = m_topSpeed;
+		break;
+	case EMOTION::FEAR:
+		if (!m_evadeActive)
+		{
+			m_evadePosition = m_transform->getPosition();
+			m_evadeActive = true;
+		}
+		m_automatedBehaviours->evade(m_evadePosition);
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 4;
+		break;
+	}
+
+	m_automatedBehaviours->accelerate();
 }
 
 bool DogScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
@@ -90,7 +149,7 @@ bool DogScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 	if (otherPickupAffordance != nullptr)
 	{
-		if (pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
+		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
 		{
 			// Object we want is directly in front so set this to avoid front collision detection
 			m_automatedBehaviours->frontFeelerHit = -1;
@@ -103,19 +162,21 @@ bool DogScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 				pickupAffordance->Interact(otherPickupAffordance);
 
 				int otherColliderID = 0;
-				if(otherObject->GetComponent<BoxCollider>() != nullptr)
+				if (otherObject->GetComponent<BoxCollider>() != nullptr)
 				{
 					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
 				}
-				else if(otherObject->GetComponent<SphereCollider>() != nullptr)
+				else if (otherObject->GetComponent<SphereCollider>() != nullptr)
 				{
 					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
 				}
 			}
 
+			m_automatedBehaviours->accelerate();
+
 			return true;
 		}
-		else if (pickupAffordance->IsActive)
+		else if (pickupAffordance->IsUsing)
 		{
 			// logic to drop box
 			//pickupAffordance->Stop();

@@ -57,10 +57,10 @@ class AIScene : public Scene
 	std::vector<unsigned int> Cubes;
 	std::map<unsigned int, unsigned int> Emotions;
 
-	const int NUM_ZOMBIES = 5;
-	const int NUM_DOGS = 5;
-	const int NUM_BLAKES = 5;
-	const int NUM_CUBES = 5;
+	const int NUM_ZOMBIES = 3;
+	const int NUM_DOGS = 3;
+	const int NUM_BLAKES = 3;
+	const int NUM_CUBES = 3;
 
 	// Models
 	unsigned int m_calmModel;

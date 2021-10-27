@@ -42,7 +42,7 @@ void BlakeScript::Start()
 
 void BlakeScript::Update(float deltaTime)
 {
-	int fakeState = 0;
+	bool iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = false;
 
 	std::shared_ptr<GameObject> otherObject;
 	int objectID = m_automatedBehaviours->frontFeelerHit;
@@ -53,15 +53,35 @@ void BlakeScript::Update(float deltaTime)
 		{
 			if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
 			{
-				fakeState = CheckPickup(otherObject);
+				iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = CheckPickup(otherObject);
 			}
 		}
 	}
 
-	StateMachine();
+	if(!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
+	{
+		StateMachine();
+	}
 
-	m_automatedBehaviours->accelerate();
+	SetAnimation();
+
 	m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y + 1, m_transform->getPosition().z));
+}
+
+void BlakeScript::SetAnimation()
+{
+	if (m_automatedBehaviours->Acceleration < m_topSpeed * 0.10)	// stand still if moving at 10% speed
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("idle");
+	}
+	else if (m_automatedBehaviours->Acceleration > m_topSpeed * 1.01)
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("run");
+	}
+	else
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("walk");
+	}
 }
 
 void BlakeScript::Draw()
@@ -108,18 +128,7 @@ void BlakeScript::StateMachine()
 		break;
 	}
 
-	if (m_automatedBehaviours->Acceleration < m_topSpeed * 0.10)	// stand still if moving at 10% speed
-	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("idle");
-	}
-	else if(m_automatedBehaviours->Acceleration > m_topSpeed * 1.01)
-	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("run");
-	}
-	else
-	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("walk");
-	}
+	m_automatedBehaviours->accelerate();
 }
 
 
@@ -130,7 +139,7 @@ bool BlakeScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 	if (otherPickupAffordance != nullptr)
 	{
-		if (pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
+		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
 		{
 			// Object we want is directly in front so set this to avoid front collision detection
 			m_automatedBehaviours->frontFeelerHit = -1;
@@ -153,9 +162,11 @@ bool BlakeScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 				}
 			}
 
+			m_automatedBehaviours->accelerate();
+
 			return true;
 		}
-		else if (pickupAffordance->IsActive)
+		else if (pickupAffordance->IsUsing)
 		{
 			// logic to drop box
 			//pickupAffordance->Stop();

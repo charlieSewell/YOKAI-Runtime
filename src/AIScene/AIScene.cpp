@@ -39,7 +39,7 @@ void AIScene::Init()
 	{
 		Zombies.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Zombies[i])->AddComponent<ZombieScript>();
-		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 8, 0, 32.5));
+		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 12, 0, 32.5));
 		m_objectManager.GetObject(Zombies[i])->GetComponent<ZombieScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Zombies[i])->Start();
 
@@ -53,7 +53,7 @@ void AIScene::Init()
 	{
 		Dogs.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Dogs[i])->AddComponent<DogScript>();
-		m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->setPosition(glm::vec3(-25 + i * 8, 0, 25));
+		m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->setPosition(glm::vec3(-25 + i * 12, 0, 25));
 		m_objectManager.GetObject(Dogs[i])->GetComponent<DogScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Dogs[i])->Start();
 
@@ -67,7 +67,7 @@ void AIScene::Init()
 	{
 		Blakes.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Blakes[i])->AddComponent<BlakeScript>();
-		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 8, 0, 20));
+		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 12, 0, 20));
 		m_objectManager.GetObject(Blakes[i])->GetComponent<BlakeScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Blakes[i])->AddComponent<EmotionSystem>();
 		m_objectManager.GetObject(Blakes[i])->Start();
@@ -82,7 +82,7 @@ void AIScene::Init()
 	{
 		Cubes.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Cubes[i])->AddComponent<CubeScript>();
-		m_objectManager.GetObject(Cubes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0.5, 20));
+		m_objectManager.GetObject(Cubes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*8, 0.5, 20));
 		m_objectManager.GetObject(Cubes[i])->Start();
 	}
 

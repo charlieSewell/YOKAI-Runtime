@@ -11,29 +11,28 @@ void PickupAffordance::EnableAbility(std::function<glm::vec3()> getPosition, std
 
 void PickupAffordance::EnableAffordance(std::shared_ptr<Transform> transform)
 {
-	//SetTransform = setTransform;
 	transformPtr = transform;
 	HasAffordance = true;
-	IsAvailable = true;
 }
 
 void PickupAffordance::Interact(std::shared_ptr<PickupAffordance> other)
 {
+	IsUsing = true;
 	m_otherPickupAffordance = other;
-	m_otherPickupAffordance->IsAvailable = false;
-	IsActive = true;
+	m_otherPickupAffordance->IsAffording = true;
 }
  
 void PickupAffordance::Stop()
 {
-	IsActive = false;
-	m_otherPickupAffordance->IsAvailable = true;
+	IsUsing = false;
+	m_otherPickupAffordance->IsAffording = false;
+	m_otherPickupAffordance->transformPtr->setRotation(glm::quat{});
 	m_otherPickupAffordance = nullptr;
 }
 
 void PickupAffordance::Update(float deltaTime)
 {
-	if(IsActive)
+	if(IsUsing)
 	{
 		Transform transform = glm::inverse(glm::lookAt(GetPosition(), GetPosition() + GetDirection(), glm::vec3(0, 1, 0)));
 		glm::vec3 offset = GetDirection() * PickupFrontOffset;

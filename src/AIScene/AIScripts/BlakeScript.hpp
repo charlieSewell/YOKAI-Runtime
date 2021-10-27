@@ -41,4 +41,5 @@ private:
 
 	void StateMachine();
 	bool CheckPickup(std::shared_ptr<GameObject> otherObject);
+	void SetAnimation();
 };
