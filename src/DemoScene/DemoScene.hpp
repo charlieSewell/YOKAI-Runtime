@@ -50,19 +50,17 @@ class DemoScene : public Scene
 	bool m_physicsOn;
 
 	unsigned int Player;
-	unsigned int LectureTheatre;
     unsigned int LectureTheatreEmpty;
-	unsigned int LectureTheatreCeiling;
-	//unsigned int LectureTheatreExtras;
-    //unsigned int ClearDesk;
-    unsigned int Plank1;
-    unsigned int Plank2;
-    unsigned int Ball;
+
     unsigned int Desk;
     unsigned int Laptop1;
     unsigned int Laptop2;
-    unsigned int Microphone;
     unsigned int Chair1;
+    unsigned int Chair2;
+    unsigned int Chair3;
+    unsigned int Chair4;
+    unsigned int Chair5;
+    unsigned int Chair6;
 
 	unsigned int UIInputObject;
 	std::shared_ptr<Input> UIinput;

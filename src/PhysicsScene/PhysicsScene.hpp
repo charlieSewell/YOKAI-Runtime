@@ -59,7 +59,6 @@ class PhysicsScene : public Scene
     unsigned int Wall1;
     unsigned int Wall2;
     unsigned int Wall3;
-    unsigned int Wall4;
 
     unsigned int Plank1;
     unsigned int Plank2;
