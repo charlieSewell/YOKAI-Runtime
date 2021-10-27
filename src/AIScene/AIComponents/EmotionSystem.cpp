@@ -120,3 +120,8 @@ void EmotionSystem::Update(float deltaTime)
 
 	//std::cout << emotion << "  |  Valence: " << m_mood.Valence << ", Arousal: " << m_mood.Arousal << "\n";
 }
+
+EMOTION EmotionSystem::GetCurrentEmotion()
+{
+	return m_currentEmotion;
+}

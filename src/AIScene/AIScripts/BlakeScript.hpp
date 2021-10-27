@@ -34,5 +34,12 @@ private:
 	std::shared_ptr<EmotionSystem> m_emotionSystem;
 	std::shared_ptr<AffordanceSystem> m_affordanceSystem;
 
+	float m_topSpeed = 0.020f;
+
+	bool m_evadeActive = false;
+	glm::vec3 m_evadePosition = {};
+
+	void StateMachine();
 	bool CheckPickup(std::shared_ptr<GameObject> otherObject);
+	void SetAnimation();
 };

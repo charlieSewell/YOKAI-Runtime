@@ -9,6 +9,7 @@ ZombieScript::ZombieScript(GameObject* parent)
 	m_sphereCollider(m_gameObject->AddComponent<SphereCollider>()),
 	m_rayCaster(m_gameObject->AddComponent<RayCaster>()),
 	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
+	m_emotionSystem(m_gameObject->AddComponent<EmotionSystem>()),
 	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>())
 {
 	Awake();
@@ -20,8 +21,11 @@ void ZombieScript::Awake()
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Zombie/ZombieSmooth.gltf");
 	m_transform->setScale(0.25);
 	m_sphereCollider->SetRadius(1.0);
+	m_sphereCollider->Start();
+	m_sphereCollider->StaticSet();
 	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
 	m_automatedBehaviours->TopSpeed = 0.010;
+	m_automatedBehaviours->SetCastHeight(0.5f);
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
@@ -85,7 +89,7 @@ bool ZombieScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 	if (otherPickupAffordance != nullptr)
 	{
-		if (pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
+		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
 		{
 			// Object we want is directly in front so set this to avoid front collision detection
 			m_automatedBehaviours->frontFeelerHit = -1;
@@ -110,7 +114,7 @@ bool ZombieScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 			return true;
 		}
-		else if (pickupAffordance->IsActive)
+		else if (pickupAffordance->IsUsing)
 		{
 			// logic to drop box
 			//pickupAffordance->Stop();

@@ -68,6 +68,11 @@ void PlayerScript::Update(float deltaTime)
 				CheckPickup(otherObject);
 			}
 		}
+
+		if (otherObject->GetComponent<EmotionSystem>() != nullptr)
+		{
+			TestEmotions(otherObject);
+		}
 	}
 }
 
@@ -135,8 +140,6 @@ void PlayerScript::UpdateMovement()
 	camera->m_frontDirection = glm::normalize(direction);
 
 	sphereCollider->SetPosition(transform->getPosition());
-	//camera->m_position = transform->getPosition();
-	//camera->m_position.y += 0.75;
 
 	//// TEST EMOTION SYSTEM ////
 
@@ -170,7 +173,7 @@ void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 	if(otherPickupAffordance != nullptr)
 	{
-		if(pickupAffordance->HasAbility && otherPickupAffordance->IsAvailable && !pickupAffordance->IsActive)
+		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
 		{
 			if(glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 5)
 			{
@@ -180,7 +183,7 @@ void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 				}
 			}
 		}
-		else if(pickupAffordance->IsActive)
+		else if(pickupAffordance->IsUsing)
 		{
 			if (input->GetKeyToggle(YOKAI_INPUT::E))
 			{
@@ -190,6 +193,33 @@ void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 	}
 
 }
+
+void PlayerScript::TestEmotions(std::shared_ptr<GameObject> otherObject)
+{
+	std::shared_ptr<EmotionSystem> otherEmotionSystem = otherObject->GetComponent<EmotionSystem>();
+
+	if (glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 5)
+	{
+		if (input->GetKeyToggle(YOKAI_INPUT::P))
+		{
+			// good
+			otherEmotionSystem->TriggerEmotionalResponse(1, 0.9);
+		}
+
+		if (input->GetKeyToggle(YOKAI_INPUT::L))
+		{
+			// Meh
+			otherEmotionSystem->TriggerEmotionalResponse(-0.5, 0.3);
+		}
+
+		if (input->GetKeyToggle(YOKAI_INPUT::M))
+		{
+			// Scary
+			otherEmotionSystem->TriggerEmotionalResponse(-1, 1);
+		}
+	}
+}
+
 void PlayerScript::ToggleMouse()
 {
 	m_pauseMouse = !m_pauseMouse;

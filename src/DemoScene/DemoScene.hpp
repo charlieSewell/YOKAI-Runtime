@@ -59,7 +59,7 @@ class DemoScene : public Scene
     unsigned int Ball;
 	unsigned int UIInputObject;
 	std::shared_ptr<Input> UIinput;
-    unsigned int Colliders;
+    std::vector<unsigned int> Colliders;
 	//colliders
     
     //GameObjectManager m_objectManager;

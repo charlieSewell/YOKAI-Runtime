@@ -26,6 +26,7 @@ public:
 	EmotionSystem(GameObject* parent);
 
 	void TriggerEmotionalResponse(double stimuliValence, double stimuliArousal);
+	EMOTION GetCurrentEmotion();
 
 	void Update(float deltaTime) override;
 

@@ -12,8 +12,8 @@ public:
 
 	bool HasAffordance = false;
 	bool HasAbility = false;
-	bool IsAvailable = false;
-	bool IsActive = false;
+	bool IsUsing = false;
+	bool IsAffording = false;
 	
 	template <typename T> void Interact(std::shared_ptr<T> otherAffordance) = 0;
 
