@@ -4,6 +4,7 @@
 #include "Engine/GameObject.hpp"
 #include "Components/DrawableEntity.hpp"
 #include "Components/InputComponent.hpp"
+#include "Engine/JSONHelper.hpp"
 //#include "Engine/UIManager.hpp"
 //#include "Physics/ResolutionFunctions.hpp"
 

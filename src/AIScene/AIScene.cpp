@@ -11,7 +11,7 @@
 
 AIScene::AIScene()
 {
-
+	m_sceneName = "AIScene";
 }
 
 void AIScene::Init()

@@ -7,7 +7,7 @@
 
 PhysicsScene::PhysicsScene()
 {
-
+	m_sceneName = "PhysicsDemo";
 }
 
 void PhysicsScene::PhysicsTest1()
