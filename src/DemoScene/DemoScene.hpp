@@ -20,10 +20,14 @@ class DemoScene : public Scene
      * @brief Initialised the Scene
      */
     void Init() override;
-	/**
-	 * @brief Updates the Scene
-	 */
+    /**
+     * @brief Updates the Scene before physics simulation
+     */
     void Update(double frameRate) override;
+    /**
+     * @brief Updates the Scene After physics simulation
+     */
+    void LateUpdate(double frameRate);
     /**
      * @brief Draws the Scene
      */
