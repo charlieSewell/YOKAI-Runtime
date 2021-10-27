@@ -17,6 +17,8 @@ void CubeScript::Awake()
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/shay/shay.gltf");
 	m_transform->setScale(0.25);
 	m_boxCollider->SetExtents(glm::vec3(0.5, 0.5, 0.5));
+	m_boxCollider->Start();
+	m_boxCollider->StaticSet();
 
 	//m_boxCollider->SetGravityAffected(true);
 

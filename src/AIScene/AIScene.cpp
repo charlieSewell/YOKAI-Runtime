@@ -100,13 +100,18 @@ void AIScene::Update(double deltaTime)
 		m_physicsOn = !m_physicsOn;
 	}
 
-	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
+	//PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 
 	UpdateEmotionIcons(Zombies, NUM_ZOMBIES);
 	UpdateEmotionIcons(Dogs, NUM_DOGS);
 	UpdateEmotionIcons(Blakes, NUM_BLAKES);
 
 	//std::cout << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().x << ", " << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().y << ", " << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().z << std::endl;
+}
+
+void AIScene::LateUpdate(double deltaTime) 
+{
+	m_objectManager.LateUpdate(deltaTime);
 }
 
 void AIScene::UpdateEmotionIcons(std::vector<unsigned int> actors, const int SIZE)
@@ -152,6 +157,7 @@ void AIScene::InitColliders()
 	m_objectManager.GetObject(Colliders[0])->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, 0, 14.0));
 	m_objectManager.GetObject(Colliders[0])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 0.4, 20.5));
 	m_objectManager.GetObject(Colliders[0])->Start();
+	m_objectManager.GetObject(Colliders[0])->GetComponent<BoxCollider>()->StaticSet();
 	
 
 	// Back fence

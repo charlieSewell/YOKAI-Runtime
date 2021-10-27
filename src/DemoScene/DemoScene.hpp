@@ -20,10 +20,14 @@ class DemoScene : public Scene
      * @brief Initialised the Scene
      */
     void Init() override;
-	/**
-	 * @brief Updates the Scene
-	 */
-    void Update(double deltaTime) override;
+    /**
+     * @brief Updates the Scene before physics simulation
+     */
+    void Update(double frameRate) override;
+    /**
+     * @brief Updates the Scene After physics simulation
+     */
+    void LateUpdate(double frameRate);
     /**
      * @brief Draws the Scene
      */
@@ -55,9 +59,8 @@ class DemoScene : public Scene
     unsigned int Ball;
 	unsigned int UIInputObject;
 	std::shared_ptr<Input> UIinput;
-
+    unsigned int Colliders;
 	//colliders
-	unsigned int Colliders;
     
     //GameObjectManager m_objectManager;
 
