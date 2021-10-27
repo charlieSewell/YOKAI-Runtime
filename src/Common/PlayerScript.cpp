@@ -30,7 +30,7 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-	//sphereCollider->Start();
+	sphereCollider->Start();
 	///*
 	//sphereCollider->SetLinearVelocity(glm::dvec3(0, 0, 0));
 	//sphereCollider->SetAngularVelocity(glm::dvec3(0, 0, 0));
@@ -112,7 +112,7 @@ void PlayerScript::UpdateMovement()
 
 		sprintActive = false;
 	}
-		
+
 	transform->setPosition(transform->getPosition() + tempPosition);
 
 	yaw += input->GetMouseState().offset.x * lookSensitivity;

@@ -31,7 +31,7 @@ void CubeScript::Start()
 
 void CubeScript::Update(float deltaTime)
 {
-	//m_boxCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y, m_transform->getPosition().z));
+	m_boxCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y, m_transform->getPosition().z));
 }
 
 void CubeScript::Draw()
