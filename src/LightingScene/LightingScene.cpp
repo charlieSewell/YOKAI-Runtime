@@ -3,7 +3,7 @@
 #include "Engine/JSONHelper.hpp"
 LightingScene::LightingScene()
 {
-	m_sceneName = "Clustered Lighting Demo";
+	m_sceneName = "ClusteredLightingDemo";
 }
 
 void LightingScene::Init()
@@ -21,7 +21,7 @@ void LightingScene::Init()
 	m_objectManager.GetObject(Player)->Start();
 	for (int i = 0; i < 1000; i++) 
 	{
-		//m_lightManager.AddLight(glm::vec4(1.0f + dis(gen), 1.0f + dis(gen), 1.0f + dis(gen), 1.0f),glm::vec4(RandomPosition(dis, gen), 1.0f),glm::vec4(glm::vec3(0.0f), 40.0f));
+		m_lightManager.AddLight(glm::vec4(1.0f + dis(gen), 1.0f + dis(gen), 1.0f + dis(gen), 1.0f),glm::vec4(RandomPosition(dis, gen), 1.0f),glm::vec4(glm::vec3(0.0f), 40.0f));
 	}
 	UIInputObject = m_objectManager.CreateObject();
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();

@@ -14,6 +14,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 		AIScene/AIComponents/PickupAffordance.cpp
 
 		LightingScene/LightingScene.cpp
+
+		PhysicsScene/PhysicsScene.cpp
 )
 
 # Include project header files.
