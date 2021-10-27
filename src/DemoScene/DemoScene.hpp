@@ -51,12 +51,19 @@ class DemoScene : public Scene
 
 	unsigned int Player;
 	unsigned int LectureTheatre;
+    unsigned int LectureTheatreEmpty;
 	unsigned int LectureTheatreCeiling;
-	unsigned int LectureTheatreExtras;
+	//unsigned int LectureTheatreExtras;
     //unsigned int ClearDesk;
     unsigned int Plank1;
     unsigned int Plank2;
     unsigned int Ball;
+    unsigned int Desk;
+    unsigned int Laptop1;
+    unsigned int Laptop2;
+    unsigned int Microphone;
+    unsigned int Chair1;
+
 	unsigned int UIInputObject;
 	std::shared_ptr<Input> UIinput;
     std::vector<unsigned int> Colliders;
