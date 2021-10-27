@@ -193,7 +193,6 @@ void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 	}
 
 }
-<<<<<<< HEAD
 
 void PlayerScript::TestEmotions(std::shared_ptr<GameObject> otherObject)
 {
@@ -218,7 +217,9 @@ void PlayerScript::TestEmotions(std::shared_ptr<GameObject> otherObject)
 			// Scary
 			otherEmotionSystem->TriggerEmotionalResponse(-1, 1);
 		}
-=======
+	}
+}
+
 void PlayerScript::ToggleMouse()
 {
 	m_pauseMouse = !m_pauseMouse;
@@ -229,6 +230,5 @@ void PlayerScript::ToggleMouse()
 	else
 	{
 		input->HideMouse();
->>>>>>> 26fb9f4d146be44e8e17c6b4f714e83612f0c768
 	}
 }

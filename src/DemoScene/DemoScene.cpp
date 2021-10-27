@@ -103,7 +103,7 @@ void DemoScene::Init()
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetCollisionCategory(Physics::CATEGORY2);
 	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 | Physics::CATEGORY2);
 	//m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.854, 0.354, -0.146, 0.354));
-	//m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetGravityAffected(true);
+	m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetGravityAffected(true);
 
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetLinearVelocity(glm::dvec3(0.5, 0, 0));
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetAngularVelocity(glm::dvec3(0, 0, 0));
@@ -143,43 +143,59 @@ void DemoScene::Disable()
 
 void DemoScene::InitColliders()
 {
-	Colliders = m_objectManager.CreateObject();
+	for (int i = 0; i < 48; i++)
+	{
+		Colliders.push_back(m_objectManager.CreateObject());
+	}
+	int counter = 0;
 	
 	// Floor
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20, 0.2, 20));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(15, 0, -15));
-	m_objectManager.GetObject(Colliders)->Start();
-	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->StaticSet();
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20, 0.2, 20));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(15, 0, -15));
+	m_objectManager.GetObject(Colliders[counter])->Start();
+	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
+	++counter;
 	
 
 	// Desk
 	//objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(1.00, 0.75, 0.5));
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(1.00, 0.5, 0.5));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(13.125, 0.5, -4.25));
-	m_objectManager.GetObject(Colliders)->Start();
-	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->StaticSet();
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(1.00, 0.5, 0.5));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(13.125, 0.5, -4.25));
+	m_objectManager.GetObject(Colliders[counter])->Start();
+	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
 	//m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.986, 0.165, 0.0, 0.0));
+	++counter;
+
+	// Left Stairs
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20.00, 0.5, 11.0));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(9.75, 0.25, -10));
+	m_objectManager.GetObject(Colliders[counter])->Start();
+	m_objectManager.GetObject(Colliders[counter])->GetComponent<Transform>()->setRotation(glm::quat(0.986, 0.165, 0.003, -0.017));
+	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
+	++counter;
 
 	// Left Wall
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.10, 5.0, 5.0));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(7.0, 0.25, -6.5));
-	m_objectManager.GetObject(Colliders)->Start();
-	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, 0.259, 0));
-	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->StaticSet();
-
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.10, 5.0, 5.0));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(7.0, 0.25, -6.5));
+	m_objectManager.GetObject(Colliders[counter])->Start();
+	m_objectManager.GetObject(Colliders[counter])->GetComponent<Transform>()->setRotation(glm::quat(0.966, 0, 0.259, 0));
+	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
+	++counter;
 	// Right Wall
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.10, 5.0, 5.0));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(18.5, 0.25, -6.5));
-	m_objectManager.GetObject(Colliders)->Start();
-	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.966, 0, -0.259, 0));
-	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->StaticSet();
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.10, 5.0, 5.0));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(18.5, 0.25, -6.5));
+	m_objectManager.GetObject(Colliders[counter])->Start();
+	m_objectManager.GetObject(Colliders[counter])->GetComponent<Transform>()->setRotation(glm::quat(0.966, 0, -0.259, 0));
+	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
+	++counter;
 	
 
 	// Back Wall
-	m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(5.0, 5.0, 0.10));
-	m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(12, 0.25, -1.775));
-	m_objectManager.GetObject(Colliders)->Start();
-	m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->StaticSet();
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(5.0, 5.0, 0.10));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(12, 0.25, -1.775));
+	m_objectManager.GetObject(Colliders[counter])->Start();
+	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
+	++counter;
 	for(int i=0; i<14; ++i)
 	{
 		float y = 0.32 * i;
@@ -190,11 +206,11 @@ void DemoScene::InitColliders()
 		// To acount for diamond shape of rows
 		if(i > 7)
 			extX -= (0.21 * (i-7)) * 1.5;	// don't think about it lol
-		m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(2.2 + extX, 0.55, 0.20));
-		m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(13.125, 0.1 + y, -8.75 + z));
-		m_objectManager.GetObject(Colliders)->Start();
-		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->StaticSet();
-
+		m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(2.2 + extX, 0.55, 0.20));
+		m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(13.125, 0.1 + y, -8.75 + z));
+		m_objectManager.GetObject(Colliders[counter])->Start();
+		m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
+		++counter;
 	}
 
 	// Left rows
@@ -217,11 +233,12 @@ void DemoScene::InitColliders()
 		// To acount for diamond shape of rows
 		if (i > 7)
 			x += 0.325 * (i-7);
-		m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(1.35 + extX, 0.55, 0.20));
-		m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(8.0 + x, 0.1 + y, -7.75 + z));
-		m_objectManager.GetObject(Colliders)->Start();
-		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.991, 0, 0.131, 0));
-		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->StaticSet();
+		m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(1.35 + extX, 0.55, 0.20));
+		m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(8.0 + x, 0.1 + y, -7.75 + z));
+		m_objectManager.GetObject(Colliders[counter])->Start();
+		m_objectManager.GetObject(Colliders[counter])->GetComponent<Transform>()->setRotation(glm::quat(0.991, 0, 0.131, 0));
+		m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
+		++counter;
 	}
 
 	// Right rows
@@ -244,11 +261,13 @@ void DemoScene::InitColliders()
 		// To acount for diamond shape of rows
 		if (i > 7)
 			x -= 0.325 * (i - 7);
-		Colliders = m_objectManager.CreateObject();
-		m_objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(1.35 + extX, 0.55, 0.20));
-		m_objectManager.GetObject(Colliders)->AddComponent<Transform>()->setPosition(glm::dvec3(18.25 + x, 0.1 + y, -7.75 + z));
-		m_objectManager.GetObject(Colliders)->Start();
-		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.991, 0, -0.131, 0));
-		m_objectManager.GetObject(Colliders)->GetComponent<BoxCollider>()->StaticSet();
+		m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(1.35 + extX, 0.55, 0.20));
+		m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(18.25 + x, 0.1 + y, -7.75 + z));
+		m_objectManager.GetObject(Colliders[counter])->Start();
+		m_objectManager.GetObject(Colliders[counter])->GetComponent<Transform>()->setRotation(glm::quat(0.991, 0, -0.131, 0));
+		m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
+		++counter;
 	}
+
+	std::cout << counter;
 }

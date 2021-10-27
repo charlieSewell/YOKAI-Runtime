@@ -21,6 +21,8 @@ void ZombieScript::Awake()
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Zombie/ZombieSmooth.gltf");
 	m_transform->setScale(0.25);
 	m_sphereCollider->SetRadius(1.0);
+	m_sphereCollider->Start();
+	m_sphereCollider->StaticSet();
 	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
 	m_automatedBehaviours->TopSpeed = 0.010;
 	m_automatedBehaviours->SetCastHeight(0.5f);

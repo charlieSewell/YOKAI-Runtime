@@ -8,14 +8,9 @@ DogScript::DogScript(GameObject* parent)
 	m_transform(m_gameObject->AddComponent<Transform>()),
 	m_rayCaster(m_gameObject->AddComponent<RayCaster>()),
 	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
-<<<<<<< HEAD
 	m_emotionSystem(m_gameObject->AddComponent<EmotionSystem>()),
-	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>())
-=======
 	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>()),
-	//m_sphereCollider(m_gameObject->AddComponent<SphereCollider>())
 	m_sphereCollider(m_gameObject->AddComponent<BoxCollider>())
->>>>>>> 26fb9f4d146be44e8e17c6b4f714e83612f0c768
 {
 	Awake();
 }
@@ -23,36 +18,22 @@ DogScript::DogScript(GameObject* parent)
 
 void DogScript::Awake()
 {
-	m_sphereCollider->Start();
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/dog/husky.gltf");
 	m_transform->setScale(0.35);
 	//m_sphereCollider->SetRadius(1.0);
 	m_sphereCollider->SetExtents(1, 1, 1);
-	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
-<<<<<<< HEAD
-	m_automatedBehaviours->SetCastHeight(0.5f);
-=======
-	m_automatedBehaviours->TopSpeed = 0.015;
+	m_sphereCollider->Start();
 	m_sphereCollider->StaticSet();
-	m_sphereCollider->SetIsStaticObject(true);
 
-	std::cout << m_sphereCollider->GetIsStaticObject() << std::endl;
->>>>>>> 26fb9f4d146be44e8e17c6b4f714e83612f0c768
-
-	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
-	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
+	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
+	m_automatedBehaviours->SetCastHeight(0.5f);
 
 	std::function<glm::vec3()> getPosition = [&]() { return m_transform->getPosition(); };
 	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 0.5;
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
-<<<<<<< HEAD
-
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(m_transform);
-=======
-	//m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(m_transform);
->>>>>>> 26fb9f4d146be44e8e17c6b4f714e83612f0c768
 }
 
 void DogScript::Start()
@@ -62,51 +43,38 @@ void DogScript::Start()
 
 void DogScript::Update(float deltaTime)
 {
-<<<<<<< HEAD
-=======
-	m_sphereCollider->StaticSet();
-	int fakeState = 0;
+	bool iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = false;
 
-	if(m_automatedBehaviours->Acceleration < m_automatedBehaviours->TopSpeed * 0.10)	// stand still if moving at 10% speed
+	std::shared_ptr<GameObject> otherObject;
+	int objectID = m_automatedBehaviours->frontFeelerHit;
+	if (objectID != -1)
 	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("Idle");
-	}
-	else
->>>>>>> 26fb9f4d146be44e8e17c6b4f714e83612f0c768
-	{
-		bool iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = false;
-
-		std::shared_ptr<GameObject> otherObject;
-		int objectID = m_automatedBehaviours->frontFeelerHit;
-		if (objectID != -1)
+		otherObject = GetAISceneObject(objectID);
+		if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
 		{
-			otherObject = GetAISceneObject(objectID);
-			if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
+			if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
 			{
-				if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
-				{
-					iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = CheckPickup(otherObject);
-				}
+				iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = CheckPickup(otherObject);
 			}
 		}
-
-		//if dog is picked turn into limp boi
-		if(m_affordanceSystem->GetAffordance<PickupAffordance>()->IsAffording)
-		{
-			m_automatedBehaviours->Acceleration = 0;
-			m_automatedBehaviours->Angle = 0;
-			iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = true;
-		}
-
-		if (!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
-		{
-			StateMachine();
-		}
-
-		SetAnimation();
-
-		m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y + 1, m_transform->getPosition().z));
 	}
+
+	//if dog is picked turn into limp boi
+	if(m_affordanceSystem->GetAffordance<PickupAffordance>()->IsAffording)
+	{
+		m_automatedBehaviours->Acceleration = 0;
+		m_automatedBehaviours->Angle = 0;
+		iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = true;
+	}
+
+	if (!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
+	{
+		StateMachine();
+	}
+
+	SetAnimation();
+
+	m_sphereCollider->SetPosition(m_transform->getPosition());
 }
 
 void DogScript::SetAnimation()
@@ -123,14 +91,6 @@ void DogScript::SetAnimation()
 	{
 		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("Walk");
 	}
-<<<<<<< HEAD
-=======
-
-	m_automatedBehaviours->accelerate();
-	//m_sphereCollider->SetPosition(m_transform->getPosition());
-	//m_sphereCollider->SetOrientation(glm::inverse(m_transform->getRotation()));
-	//m_transform->setRotation()
->>>>>>> 26fb9f4d146be44e8e17c6b4f714e83612f0c768
 }
 
 void DogScript::Draw()
