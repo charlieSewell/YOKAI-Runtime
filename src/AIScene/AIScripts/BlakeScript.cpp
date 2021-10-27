@@ -21,8 +21,10 @@ void BlakeScript::Awake()
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/blake/blake.gltf");
 	m_transform->setScale(1.1);
 	m_sphereCollider->SetRadius(1.0);
+	m_sphereCollider->Start();
 	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
 	m_automatedBehaviours->TopSpeed = 0.020;
+	m_sphereCollider->StaticSet();
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	//m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
@@ -72,7 +74,7 @@ void BlakeScript::Update(float deltaTime)
 	}
 
 	m_automatedBehaviours->accelerate();
-	m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y + 1, m_transform->getPosition().z));
+	m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y, m_transform->getPosition().z));
 }
 
 void BlakeScript::Draw()

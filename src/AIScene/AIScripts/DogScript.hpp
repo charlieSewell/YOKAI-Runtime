@@ -4,6 +4,7 @@
 #include "Components/Transform.hpp"
 #include "Components/Component.hpp"
 #include "Components/SphereCollider.hpp"
+#include "Components/BoxCollider.hpp"
 #include "Components/InputComponent.hpp"
 #include "Components/RayCaster.hpp"
 #include "Components/AutomatedBehaviours.hpp"
@@ -27,7 +28,7 @@ public:
 private:
 	GameObject* m_gameObject;
 	std::shared_ptr<Transform> m_transform;
-	std::shared_ptr<SphereCollider> m_sphereCollider;
+	std::shared_ptr<BoxCollider> m_sphereCollider;
 	std::shared_ptr<RayCaster> m_rayCaster;
 	std::shared_ptr<AutomatedBehaviours> m_automatedBehaviours;
 	std::shared_ptr<AffordanceSystem> m_affordanceSystem;

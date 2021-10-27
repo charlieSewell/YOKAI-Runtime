@@ -6,10 +6,11 @@ DogScript::DogScript(GameObject* parent)
 	Component(parent),
 	m_gameObject(parent),
 	m_transform(m_gameObject->AddComponent<Transform>()),
-	m_sphereCollider(m_gameObject->AddComponent<SphereCollider>()),
 	m_rayCaster(m_gameObject->AddComponent<RayCaster>()),
 	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
-	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>())
+	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>()),
+	//m_sphereCollider(m_gameObject->AddComponent<SphereCollider>())
+	m_sphereCollider(m_gameObject->AddComponent<BoxCollider>())
 {
 	Awake();
 }
@@ -17,11 +18,17 @@ DogScript::DogScript(GameObject* parent)
 
 void DogScript::Awake()
 {
+	m_sphereCollider->Start();
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/dog/husky.gltf");
 	m_transform->setScale(0.35);
-	m_sphereCollider->SetRadius(1.0);
+	//m_sphereCollider->SetRadius(1.0);
+	m_sphereCollider->SetExtents(1, 1, 1);
 	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
 	m_automatedBehaviours->TopSpeed = 0.015;
+	m_sphereCollider->StaticSet();
+	m_sphereCollider->SetIsStaticObject(true);
+
+	std::cout << m_sphereCollider->GetIsStaticObject() << std::endl;
 
 	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
 	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
@@ -30,6 +37,7 @@ void DogScript::Awake()
 	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
+	//m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(m_transform);
 }
 
 void DogScript::Start()
@@ -39,6 +47,7 @@ void DogScript::Start()
 
 void DogScript::Update(float deltaTime)
 {
+	m_sphereCollider->StaticSet();
 	int fakeState = 0;
 
 	if(m_automatedBehaviours->Acceleration < m_automatedBehaviours->TopSpeed * 0.10)	// stand still if moving at 10% speed
@@ -70,7 +79,9 @@ void DogScript::Update(float deltaTime)
 	}
 
 	m_automatedBehaviours->accelerate();
-	m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y + 1, m_transform->getPosition().z));
+	//m_sphereCollider->SetPosition(m_transform->getPosition());
+	//m_sphereCollider->SetOrientation(glm::inverse(m_transform->getRotation()));
+	//m_transform->setRotation()
 }
 
 void DogScript::Draw()

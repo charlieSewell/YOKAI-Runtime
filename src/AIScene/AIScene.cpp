@@ -31,7 +31,7 @@ void AIScene::Init()
 	{
 		Zombies.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Zombies[i])->AddComponent<ZombieScript>();
-		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 8, 0, 32.5));
+		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 8, 1, 32.5));
 		m_objectManager.GetObject(Zombies[i])->GetComponent<ZombieScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Zombies[i])->Start();
 
@@ -45,7 +45,7 @@ void AIScene::Init()
 	{
 		Dogs.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Dogs[i])->AddComponent<DogScript>();
-		m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->setPosition(glm::vec3(-25 + i * 8, 0, 25));
+		m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->setPosition(glm::vec3(-25 + i * 8, 1, 25));
 		m_objectManager.GetObject(Dogs[i])->GetComponent<DogScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Dogs[i])->Start();
 
@@ -59,7 +59,7 @@ void AIScene::Init()
 	{
 		Blakes.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Blakes[i])->AddComponent<BlakeScript>();
-		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 8, -0, 20));
+		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 8, 1, 20));
 		m_objectManager.GetObject(Blakes[i])->GetComponent<BlakeScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Blakes[i])->Start();
 
@@ -73,7 +73,7 @@ void AIScene::Init()
 	{
 		Cubes.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Cubes[i])->AddComponent<CubeScript>();
-		m_objectManager.GetObject(Cubes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0, 20));
+		m_objectManager.GetObject(Cubes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 1, 20));
 		m_objectManager.GetObject(Cubes[i])->Start();
 	}
 
@@ -100,13 +100,18 @@ void AIScene::Update(double deltaTime)
 		m_physicsOn = !m_physicsOn;
 	}
 
-	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
+	//PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 
 	UpdateEmotionIcons(Zombies, NUM_ZOMBIES);
 	UpdateEmotionIcons(Dogs, NUM_DOGS);
 	UpdateEmotionIcons(Blakes, NUM_BLAKES);
 
 	//std::cout << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().x << ", " << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().y << ", " << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().z << std::endl;
+}
+
+void AIScene::LateUpdate(double deltaTime) 
+{
+	m_objectManager.LateUpdate(deltaTime);
 }
 
 void AIScene::UpdateEmotionIcons(std::vector<unsigned int> actors, const int SIZE)
@@ -152,6 +157,7 @@ void AIScene::InitColliders()
 	m_objectManager.GetObject(Colliders[0])->AddComponent<Transform>()->setPosition(glm::vec3(-9.75, 0, 14.0));
 	m_objectManager.GetObject(Colliders[0])->AddComponent<BoxCollider>()->SetExtents(glm::vec3(27.75, 0.4, 20.5));
 	m_objectManager.GetObject(Colliders[0])->Start();
+	m_objectManager.GetObject(Colliders[0])->GetComponent<BoxCollider>()->StaticSet();
 	
 
 	// Back fence
