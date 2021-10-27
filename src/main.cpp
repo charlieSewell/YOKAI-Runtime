@@ -11,10 +11,6 @@ int main()
 	engine.addScene(std::shared_ptr<Scene>(new AIScene()));
 	//engine.addScene(std::shared_ptr<Scene>(new LightingScene()));
 
-	if(!engine.Init())
-	{
-		exit(EXIT_FAILURE);
-	}
     engine.Run();
 	return 0;
 }
