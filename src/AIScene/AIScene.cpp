@@ -1,7 +1,9 @@
 #include "AIScene.hpp"
 #include "Common/PlayerScript.hpp"
-#include "NPCScript.hpp"
-#include "CubeScript.hpp"
+#include "AIScripts/ZombieScript.hpp"
+#include "AIScripts/DogScript.hpp"
+#include "AIScripts/BlakeScript.hpp"
+#include "AIScripts/CubeScript.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/BoxCollider.hpp"
 #include "AIComponents/AffordanceSystem.hpp"
@@ -20,26 +22,59 @@ void AIScene::Init()
 	// Player
 	Player = m_objectManager.CreateObject();
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
+	m_objectManager.GetObject(Player)->GetComponent<Transform>()->setPosition(11, 3, 30);
 	m_objectManager.GetObject(Player)->GetComponent<PlayerScript>()->GetAISceneObject = getAISceneObject;
 	m_objectManager.GetObject(Player)->Start();
 
 	// Zombies
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < NUM_ZOMBIES; ++i)
 	{
-		Zombies[i] = m_objectManager.CreateObject();
-		m_objectManager.GetObject(Zombies[i])->AddComponent<NPCScript>();
-		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 4, 0, 30 - i));
-		m_objectManager.GetObject(Zombies[i])->GetComponent<NPCScript>()->GetAISceneObject = getAISceneObject;
+		Zombies.push_back(m_objectManager.CreateObject());
+		m_objectManager.GetObject(Zombies[i])->AddComponent<ZombieScript>();
+		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 8, 0, 32.5));
+		m_objectManager.GetObject(Zombies[i])->GetComponent<ZombieScript>()->GetAISceneObject = getAISceneObject;
 		m_objectManager.GetObject(Zombies[i])->Start();
+
+		Emotions[Zombies[i]] = m_objectManager.CreateObject();
+		m_objectManager.GetObject(Emotions[Zombies[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/frustration/frustration.gltf");
+		m_objectManager.GetObject(Emotions[Zombies[i]])->Start();
 	}
 
-	// Cube - can get it's own script later
-	for(int i=0; i < 5; ++i)
+	// Dogs
+	for (int i = 0; i < NUM_DOGS; ++i)
 	{
-		Cube[i] = m_objectManager.CreateObject();
-		m_objectManager.GetObject(Cube[i])->AddComponent<CubeScript>();
-		m_objectManager.GetObject(Cube[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0, 20));
-		m_objectManager.GetObject(Cube[i])->Start();
+		Dogs.push_back(m_objectManager.CreateObject());
+		m_objectManager.GetObject(Dogs[i])->AddComponent<DogScript>();
+		m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->setPosition(glm::vec3(-25 + i * 8, 0, 25));
+		m_objectManager.GetObject(Dogs[i])->GetComponent<DogScript>()->GetAISceneObject = getAISceneObject;
+		m_objectManager.GetObject(Dogs[i])->Start();
+
+		Emotions[Dogs[i]] = m_objectManager.CreateObject();
+		m_objectManager.GetObject(Emotions[Dogs[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/excited/excited.gltf");
+		m_objectManager.GetObject(Emotions[Dogs[i]])->Start();
+	}
+
+	// Blakes
+	for (int i = 0; i < NUM_BLAKES; ++i)
+	{
+		Blakes.push_back(m_objectManager.CreateObject());
+		m_objectManager.GetObject(Blakes[i])->AddComponent<BlakeScript>();
+		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 8, -0, 20));
+		m_objectManager.GetObject(Blakes[i])->GetComponent<BlakeScript>()->GetAISceneObject = getAISceneObject;
+		m_objectManager.GetObject(Blakes[i])->Start();
+
+		Emotions[Blakes[i]] = m_objectManager.CreateObject();
+		m_objectManager.GetObject(Emotions[Blakes[i]])->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Emotions/calm/calm.gltf");
+		m_objectManager.GetObject(Emotions[Blakes[i]])->Start();
+	}
+
+	// Cube
+	for(int i=0; i < NUM_CUBES; ++i)
+	{
+		Cubes.push_back(m_objectManager.CreateObject());
+		m_objectManager.GetObject(Cubes[i])->AddComponent<CubeScript>();
+		m_objectManager.GetObject(Cubes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-10 + i*5, 0, 20));
+		m_objectManager.GetObject(Cubes[i])->Start();
 	}
 
 	// House
@@ -66,7 +101,30 @@ void AIScene::Update(double deltaTime)
 	}
 
 	PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
-	//m_objectManager.GetObject(Cube)->GetComponent<BoxCollider>()->SetPosition(m_objectManager.GetObject(Cube)->GetComponent<Transform>()->getPosition());
+
+	UpdateEmotionIcons(Zombies, NUM_ZOMBIES);
+	UpdateEmotionIcons(Dogs, NUM_DOGS);
+	UpdateEmotionIcons(Blakes, NUM_BLAKES);
+
+	//std::cout << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().x << ", " << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().y << ", " << m_objectManager.GetObject(Cubes[0])->GetComponent<Transform>()->getPosition().z << std::endl;
+}
+
+void AIScene::UpdateEmotionIcons(std::vector<unsigned int> actors, const int SIZE)
+{
+	Transform tempTransform;
+	glm::vec3 tempPosition;
+
+	for (int i = 0; i < SIZE; ++i)
+	{
+		tempTransform = Transform(glm::inverse(m_objectManager.GetObject(Player)->GetComponent<Camera>()->getViewMatrix()));	// set the object transform to the view matrix
+		tempPosition = m_objectManager.GetObject(actors[i])->GetComponent<Transform>()->getPosition();							// get the ai position
+		tempPosition.y = 2.5;																									// raise abvove head
+		tempTransform.setScale(0.25);
+		tempTransform.rotate(glm::pi<float>(), glm::vec3(0, 1, 0));																// rotate 180 degrees to face player
+		tempTransform.rotate(glm::pi<float>() / 2, glm::vec3(0, 0, 1));															// rotate 90 degrees so not sideways
+		tempTransform.setPosition(tempPosition);
+		*m_objectManager.GetObject(Emotions[actors[i]])->GetComponent<Transform>() = tempTransform;
+	}
 }
 
 void AIScene::Draw()

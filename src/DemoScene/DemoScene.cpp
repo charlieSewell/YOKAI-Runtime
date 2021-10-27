@@ -15,6 +15,7 @@ void DemoScene::Init()
 	//m_lightManager.AddLight(glm::vec4{4.0f,3.0f,1.0f,1.0f},glm::vec4{0.0f},glm::vec4{0.0f,0.0f,0.0f,30.0f});
 	Player = m_objectManager.CreateObject("Player");
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
+	m_objectManager.GetObject(Player)->GetComponent<Transform>()->setPosition(11, 3, 0);
 	m_objectManager.GetObject(Player)->Start();
 
 	LectureTheatre = m_objectManager.CreateObject("LectureTheatre");

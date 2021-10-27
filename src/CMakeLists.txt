@@ -4,9 +4,11 @@ target_sources(${PROJECT_NAME} PRIVATE
 		DemoScene/DemoScene.cpp
 		Common/PlayerScript.cpp
 
-		AIScene/NPCScript.cpp
-		AIScene/CubeScript.cpp
 		AIScene/AIScene.cpp
+		AIScene/AIScripts/ZombieScript.cpp
+		AIScene/AIScripts/DogScript.cpp
+		AIScene/AIScripts/BlakeScript.cpp
+		AIScene/AIScripts/CubeScript.cpp		
 		AIScene/AIComponents/EmotionSystem.cpp
 		AIScene/AIComponents/AffordanceSystem.cpp
 		AIScene/AIComponents/PickupAffordance.cpp
