@@ -20,10 +20,14 @@ class LightingScene : public Scene
      * @brief Initialised the Scene
      */
     void Init() override;
-	/**
-	 * @brief Updates the Scene
-	 */
+	  /**
+	  * @brief Updates the Scene
+	  */
     void Update(double deltaTime) override;
+    /**
+	  * @brief Updates the Scene
+	  */
+    void LateUpdate(double deltaTime) override;
     /**
      * @brief Draws the Scene
      */
@@ -47,6 +51,6 @@ class LightingScene : public Scene
 	unsigned int UIInputObject;
 
 	std::shared_ptr<Input> UIinput;
-    glm::vec3 RandomPosition(std::uniform_real_distribution<> dis, std::mt19937 gen);
+  glm::vec3 RandomPosition(std::uniform_real_distribution<> dis, std::mt19937 gen);
 
 };

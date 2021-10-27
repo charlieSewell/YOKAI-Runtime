@@ -6,7 +6,7 @@
 #include "glm/gtx/string_cast.hpp"
 DemoScene::DemoScene()
 {
-
+	m_sceneName = "LectureTheatre";
 }
 
 void DemoScene::Init() 
@@ -115,11 +115,16 @@ void DemoScene::Init()
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetCollisionCategory(Physics::CATEGORY2);
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 | Physics::CATEGORY2);
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetGravityAffected(true);
+	
 }
 
 void DemoScene::Update(double frameRate)
 {
 	m_objectManager.Update(frameRate);
+	if(UIinput->GetKeyState(YOKAI_INPUT::G))
+	{
+		YOKAI_PARSE::SaveScene("content/LectureTheatre.json", m_objectManager, m_lightManager);
+	}
 	//PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 	//m_physicsOn = true;
 }
@@ -269,5 +274,4 @@ void DemoScene::InitColliders()
 		++counter;
 	}
 
-	std::cout << counter;
 }
