@@ -6,7 +6,7 @@ ZombieScript::ZombieScript(GameObject* parent)
 	Component(parent),
 	m_gameObject(parent),
 	m_transform(m_gameObject->AddComponent<Transform>()),
-	m_sphereCollider(m_gameObject->AddComponent<SphereCollider>()),
+	m_boxCollider(m_gameObject->AddComponent<BoxCollider>()),
 	m_rayCaster(m_gameObject->AddComponent<RayCaster>()),
 	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
 	m_emotionSystem(m_gameObject->AddComponent<EmotionSystem>()),
@@ -18,34 +18,30 @@ ZombieScript::ZombieScript(GameObject* parent)
 
 void ZombieScript::Awake()
 {
+	Transform offset;
+	offset.setPosition(0.0f, -4.0f, 0.0f);
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Zombie/ZombieSmooth.gltf");
+	m_gameObject->AddComponent<DrawableEntity>()->SetOffset(offset.getMatrix());
 	m_transform->setScale(0.25);
-	m_sphereCollider->SetRadius(1.0);
-	m_sphereCollider->Start();
-	m_sphereCollider->StaticSet();
-	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
-	m_automatedBehaviours->TopSpeed = 0.010;
+	m_boxCollider->SetExtents(0.4, 1.1, 0.4);
+	m_boxCollider->Start();
+	m_boxCollider->StaticSet();
+	m_rayCaster->setOwnColliderID(m_boxCollider->GetColliderID());
+	m_automatedBehaviours->TopSpeed = m_topSpeed;
 	m_automatedBehaviours->SetCastHeight(0.5f);
-
-	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
-	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
-
-	std::function<glm::vec3()> getPosition = [&]() { return m_transform->getPosition(); };
-	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
-	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
-	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
+	m_automatedBehaviours->RotationSpeed = 0.005;
 }
 
 void ZombieScript::Start()
 {
-	m_automatedBehaviours->RotationSpeed = 0.05;
+	
 }
 
 void ZombieScript::Update(float deltaTime)
 {
 	int fakeState = 0;
 
-	if(m_automatedBehaviours->Acceleration < m_automatedBehaviours->TopSpeed * 0.10)	// stand still if moving at 10% speed
+	if(m_automatedBehaviours->Acceleration < m_topSpeed * 0.10)	// stand still if moving at 10% speed
 	{
 		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieIdle");
 	}
@@ -61,10 +57,10 @@ void ZombieScript::Update(float deltaTime)
 		otherObject = GetAISceneObject(objectID);
 		if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
 		{
-			if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
+			/*if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
 			{
 				fakeState = CheckPickup(otherObject);
-			}
+			}*/
 		}
 	}
 
@@ -74,53 +70,9 @@ void ZombieScript::Update(float deltaTime)
 	}
 
 	m_automatedBehaviours->accelerate();
-	m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y, m_transform->getPosition().z));
 }
 
 void ZombieScript::Draw()
 {
 
-}
-
-bool ZombieScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
-{
-	std::shared_ptr<PickupAffordance> pickupAffordance = m_affordanceSystem->GetAffordance<PickupAffordance>();
-	std::shared_ptr<PickupAffordance> otherPickupAffordance = otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>();
-
-	if (otherPickupAffordance != nullptr)
-	{
-		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
-		{
-			// Object we want is directly in front so set this to avoid front collision detection
-			m_automatedBehaviours->frontFeelerHit = -1;
-			m_automatedBehaviours->feelerLeftHit = -1;
-			m_automatedBehaviours->feelerRightHit = -1;
-			m_automatedBehaviours->seek(otherObject->GetComponent<Transform>()->getPosition());
-
-			if (glm::distance(m_transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
-			{
-				pickupAffordance->Interact(otherPickupAffordance);
-
-				int otherColliderID = 0;
-				if(otherObject->GetComponent<BoxCollider>() != nullptr)
-				{
-					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
-				}
-				else if(otherObject->GetComponent<SphereCollider>() != nullptr)
-				{
-					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
-				}
-			}
-
-			return true;
-		}
-		else if (pickupAffordance->IsUsing)
-		{
-			// logic to drop box
-			//pickupAffordance->Stop();
-			//rayCaster->setExcludedColliderID(-1);
-		}
-	}
-
-	return false;
 }

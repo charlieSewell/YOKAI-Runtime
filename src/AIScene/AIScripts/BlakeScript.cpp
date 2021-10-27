@@ -6,7 +6,7 @@ BlakeScript::BlakeScript(GameObject* parent)
 	Component(parent),
 	m_gameObject(parent),
 	m_transform(m_gameObject->AddComponent<Transform>()),
-	m_sphereCollider(m_gameObject->AddComponent<SphereCollider>()),
+	m_boxCollider(m_gameObject->AddComponent<BoxCollider>()),
 	m_rayCaster(m_gameObject->AddComponent<RayCaster>()),
 	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
 	m_emotionSystem(m_gameObject->AddComponent<EmotionSystem>()),
@@ -18,23 +18,23 @@ BlakeScript::BlakeScript(GameObject* parent)
 
 void BlakeScript::Awake()
 {
+	Transform offset;
+	offset.setPosition(0.0f, -1.0f, 0.0f);
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/blake/blake.gltf");
+	m_gameObject->AddComponent<DrawableEntity>()->SetOffset(offset.getMatrix());
 	m_transform->setScale(1.1);
-	m_sphereCollider->SetRadius(1.0);
-	m_sphereCollider->Start();
-	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
+	m_boxCollider->SetExtents(0.35, 1.1, 0.35);
+	m_boxCollider->Start();
+	m_rayCaster->setOwnColliderID(m_boxCollider->GetColliderID());
 	m_automatedBehaviours->TopSpeed = m_topSpeed;
 	m_automatedBehaviours->SetCastHeight(0.5f);
-	m_sphereCollider->StaticSet();
-
-	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
-	//m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
+	m_boxCollider->StaticSet();
 
 	std::function<glm::vec3()> getPosition = [&]() { return m_transform->getPosition(); };
 	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 0.5;
-	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 1.25;
+	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 0.25;
 }
 
 void BlakeScript::Start()
@@ -48,7 +48,7 @@ void BlakeScript::Update(float deltaTime)
 
 	std::shared_ptr<GameObject> otherObject;
 	int objectID = m_automatedBehaviours->frontFeelerHit;
-	if (objectID != -1)
+	if (objectID != -1 && m_emotionSystem->GetCurrentEmotion() != EMOTION::FEAR)
 	{
 		otherObject = GetAISceneObject(objectID);
 		if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
@@ -59,15 +59,17 @@ void BlakeScript::Update(float deltaTime)
 			}
 		}
 	}
+	else if (m_affordanceSystem->GetAffordance<PickupAffordance>()->IsUsing)
+	{
+		DropPickup(deltaTime);
+	}
 
-	if(!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
+	if (!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
 	{
 		StateMachine();
 	}
 
 	SetAnimation();
-	m_automatedBehaviours->accelerate();
-	m_sphereCollider->SetPosition(m_transform->getPosition());
 }
 
 void BlakeScript::SetAnimation()
@@ -76,7 +78,7 @@ void BlakeScript::SetAnimation()
 	{
 		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("idle");
 	}
-	else if (m_automatedBehaviours->Acceleration > m_topSpeed * 1.01)
+	else if (m_automatedBehaviours->Acceleration > m_topSpeed * 1.10)		// run if moving at 110% speed
 	{
 		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("run");
 	}
@@ -154,11 +156,11 @@ bool BlakeScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 				pickupAffordance->Interact(otherPickupAffordance);
 
 				int otherColliderID = 0;
-				if(otherObject->GetComponent<BoxCollider>() != nullptr)
+				if (otherObject->GetComponent<BoxCollider>() != nullptr)
 				{
 					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
 				}
-				else if(otherObject->GetComponent<SphereCollider>() != nullptr)
+				else if (otherObject->GetComponent<SphereCollider>() != nullptr)
 				{
 					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
 				}
@@ -168,13 +170,23 @@ bool BlakeScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 			return true;
 		}
-		else if (pickupAffordance->IsUsing)
-		{
-			// logic to drop box
-			//pickupAffordance->Stop();
-			//rayCaster->setExcludedColliderID(-1);
-		}
 	}
 
 	return false;
+}
+
+void BlakeScript::DropPickup(float deltaTime)
+{
+	if (!m_isTimerSet)
+	{
+		m_timer = 0.0f;
+		m_isTimerSet = true;
+	}
+	m_timer += deltaTime;
+
+	if (m_timer > 10)
+	{
+		m_affordanceSystem->GetAffordance<PickupAffordance>()->Stop();
+		m_isTimerSet = false;
+	}
 }

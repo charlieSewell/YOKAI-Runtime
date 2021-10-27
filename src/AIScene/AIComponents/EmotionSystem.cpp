@@ -7,6 +7,12 @@ EmotionSystem::EmotionSystem(GameObject* parent)
 
 }
 
+void EmotionSystem::SetTraits(double meekness, double enthusiasm)
+{
+	m_traits.Meekness = meekness;
+	m_traits.Enthusiasm = enthusiasm;
+}
+
 void EmotionSystem::TriggerEmotionalResponse(double stimuliValence, double stimuliArousal)
 {
 	m_mood.Valence = stimuliValence;
@@ -49,7 +55,7 @@ void EmotionSystem::UpdateEmotionalState()
 {
 	//double moodDecay = 100 * deltaTime;	//TODO CONNOR: make this a meaningful number
 
-	double moodDecay = 0.0005;
+	double moodDecay = 0.0001;
 
 	if (m_mood.Valence > 0.01)
 	{

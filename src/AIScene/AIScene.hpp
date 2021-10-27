@@ -60,8 +60,8 @@ class AIScene : public Scene
 
 	const int NUM_ZOMBIES = 3;
 	const int NUM_DOGS = 3;
-	const int NUM_BLAKES = 0;
-	const int NUM_CUBES = 3;
+	const int NUM_BLAKES = 3;
+	const int NUM_CUBES = 4;
 
 	// Models
 	unsigned int m_calmModel;

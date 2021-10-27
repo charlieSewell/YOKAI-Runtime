@@ -28,6 +28,8 @@ public:
 	void TriggerEmotionalResponse(double stimuliValence, double stimuliArousal);
 	EMOTION GetCurrentEmotion();
 
+	void SetTraits(double meekness, double Enthusiasm);
+
 	void Update(float deltaTime) override;
 
 private:

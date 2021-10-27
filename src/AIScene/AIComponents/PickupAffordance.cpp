@@ -9,9 +9,10 @@ void PickupAffordance::EnableAbility(std::function<glm::vec3()> getPosition, std
 	HasAbility = true;
 }
 
-void PickupAffordance::EnableAffordance(std::shared_ptr<Transform> transform)
+void PickupAffordance::EnableAffordance(std::shared_ptr<Transform> transform, std::shared_ptr<BoxCollider> boxCollider)
 {
 	transformPtr = transform;
+	colliderPtr = boxCollider;
 	HasAffordance = true;
 }
 
@@ -27,6 +28,10 @@ void PickupAffordance::Stop()
 	IsUsing = false;
 	m_otherPickupAffordance->IsAffording = false;
 	m_otherPickupAffordance->transformPtr->setRotation(glm::quat{});
+	if(m_otherPickupAffordance->isDynamic)
+	{
+		m_otherPickupAffordance->colliderPtr->SetLinearVelocity(glm::normalize(GetDirection()) * 2.0f);
+	}
 	m_otherPickupAffordance = nullptr;
 }
 

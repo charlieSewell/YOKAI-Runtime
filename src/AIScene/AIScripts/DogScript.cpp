@@ -10,7 +10,7 @@ DogScript::DogScript(GameObject* parent)
 	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
 	m_emotionSystem(m_gameObject->AddComponent<EmotionSystem>()),
 	m_affordanceSystem(m_gameObject->AddComponent<AffordanceSystem>()),
-	m_sphereCollider(m_gameObject->AddComponent<BoxCollider>())
+	m_boxCollider(m_gameObject->AddComponent<BoxCollider>())
 {
 	Awake();
 }
@@ -18,27 +18,29 @@ DogScript::DogScript(GameObject* parent)
 
 void DogScript::Awake()
 {
+	Transform offset;
+	offset.setPosition(-0.2f, -1.65f, 0.0f);
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/dog/husky.gltf");
+	m_gameObject->GetComponent<DrawableEntity>()->SetOffset(offset.getMatrix());
 	m_transform->setScale(0.35);
 	//m_sphereCollider->SetRadius(1.0);
-	m_sphereCollider->SetExtents(1, 1, 1);
-	m_sphereCollider->Start();
-	m_sphereCollider->StaticSet();
+	m_boxCollider->SetExtents(0.7, 0.45, 0.3);
+	m_boxCollider->Start();
 
-	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
+	m_rayCaster->setOwnColliderID(m_boxCollider->GetColliderID());
 	m_automatedBehaviours->SetCastHeight(0.5f);
 
 	std::function<glm::vec3()> getPosition = [&]() { return m_transform->getPosition(); };
 	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
-	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 0.5;
+	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 0.25;
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
-	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(m_transform);
+	m_affordanceSystem->GetAffordance<PickupAffordance>()->EnableAffordance(m_transform, m_boxCollider);
 }
 
 void DogScript::Start()
 {
-	m_automatedBehaviours->RotationSpeed = 0.05;
+	m_automatedBehaviours->RotationSpeed = 0.025;
 }
 
 void DogScript::Update(float deltaTime)
@@ -58,23 +60,36 @@ void DogScript::Update(float deltaTime)
 			}
 		}
 	}
+	else if(m_affordanceSystem->GetAffordance<PickupAffordance>()->IsUsing)
+	{
+		DropPickup(deltaTime);
+	}
 
-	//if dog is picked turn into limp boi
+	//if dog is picked up turn into limp boi
 	if(m_affordanceSystem->GetAffordance<PickupAffordance>()->IsAffording)
 	{
 		m_automatedBehaviours->Acceleration = 0;
 		m_automatedBehaviours->Angle = 0;
 		iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = true;
+		m_isPickedUp = true;
 	}
-
-	if (!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
+	else if (!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
 	{
+		if(m_isPickedUp)
+		{
+			glm::vec3 temp = m_transform->getPosition();
+			temp.y = 0.5;
+			m_transform->setPosition(temp);
+			m_automatedBehaviours->Angle = 0;
+			m_automatedBehaviours->Heading = glm::vec3{};
+			m_transform->setRotation(glm::quat{});
+			m_isPickedUp = false;
+		}
+		
 		StateMachine();
 	}
 
 	SetAnimation();
-
-	m_sphereCollider->SetPosition(m_transform->getPosition());
 }
 
 void DogScript::SetAnimation()
@@ -158,6 +173,7 @@ bool DogScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 			if (glm::distance(m_transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
 			{
 				pickupAffordance->Interact(otherPickupAffordance);
+				//pickupAffordance->HasAffordance = false; // stops getting picked up while picking things up
 
 				int otherColliderID = 0;
 				if (otherObject->GetComponent<BoxCollider>() != nullptr)
@@ -174,13 +190,24 @@ bool DogScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 			return true;
 		}
-		else if (pickupAffordance->IsUsing)
-		{
-			// logic to drop box
-			//pickupAffordance->Stop();
-			//rayCaster->setExcludedColliderID(-1);
-		}
 	}
 
 	return false;
+}
+
+void DogScript::DropPickup(float deltaTime)
+{
+	if (!m_isTimerSet)
+	{
+		m_timer = 0.0f;
+		m_isTimerSet = true;
+	}
+	m_timer += deltaTime;
+
+	if (m_timer > 10)
+	{
+		m_affordanceSystem->GetAffordance<PickupAffordance>()->Stop();
+		m_affordanceSystem->GetAffordance<PickupAffordance>()->HasAffordance = true;
+		m_isTimerSet = false;
+	}
 }
