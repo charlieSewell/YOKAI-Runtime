@@ -1,0 +1,32 @@
+{
+    "Objects" : [
+        {  
+            "ID" : 0,
+            "Name" : "Object 1",
+            "Components": [
+                {
+                    "Type" : "Transform",
+                    "matrix" : [2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1]
+                },
+                {
+                    "Type" : "DrawableEntity",
+                    "path" : "SOMEURL"
+                }
+            ]
+        },
+        {  
+            "ID" : 1,
+            "Name" : "Object 2",
+            "Components": [
+                {
+                    "Type" : "Transform",
+                    "matrix" : [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+                },
+                {
+                    "Type" : "DrawableEntity",
+                    "path" : "SOMEURL"
+                }
+            ]
+        }
+    ]
+}
