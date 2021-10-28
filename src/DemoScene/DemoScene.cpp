@@ -227,7 +227,7 @@ void DemoScene::InitColliders()
 	int counter = 0;
 	
 	// Floor
-	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20, 0, 20));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20, 0.1, 20));
 	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(15, 0, -15));
 	m_objectManager.GetObject(Colliders[counter])->Start();
 	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();

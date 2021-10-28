@@ -51,7 +51,7 @@ void AIScene::Init()
 	// Dogs
 	for (int i = 0; i < NUM_DOGS; ++i)
 	{
-		Dogs.push_back(m_objectManager.CreateObject("Doggo"));
+		Dogs.push_back(m_objectManager.CreateObject());
 		m_objectManager.GetObject(Dogs[i])->AddComponent<DogScript>();
 		m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->setPosition(glm::vec3(-25 + i * 15, 0.5, 25));
 		m_objectManager.GetObject(Dogs[i])->GetComponent<DogScript>()->GetAISceneObject = getAISceneObject;

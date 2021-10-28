@@ -38,8 +38,7 @@ void DogScript::Awake()
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 0.25;
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->EnableAffordance(m_transform, m_boxCollider);
-
-
+	m_affordanceSystem->AddAffordance<BiteAffordance>()->EnableAbility(m_emotionSystem);
 }
 
 void DogScript::Start()
@@ -91,6 +90,7 @@ void DogScript::Update(float deltaTime)
 			m_transform->setPosition(temp);
 			m_automatedBehaviours->Angle = 0;
 			m_automatedBehaviours->Heading = glm::vec3{};
+			m_automatedBehaviours->Acceleration = m_topSpeed;
 			m_transform->setRotation(glm::quat{});
 			m_isPickedUp = false;
 		}
@@ -142,12 +142,8 @@ void DogScript::StateMachine()
 		m_automatedBehaviours->TopSpeed = m_topSpeed * 0.5;
 		break;
 	case EMOTION::FRUSTRATED:
-		if (!m_evadeActive)
-		{
-			m_evadePosition = m_transform->getPosition();
-			m_evadeActive = true;
-		}
-		m_automatedBehaviours->evade(m_evadePosition);
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
 		m_automatedBehaviours->TopSpeed = m_topSpeed;
 		break;
 	case EMOTION::FEAR:
