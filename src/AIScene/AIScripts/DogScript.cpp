@@ -30,12 +30,16 @@ void DogScript::Awake()
 	m_rayCaster->setOwnColliderID(m_boxCollider->GetColliderID());
 	m_automatedBehaviours->SetCastHeight(0.5f);
 
+	m_emotionSystem->SetTraits(1.2, 1.6);
+
 	std::function<glm::vec3()> getPosition = [&]() { return m_transform->getPosition(); };
 	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupHeightOffset = 0.25;
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->EnableAffordance(m_transform, m_boxCollider);
+
+
 }
 
 void DogScript::Start()
@@ -54,7 +58,11 @@ void DogScript::Update(float deltaTime)
 		otherObject = GetAISceneObject(objectID);
 		if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
 		{
-			if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
+			if(otherObject->GetComponent<AffordanceSystem>()->GetAffordance<BiteAffordance>() != nullptr && m_emotionSystem->GetCurrentEmotion() == EMOTION::FRUSTRATED)
+			{
+				iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = CheckBite(otherObject);
+			}
+			else if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
 			{
 				iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = CheckPickup(otherObject);
 			}
@@ -68,6 +76,7 @@ void DogScript::Update(float deltaTime)
 	//if dog is picked up turn into limp boi
 	if(m_affordanceSystem->GetAffordance<PickupAffordance>()->IsAffording)
 	{
+		m_emotionSystem->TriggerEmotionalResponse(-1, 0.00025);
 		m_automatedBehaviours->Acceleration = 0;
 		m_automatedBehaviours->Angle = 0;
 		iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = true;
@@ -186,6 +195,46 @@ bool DogScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 				}
 			}
 
+			m_automatedBehaviours->accelerate();
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool DogScript::CheckBite(std::shared_ptr<GameObject> otherObject)
+{
+	std::shared_ptr<BiteAffordance> biteAffordance = m_affordanceSystem->GetAffordance<BiteAffordance>();
+	std::shared_ptr<BiteAffordance> otherBiteAffordance = otherObject->GetComponent<AffordanceSystem>()->GetAffordance<BiteAffordance>();
+
+	if (otherBiteAffordance != nullptr)
+	{
+		if (biteAffordance->HasAbility && otherBiteAffordance->HasAffordance)
+		{
+			// Object we want is directly in front so set this to avoid front collision detection
+			m_automatedBehaviours->frontFeelerHit = -1;
+			m_automatedBehaviours->feelerLeftHit = -1;
+			m_automatedBehaviours->feelerRightHit = -1;
+			m_automatedBehaviours->seek(otherObject->GetComponent<Transform>()->getPosition());
+
+			if (glm::distance(m_transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
+			{
+				biteAffordance->Interact(otherBiteAffordance);
+
+				int otherColliderID = 0;
+				if (otherObject->GetComponent<BoxCollider>() != nullptr)
+				{
+					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
+				}
+				else if (otherObject->GetComponent<SphereCollider>() != nullptr)
+				{
+					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
+				}
+			}
+
+			m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("Attack");
 			m_automatedBehaviours->accelerate();
 
 			return true;

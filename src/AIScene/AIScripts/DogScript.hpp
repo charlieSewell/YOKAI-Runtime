@@ -12,6 +12,7 @@
 #include "../AIComponents/AffordanceSystem.hpp"
 #include "../AIComponents/EmotionSystem.hpp"
 #include "../AIComponents/PickupAffordance.hpp"
+#include "../AIComponents/BiteAffordance.hpp"
 
 class GameObject;
 
@@ -46,6 +47,7 @@ private:
 
 	void StateMachine();
 	bool CheckPickup(std::shared_ptr<GameObject> otherObject);
+	bool CheckBite(std::shared_ptr<GameObject> otherObject);
 	void DropPickup(float deltaTime);
 	void SetAnimation();
 };

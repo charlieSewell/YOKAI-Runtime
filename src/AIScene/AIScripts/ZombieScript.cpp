@@ -30,25 +30,20 @@ void ZombieScript::Awake()
 	m_automatedBehaviours->TopSpeed = m_topSpeed;
 	m_automatedBehaviours->SetCastHeight(0.5f);
 	m_automatedBehaviours->RotationSpeed = 0.005;
+
+	m_emotionSystem->SetTraits(0.2, 0.8);
+
+	m_affordanceSystem->AddAffordance<BiteAffordance>()->EnableAbility(m_emotionSystem);
 }
 
 void ZombieScript::Start()
 {
-	
+
 }
 
 void ZombieScript::Update(float deltaTime)
 {
-	int fakeState = 0;
-
-	if(m_automatedBehaviours->Acceleration < m_topSpeed * 0.10)	// stand still if moving at 10% speed
-	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieIdle");
-	}
-	else
-	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieWalk");
-	}
+	bool iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = false;
 
 	std::shared_ptr<GameObject> otherObject;
 	int objectID = m_automatedBehaviours->frontFeelerHit;
@@ -57,22 +52,125 @@ void ZombieScript::Update(float deltaTime)
 		otherObject = GetAISceneObject(objectID);
 		if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
 		{
-			/*if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
+			if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<BiteAffordance>() != nullptr)
 			{
-				fakeState = CheckPickup(otherObject);
-			}*/
+				iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = CheckBite(otherObject);
+			}
 		}
 	}
 
-	if(!fakeState)
+	if (!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
 	{
-		m_automatedBehaviours->wander();
+		StateMachine();
 	}
 
-	m_automatedBehaviours->accelerate();
+	SetAnimation();
+}
+
+void ZombieScript::SetAnimation()
+{
+	if (m_automatedBehaviours->Acceleration < m_topSpeed * 0.10)	// stand still if moving at 10% speed
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieIdle");
+	}
+	else if (m_automatedBehaviours->Acceleration > m_topSpeed * 1.01)
+	{
+		//m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("Gallop");
+	}
+	else
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieWalk");
+	}
 }
 
 void ZombieScript::Draw()
 {
 
+}
+
+void ZombieScript::StateMachine()
+{
+	switch (m_emotionSystem->GetCurrentEmotion())
+	{
+	case EMOTION::CALM:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed;
+		break;
+	case EMOTION::EXCITED:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 1.5;
+		break;
+	case EMOTION::BORED:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 0.5;
+		break;
+	case EMOTION::FRUSTRATED:
+		if (!m_evadeActive)
+		{
+			m_evadePosition = m_transform->getPosition();
+			m_evadeActive = true;
+		}
+		m_automatedBehaviours->evade(m_evadePosition);
+		m_automatedBehaviours->TopSpeed = m_topSpeed;
+		break;
+	case EMOTION::FEAR:
+		if (!m_evadeActive)
+		{
+			m_evadePosition = m_transform->getPosition();
+			m_evadeActive = true;
+		}
+		m_automatedBehaviours->evade(m_evadePosition);
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 4;
+		break;
+	}
+
+	m_automatedBehaviours->accelerate();
+}
+
+bool ZombieScript::CheckBite(std::shared_ptr<GameObject> otherObject)
+{
+	std::shared_ptr<BiteAffordance> biteAffordance = m_affordanceSystem->GetAffordance<BiteAffordance>();
+	std::shared_ptr<BiteAffordance> otherBiteAffordance = otherObject->GetComponent<AffordanceSystem>()->GetAffordance<BiteAffordance>();
+
+	if (otherBiteAffordance != nullptr)
+	{
+		if (biteAffordance->HasAbility && otherBiteAffordance->HasAffordance)
+		{
+			// Object we want is directly in front so set this to avoid front collision detection
+			m_automatedBehaviours->frontFeelerHit = -1;
+			m_automatedBehaviours->feelerLeftHit = -1;
+			m_automatedBehaviours->feelerRightHit = -1;
+			m_automatedBehaviours->seek(otherObject->GetComponent<Transform>()->getPosition());
+
+			if (glm::distance(m_transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
+			{
+				biteAffordance->Interact(otherBiteAffordance);
+
+				int otherColliderID = 0;
+				if (otherObject->GetComponent<BoxCollider>() != nullptr)
+				{
+					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
+				}
+				else if (otherObject->GetComponent<SphereCollider>() != nullptr)
+				{
+					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
+				}
+				m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieAttack");
+			}
+			else
+			{
+				biteAffordance->Stop();
+			}
+
+			//m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieAttack");
+			m_automatedBehaviours->accelerate();
+
+			return true;
+		}
+	}
+
+	return false;
 }

@@ -55,7 +55,7 @@ void EmotionSystem::UpdateEmotionalState()
 {
 	//double moodDecay = 100 * deltaTime;	//TODO CONNOR: make this a meaningful number
 
-	double moodDecay = 0.0001;
+	double moodDecay = 0.00005;
 
 	if (m_mood.Valence > 0.01)
 	{

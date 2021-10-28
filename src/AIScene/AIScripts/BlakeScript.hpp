@@ -12,6 +12,7 @@
 #include "../AIComponents/AffordanceSystem.hpp"
 #include "../AIComponents/EmotionSystem.hpp"
 #include "../AIComponents/PickupAffordance.hpp"
+#include "../AIComponents/BiteAffordance.hpp"
 
 class GameObject;
 

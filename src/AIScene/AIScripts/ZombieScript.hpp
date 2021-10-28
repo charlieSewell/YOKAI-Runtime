@@ -10,6 +10,7 @@
 #include "Components/AutomatedBehaviours.hpp"
 #include "Components/DrawableEntity.hpp"
 #include "../AIComponents/AffordanceSystem.hpp"
+#include "../AIComponents/BiteAffordance.hpp"
 #include "../AIComponents/EmotionSystem.hpp"
 
 class GameObject;
@@ -35,6 +36,13 @@ private:
 	std::shared_ptr<AffordanceSystem> m_affordanceSystem;
 
 	float m_topSpeed = 0.005f;
+	bool m_isTimerSet = false;
+	float m_timer = 0;
 
-	bool CheckPickup(std::shared_ptr<GameObject> otherObject);
+	bool m_evadeActive = false;
+	glm::vec3 m_evadePosition = {};
+
+	void StateMachine();
+	void SetAnimation();
+	bool CheckBite(std::shared_ptr<GameObject> otherObject);
 };
