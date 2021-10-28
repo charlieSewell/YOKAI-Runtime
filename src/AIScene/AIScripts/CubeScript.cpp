@@ -22,7 +22,8 @@ void CubeScript::Awake()
 	m_boxCollider->SetExtents(glm::vec3(0.25, 0.25, 0.25));
 	m_boxCollider->Start();
 	//m_boxCollider->StaticSet();
-	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(m_transform);
+	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(m_transform, m_boxCollider);
+	m_affordanceSystem->AddAffordance<PickupAffordance>()->isDynamic = true;
 }
 
 void CubeScript::Start()
@@ -44,8 +45,14 @@ void CubeScript::Start()
 
 void CubeScript::Update(float deltaTime)
 {
-	//m_boxCollider->SetPosition(m_transform->getPosition());
-	//m_boxCollider->SetOrientation(m_transform->getRotation());
+	if(m_affordanceSystem->GetAffordance<PickupAffordance>()->IsAffording)
+	{
+		m_boxCollider->SetIsStaticObject(true);
+	}
+	else
+	{
+		m_boxCollider->SetIsStaticObject(false);
+	}
 }
 
 void CubeScript::Draw()

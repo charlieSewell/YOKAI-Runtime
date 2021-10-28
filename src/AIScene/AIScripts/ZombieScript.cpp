@@ -6,7 +6,7 @@ ZombieScript::ZombieScript(GameObject* parent)
 	Component(parent),
 	m_gameObject(parent),
 	m_transform(m_gameObject->AddComponent<Transform>()),
-	m_sphereCollider(m_gameObject->AddComponent<SphereCollider>()),
+	m_boxCollider(m_gameObject->AddComponent<BoxCollider>()),
 	m_rayCaster(m_gameObject->AddComponent<RayCaster>()),
 	m_automatedBehaviours(m_gameObject->AddComponent<AutomatedBehaviours>()),
 	m_emotionSystem(m_gameObject->AddComponent<EmotionSystem>()),
@@ -18,41 +18,32 @@ ZombieScript::ZombieScript(GameObject* parent)
 
 void ZombieScript::Awake()
 {
+	Transform offset;
+	offset.setPosition(0.0f, -4.0f, 0.0f);
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Zombie/ZombieSmooth.gltf");
+	m_gameObject->AddComponent<DrawableEntity>()->SetOffset(offset.getMatrix());
 	m_transform->setScale(0.25);
-	m_sphereCollider->SetRadius(1.0);
-	m_sphereCollider->Start();
-	m_sphereCollider->StaticSet();
-	m_rayCaster->setOwnColliderID(m_sphereCollider->GetColliderID());
-	m_automatedBehaviours->TopSpeed = 0.010;
+	m_boxCollider->SetExtents(0.4, 1.1, 0.4);
+	m_boxCollider->Start();
+	m_boxCollider->StaticSet();
+	m_rayCaster->setOwnColliderID(m_boxCollider->GetColliderID());
+	m_automatedBehaviours->TopSpeed = m_topSpeed;
 	m_automatedBehaviours->SetCastHeight(0.5f);
+	m_automatedBehaviours->RotationSpeed = 0.005;
 
-	//std::function<void(glm::vec3)> setPosition = [&](glm::vec3 newPosition) { transform->setPosition(newPosition); };
-	//affordanceSystem->AddAffordance<PickupAffordance>()->EnableAffordance(setPosition);
+	m_emotionSystem->SetTraits(0.2, 0.8);
 
-	std::function<glm::vec3()> getPosition = [&]() { return m_transform->getPosition(); };
-	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
-	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
-	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 1;
+	m_affordanceSystem->AddAffordance<BiteAffordance>()->EnableAbility(m_emotionSystem);
 }
 
 void ZombieScript::Start()
 {
-	m_automatedBehaviours->RotationSpeed = 0.05;
+
 }
 
 void ZombieScript::Update(float deltaTime)
 {
-	int fakeState = 0;
-
-	if(m_automatedBehaviours->Acceleration < m_automatedBehaviours->TopSpeed * 0.10)	// stand still if moving at 10% speed
-	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieIdle");
-	}
-	else
-	{
-		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieWalk");
-	}
+	bool iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = false;
 
 	std::shared_ptr<GameObject> otherObject;
 	int objectID = m_automatedBehaviours->frontFeelerHit;
@@ -61,20 +52,35 @@ void ZombieScript::Update(float deltaTime)
 		otherObject = GetAISceneObject(objectID);
 		if (otherObject->GetComponent<AffordanceSystem>() != nullptr)
 		{
-			if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
+			if (otherObject->GetComponent<AffordanceSystem>()->GetAffordance<BiteAffordance>() != nullptr)
 			{
-				fakeState = CheckPickup(otherObject);
+				iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = CheckBite(otherObject);
 			}
 		}
 	}
 
-	if(!fakeState)
+	if (!iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay)
 	{
-		m_automatedBehaviours->wander();
+		StateMachine();
 	}
 
-	m_automatedBehaviours->accelerate();
-	m_sphereCollider->SetPosition(glm::vec3(m_transform->getPosition().x, m_transform->getPosition().y, m_transform->getPosition().z));
+	SetAnimation();
+}
+
+void ZombieScript::SetAnimation()
+{
+	if (m_automatedBehaviours->Acceleration < m_topSpeed * 0.10)	// stand still if moving at 10% speed
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieIdle");
+	}
+	else if (m_automatedBehaviours->Acceleration > m_topSpeed * 1.01)
+	{
+		//m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("Gallop");
+	}
+	else
+	{
+		m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieWalk");
+	}
 }
 
 void ZombieScript::Draw()
@@ -82,14 +88,56 @@ void ZombieScript::Draw()
 
 }
 
-bool ZombieScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
+void ZombieScript::StateMachine()
 {
-	std::shared_ptr<PickupAffordance> pickupAffordance = m_affordanceSystem->GetAffordance<PickupAffordance>();
-	std::shared_ptr<PickupAffordance> otherPickupAffordance = otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>();
-
-	if (otherPickupAffordance != nullptr)
+	switch (m_emotionSystem->GetCurrentEmotion())
 	{
-		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
+	case EMOTION::CALM:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed;
+		break;
+	case EMOTION::EXCITED:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 1.5;
+		break;
+	case EMOTION::BORED:
+		m_evadeActive = false;
+		m_automatedBehaviours->wander();
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 0.5;
+		break;
+	case EMOTION::FRUSTRATED:
+		if (!m_evadeActive)
+		{
+			m_evadePosition = m_transform->getPosition();
+			m_evadeActive = true;
+		}
+		m_automatedBehaviours->evade(m_evadePosition);
+		m_automatedBehaviours->TopSpeed = m_topSpeed;
+		break;
+	case EMOTION::FEAR:
+		if (!m_evadeActive)
+		{
+			m_evadePosition = m_transform->getPosition();
+			m_evadeActive = true;
+		}
+		m_automatedBehaviours->evade(m_evadePosition);
+		m_automatedBehaviours->TopSpeed = m_topSpeed * 4;
+		break;
+	}
+
+	m_automatedBehaviours->accelerate();
+}
+
+bool ZombieScript::CheckBite(std::shared_ptr<GameObject> otherObject)
+{
+	std::shared_ptr<BiteAffordance> biteAffordance = m_affordanceSystem->GetAffordance<BiteAffordance>();
+	std::shared_ptr<BiteAffordance> otherBiteAffordance = otherObject->GetComponent<AffordanceSystem>()->GetAffordance<BiteAffordance>();
+
+	if (otherBiteAffordance != nullptr)
+	{
+		if (biteAffordance->HasAbility && otherBiteAffordance->HasAffordance)
 		{
 			// Object we want is directly in front so set this to avoid front collision detection
 			m_automatedBehaviours->frontFeelerHit = -1;
@@ -99,26 +147,28 @@ bool ZombieScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 
 			if (glm::distance(m_transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
 			{
-				pickupAffordance->Interact(otherPickupAffordance);
+				biteAffordance->Interact(otherBiteAffordance);
 
 				int otherColliderID = 0;
-				if(otherObject->GetComponent<BoxCollider>() != nullptr)
+				if (otherObject->GetComponent<BoxCollider>() != nullptr)
 				{
 					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
 				}
-				else if(otherObject->GetComponent<SphereCollider>() != nullptr)
+				else if (otherObject->GetComponent<SphereCollider>() != nullptr)
 				{
 					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
 				}
+				m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieAttack");
+			}
+			else
+			{
+				biteAffordance->Stop();
 			}
 
+			//m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieAttack");
+			m_automatedBehaviours->accelerate();
+
 			return true;
-		}
-		else if (pickupAffordance->IsUsing)
-		{
-			// logic to drop box
-			//pickupAffordance->Stop();
-			//rayCaster->setExcludedColliderID(-1);
 		}
 	}
 

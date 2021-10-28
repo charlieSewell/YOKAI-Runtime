@@ -12,6 +12,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 		AIScene/AIComponents/EmotionSystem.cpp
 		AIScene/AIComponents/AffordanceSystem.cpp
 		AIScene/AIComponents/PickupAffordance.cpp
+		AIScene/AIComponents/BiteAffordance.cpp
 
 		LightingScene/LightingScene.cpp
 

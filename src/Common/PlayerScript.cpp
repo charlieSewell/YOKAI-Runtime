@@ -19,7 +19,7 @@ PlayerScript::PlayerScript(GameObject* parent)
 
 void PlayerScript::Awake()
 {
-	movementSpeed = 0.1f;
+	movementSpeed = 0.05f;
 	lookSensitivity = 0.05f;
 	sprintMultiplyer = 4;
 	std::function<glm::vec3()> getPlayerPosition = [&]() { return transform->getPosition(); };
@@ -30,7 +30,7 @@ void PlayerScript::Awake()
 
 void PlayerScript::Start()
 {
-	sphereCollider->Start();
+	//sphereCollider->Start();
 	///*
 	//sphereCollider->SetLinearVelocity(glm::dvec3(0, 0, 0));
 	//sphereCollider->SetAngularVelocity(glm::dvec3(0, 0, 0));

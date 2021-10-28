@@ -5,6 +5,7 @@
 #include <memory>
 #include <functional>
 #include "Components/Transform.hpp"
+#include "Components/BoxCollider.hpp"
 
 class PickupAffordance : public IAffordance
 {
@@ -15,7 +16,7 @@ public:
 	void Update(float deltaTime) override;
 
 	void EnableAbility(std::function<glm::vec3()> getPosition, std::function<glm::vec3()> getDirection);
-	void EnableAffordance(std::shared_ptr<Transform> transform);
+	void EnableAffordance(std::shared_ptr<Transform> transform, std::shared_ptr<BoxCollider> boxCollider);
 
 	void Interact(std::shared_ptr<PickupAffordance> other);
 	void Stop();
@@ -28,6 +29,8 @@ public:
 	float PickupHeightOffset = 0.0f;
 
 	std::shared_ptr<Transform> transformPtr = nullptr;
+	std::shared_ptr<BoxCollider> colliderPtr = nullptr;
+	bool isDynamic = false;
 
 private:
 
