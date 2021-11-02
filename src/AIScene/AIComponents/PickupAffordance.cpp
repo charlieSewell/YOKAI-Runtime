@@ -32,7 +32,7 @@ void PickupAffordance::Stop()
 	{
 		m_otherPickupAffordance->colliderPtr->SetLinearVelocity(glm::normalize(GetDirection()) * 2.0f);
 	}
-	//m_otherPickupAffordance = nullptr;
+	m_otherPickupAffordance = nullptr;
 }
 
 void PickupAffordance::Update(float deltaTime)

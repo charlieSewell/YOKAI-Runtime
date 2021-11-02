@@ -46,15 +46,6 @@ void PlayerScript::Update(float deltaTime)
 {
 
 	UpdateMovement();
-	//std::cout << transform->getPosition().x << ", " << transform->getPosition().y << ", " << transform->getPosition().z << "\n";
-	
-	// Ray caster Test
-	/*
-	if(rayCaster->CastRay(camera->m_position, camera->m_frontDirection, 10) != -1 )
-		std::cout << "Hit!\n";
-	else
-		std::cout << "Miss!\n";
-	*/
 
 	std::shared_ptr<GameObject> otherObject;
 	int objectID = rayCaster->CastRay(camera->getPosition(), camera->m_frontDirection, 10);

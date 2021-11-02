@@ -37,7 +37,7 @@ void AIScene::Init()
 	// Zombies
 	for (int i = 0; i < NUM_ZOMBIES; ++i)
 	{
-		Zombies.push_back(m_objectManager.CreateObject());
+		Zombies.push_back(m_objectManager.CreateObject("Zombie"));
 		m_objectManager.GetObject(Zombies[i])->AddComponent<ZombieScript>();
 		m_objectManager.GetObject(Zombies[i])->GetComponent<Transform>()->setPosition(glm::vec3(-30 + i * 12, 1, 32.5));
 		m_objectManager.GetObject(Zombies[i])->GetComponent<ZombieScript>()->GetAISceneObject = getAISceneObject;
@@ -51,7 +51,7 @@ void AIScene::Init()
 	// Dogs
 	for (int i = 0; i < NUM_DOGS; ++i)
 	{
-		Dogs.push_back(m_objectManager.CreateObject());
+		Dogs.push_back(m_objectManager.CreateObject("Doggo"));
 		m_objectManager.GetObject(Dogs[i])->AddComponent<DogScript>();
 		m_objectManager.GetObject(Dogs[i])->GetComponent<Transform>()->setPosition(glm::vec3(-25 + i * 15, 0.5, 25));
 		m_objectManager.GetObject(Dogs[i])->GetComponent<DogScript>()->GetAISceneObject = getAISceneObject;
@@ -65,7 +65,7 @@ void AIScene::Init()
 	// Blakes
 	for (int i = 0; i < NUM_BLAKES; ++i)
 	{
-		Blakes.push_back(m_objectManager.CreateObject());
+		Blakes.push_back(m_objectManager.CreateObject("Blake"));
 		m_objectManager.GetObject(Blakes[i])->AddComponent<BlakeScript>();
 		m_objectManager.GetObject(Blakes[i])->GetComponent<Transform>()->setPosition(glm::vec3(-20 + i * 12, 1, 20));
 		m_objectManager.GetObject(Blakes[i])->GetComponent<BlakeScript>()->GetAISceneObject = getAISceneObject;
