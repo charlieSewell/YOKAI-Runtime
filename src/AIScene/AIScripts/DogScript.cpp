@@ -26,6 +26,7 @@ void DogScript::Awake()
 	//m_sphereCollider->SetRadius(1.0);
 	m_boxCollider->SetExtents(0.7, 0.45, 0.3);
 	m_boxCollider->Start();
+	m_boxCollider->StaticSet();
 
 	m_rayCaster->setOwnColliderID(m_boxCollider->GetColliderID());
 	m_automatedBehaviours->SetCastHeight(0.5f);
@@ -76,8 +77,7 @@ void DogScript::Update(float deltaTime)
 	if(m_affordanceSystem->GetAffordance<PickupAffordance>()->IsAffording)
 	{
 		m_emotionSystem->TriggerEmotionalResponse(-1, 0.00025);
-		m_automatedBehaviours->Acceleration = 0;
-		m_automatedBehaviours->Angle = 0;
+		m_automatedBehaviours->Acceleration = 0.0f;
 		iDunnoHesDoingAnAffordanceVariableNamesAreHardOkay = true;
 		m_isPickedUp = true;
 	}
@@ -89,7 +89,7 @@ void DogScript::Update(float deltaTime)
 			temp.y = 0.5;
 			m_transform->setPosition(temp);
 			m_automatedBehaviours->Angle = 0;
-			m_automatedBehaviours->Heading = glm::vec3{};
+			m_automatedBehaviours->Heading = glm::vec3(0.5f, 0.0f, 0.5f);
 			m_automatedBehaviours->Acceleration = m_topSpeed;
 			m_transform->setRotation(glm::quat{});
 			m_isPickedUp = false;
