@@ -60,7 +60,6 @@ void DemoScene::Init()
 	m_objectManager.GetObject(Laptop2)->Start();
 
 	glm::mat4 offset3 = glm::mat4(1.0);
-	//offset3 = glm::translate(offset3, glm::vec3(2.5, -0.375, 3.25));
 	offset3 = glm::translate(offset3, glm::vec3(1.8, -0.345, 2.4));
 	offset3 = glm::rotate(offset3, glm::radians(-45.0f), glm::vec3(0, 1, 0));
 	offset3 = glm::scale(offset3, glm::vec3(0.75, 0.75, 0.75));
@@ -193,12 +192,11 @@ void DemoScene::Init()
 void DemoScene::Update(double frameRate)
 {
 	m_objectManager.Update(frameRate);
+
 	if(UIinput->GetKeyState(YOKAI_INPUT::G))
 	{
 		YOKAI_PARSE::SaveScene("content/LectureTheatre.json", m_objectManager, m_lightManager);
 	}
-	//PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
-	//m_physicsOn = true;
 }
 void DemoScene::LateUpdate(double frameRate)
 {
@@ -233,7 +231,6 @@ void DemoScene::InitColliders()
 	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
 	++counter;
 	
-
 	// Desk
 	//objectManager.GetObject(Colliders)->AddComponent<BoxCollider>()->SetExtents(glm::vec3(1.00, 0.75, 0.5));
 	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(1.00, 0.5, 0.5));
@@ -266,7 +263,6 @@ void DemoScene::InitColliders()
 	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
 	++counter;
 	
-
 	// Back Wall
 	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(5.0, 5.0, 0.10));
 	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(12, 0.25, -1.775));

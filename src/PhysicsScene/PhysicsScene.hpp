@@ -48,6 +48,8 @@ class PhysicsScene : public Scene
     void PhysicsTest2();
     void PhysicsTest3();
 
+    void Throw();
+    void Reset();
 
     ///Is this scene active
     bool isEnabled = true;
@@ -76,5 +78,6 @@ class PhysicsScene : public Scene
 	//colliders
     
     //GameObjectManager m_objectManager;
-
+    std::vector<int> bullets;
+    int bulletCount = 0;
 };

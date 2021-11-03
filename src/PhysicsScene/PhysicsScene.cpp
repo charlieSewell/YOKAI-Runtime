@@ -72,7 +72,8 @@ void PhysicsScene::PhysicsTest2()
 void PhysicsScene::PhysicsTest3()
 {
 	m_objectManager.GetObject(Plank3)->GetComponent<BoxCollider>()->SetLinearVelocity(glm::dvec3(0, 0, 0));
-	m_objectManager.GetObject(Plank3)->GetComponent<BoxCollider>()->SetAngularVelocity(glm::dvec3(2, 2, 2));
+	//m_objectManager.GetObject(Plank3)->GetComponent<BoxCollider>()->SetAngularVelocity(glm::dvec3(2, 2, 2));
+	m_objectManager.GetObject(Plank3)->GetComponent<BoxCollider>()->SetAngularVelocity(glm::dvec3(0, 0, 0));
 	m_objectManager.GetObject(Plank3)->GetComponent<BoxCollider>()->SetMass(2.0);
 	m_objectManager.GetObject(Plank3)->GetComponent<BoxCollider>()->SetIsStaticObject(false);
 	m_objectManager.GetObject(Plank3)->GetComponent<BoxCollider>()->SetInertiaTensor();
@@ -83,7 +84,8 @@ void PhysicsScene::PhysicsTest3()
 	m_objectManager.GetObject(Plank3)->GetComponent<BoxCollider>()->SetGravityAffected(true);
 
 	m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetLinearVelocity(glm::dvec3(0, 0, 0));
-	m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetAngularVelocity(glm::dvec3(-1, -1, -1));
+	//m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetAngularVelocity(glm::dvec3(-1, -1, -1));
+	m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetAngularVelocity(glm::dvec3(0, 0, 0));
 	m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetMass(2.0);
 	m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetIsStaticObject(false);
 	m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetInertiaTensor();
@@ -92,6 +94,46 @@ void PhysicsScene::PhysicsTest3()
 	m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 | Physics::CATEGORY2);
 	//m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetOrientation(glm::quat(0.854, 0.354, -0.146, 0.354));
 	m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetGravityAffected(true);
+}
+
+void PhysicsScene::Throw() 
+{
+	//std::cout << "Throw" << std::endl;
+
+	bullets.push_back(m_objectManager.CreateObject("Bullet"));
+	m_objectManager.GetObject(bullets[bulletCount])->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/physicsbullet.gltf");
+
+	glm::vec3 playerPos = m_objectManager.GetObject(Player)->GetComponent<Transform>()->getPosition();
+	glm::vec3 frontDirection = m_objectManager.GetObject(Player)->GetComponent<Camera>()->m_frontDirection;
+
+	glm::mat4 offset1 = glm::mat4(1.0);
+	offset1 = glm::translate(offset1, glm::vec3(0.2075, -0.735, 0));
+	offset1 = glm::scale(offset1, glm::vec3(2.5, 2.5, 2.5));
+	m_objectManager.GetObject(bullets[bulletCount])->GetComponent<DrawableEntity>()->SetOffset(offset1);
+	m_objectManager.GetObject(bullets[bulletCount])->AddComponent<Transform>()->setPosition(playerPos);
+	m_objectManager.GetObject(bullets[bulletCount])->AddComponent<SphereCollider>()->SetRadius(0.041);
+	m_objectManager.GetObject(bullets[bulletCount])->Start();
+
+	m_objectManager.GetObject(bullets[bulletCount])->GetComponent<SphereCollider>()->SetLinearVelocity(glm::normalize(frontDirection) * 4.0f);
+	m_objectManager.GetObject(bullets[bulletCount])->GetComponent<SphereCollider>()->SetAngularVelocity(glm::dvec3(0, 0, 0));
+	m_objectManager.GetObject(bullets[bulletCount])->GetComponent<SphereCollider>()->SetMass(0.1);
+	m_objectManager.GetObject(bullets[bulletCount])->GetComponent<SphereCollider>()->SetIsStaticObject(false);
+	m_objectManager.GetObject(bullets[bulletCount])->GetComponent<SphereCollider>()->SetInertiaTensor();
+	m_objectManager.GetObject(bullets[bulletCount])->GetComponent<SphereCollider>()->SetOrientation(glm::quat(1, 0, 0, 0));
+	m_objectManager.GetObject(bullets[bulletCount])->GetComponent<SphereCollider>()->SetCollisionCategory(Physics::CATEGORY2);
+	m_objectManager.GetObject(bullets[bulletCount])->GetComponent<SphereCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 | Physics::CATEGORY2);
+	//m_objectManager.GetObject(bullets[bulletCount])->GetComponent<SphereCollider>()->SetGravityAffected(true);
+
+	bulletCount++;
+
+}
+
+void PhysicsScene::Reset()
+{
+	//std::cout << "Reset" << std::endl;
+	m_objectManager.GetObject(Plank3)->GetComponent<BoxCollider>()->SetPosition(glm::dvec3(12, 1.47, -10));
+	m_objectManager.GetObject(Plank4)->GetComponent<BoxCollider>()->SetPosition(glm::dvec3(12.5, 1.47, -10));
+	PhysicsTest3();
 }
 
 void PhysicsScene::Init()
@@ -194,15 +236,17 @@ void PhysicsScene::Init()
 	m_objectManager.GetObject(Plank4)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/physicsblock.gltf");
 
 	glm::mat4 offset4 = glm::mat4(1.0);
-	offset4 = glm::translate(offset4, glm::vec3(0.0, -0.3, -0.00685));
-	m_objectManager.GetObject(Plank3)->AddComponent<Transform>()->setPosition(glm::dvec3(11.5, 2.66, -10));
+	//offset4 = glm::translate(offset4, glm::vec3(0.0, -0.3, -0.00685));
+	offset4 = glm::translate(offset4, glm::vec3(0.0, -0.6, -0.01370));
+	offset4 = glm::scale(offset4, glm::vec3(2, 2, 2));
+	m_objectManager.GetObject(Plank3)->AddComponent<Transform>()->setPosition(glm::dvec3(12, 1.47, -10));
 	m_objectManager.GetObject(Plank3)->GetComponent<DrawableEntity>()->SetOffset(offset4);
-	m_objectManager.GetObject(Plank3)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
+	m_objectManager.GetObject(Plank3)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.03, 0.30, 0.20));
 	m_objectManager.GetObject(Plank3)->Start();
 
-	m_objectManager.GetObject(Plank4)->AddComponent<Transform>()->setPosition(glm::dvec3(12.7, 2.66, -10));
+	m_objectManager.GetObject(Plank4)->AddComponent<Transform>()->setPosition(glm::dvec3(12.5, 1.47, -10));
 	m_objectManager.GetObject(Plank4)->GetComponent<DrawableEntity>()->SetOffset(offset4);
-	m_objectManager.GetObject(Plank4)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
+	m_objectManager.GetObject(Plank4)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.03, 0.30, 0.20));
 	m_objectManager.GetObject(Plank4)->Start();
 
 	// COLLIDERS
@@ -215,8 +259,6 @@ void PhysicsScene::Init()
 void PhysicsScene::Update(double frameRate)
 {
 	m_objectManager.Update(frameRate);
-	//PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
-	//m_physicsOn = true;
 
 	if (UIinput->GetKeyToggle(YOKAI_INPUT::NUM_1))
 	{
@@ -231,6 +273,16 @@ void PhysicsScene::Update(double frameRate)
 	if (UIinput->GetKeyToggle(YOKAI_INPUT::NUM_3))
 	{
 		PhysicsTest3();
+	}
+
+	if (UIinput->GetKeyToggle(YOKAI_INPUT::Q))
+	{
+		Throw();
+	}
+
+	if (UIinput->GetKeyToggle(YOKAI_INPUT::R))
+	{
+		Reset();
 	}
 }
 void PhysicsScene::LateUpdate(double frameRate)
