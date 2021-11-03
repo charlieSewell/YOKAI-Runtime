@@ -19,18 +19,18 @@ BlakeScript::BlakeScript(GameObject* parent)
 void BlakeScript::Awake()
 {
 	Transform offset;
-	offset.setPosition(0.0f, -1.0f, 0.0f);
+	offset.SetPosition(0.0f, -1.0f, 0.0f);
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/blake/blake.gltf");
-	m_gameObject->AddComponent<DrawableEntity>()->SetOffset(offset.getMatrix());
-	m_transform->setScale(1.1);
+	m_gameObject->AddComponent<DrawableEntity>()->SetOffset(offset.GetMatrix());
+	m_transform->SetScale(1.1);
 	m_boxCollider->SetExtents(0.35, 1.1, 0.35);
 	m_boxCollider->Start();
-	m_rayCaster->setOwnColliderID(m_boxCollider->GetColliderID());
+	m_rayCaster->SetOwnColliderID(m_boxCollider->GetColliderID());
 	m_automatedBehaviours->TopSpeed = m_topSpeed;
 	m_automatedBehaviours->SetCastHeight(0.5f);
 	m_boxCollider->StaticSet();
 
-	std::function<glm::vec3()> getPosition = [&]() { return m_transform->getPosition(); };
+	std::function<glm::vec3()> getPosition = [&]() { return m_transform->GetPosition(); };
 	std::function<glm::vec3()> getHeading = [&]() { return m_automatedBehaviours->Heading; };
 	m_affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPosition, getHeading);
 	m_affordanceSystem->GetAffordance<PickupAffordance>()->PickupFrontOffset = 0.5;
@@ -116,7 +116,7 @@ void BlakeScript::StateMachine()
 	case EMOTION::FRUSTRATED:
 		if (!m_evadeActive)
 		{
-			m_evadePosition = m_transform->getPosition();
+			m_evadePosition = m_transform->GetPosition();
 			m_evadeActive = true;
 		}
 		m_automatedBehaviours->evade(m_evadePosition);
@@ -125,7 +125,7 @@ void BlakeScript::StateMachine()
 	case EMOTION::FEAR:
 		if(!m_evadeActive)
 		{
-			m_evadePosition = m_transform->getPosition();
+			m_evadePosition = m_transform->GetPosition();
 			m_evadeActive = true;
 		}
 		m_automatedBehaviours->evade(m_evadePosition);
@@ -150,20 +150,20 @@ bool BlakeScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 			m_automatedBehaviours->frontFeelerHit = -1;
 			m_automatedBehaviours->feelerLeftHit = -1;
 			m_automatedBehaviours->feelerRightHit = -1;
-			m_automatedBehaviours->seek(otherObject->GetComponent<Transform>()->getPosition());
+			m_automatedBehaviours->seek(otherObject->GetComponent<Transform>()->GetPosition());
 
-			if (glm::distance(m_transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
+			if (glm::distance(m_transform->GetPosition(), otherObject->GetComponent<Transform>()->GetPosition()) < 2)
 			{
 				pickupAffordance->Interact(otherPickupAffordance);
 
 				int otherColliderID = 0;
 				if (otherObject->GetComponent<BoxCollider>() != nullptr)
 				{
-					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
+					m_rayCaster->SetExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
 				}
 				else if (otherObject->GetComponent<SphereCollider>() != nullptr)
 				{
-					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
+					m_rayCaster->SetExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
 				}
 			}
 

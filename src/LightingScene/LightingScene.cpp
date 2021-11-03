@@ -15,7 +15,7 @@ void LightingScene::Init()
     Scene =  m_objectManager.CreateObject();
     m_objectManager.GetObject(Scene)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
     m_objectManager.GetObject(Scene)->Start();	// This line only exists to add a transform. Should come up with a better solution
-	m_objectManager.GetObject(Scene)->GetComponent<Transform>()->scale(0.1);
+	m_objectManager.GetObject(Scene)->GetComponent<Transform>()->Scale(0.1);
 
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
 	m_objectManager.GetObject(Player)->Start();

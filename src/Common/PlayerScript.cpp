@@ -22,10 +22,10 @@ void PlayerScript::Awake()
 	movementSpeed = 0.05f;
 	lookSensitivity = 0.05f;
 	sprintMultiplyer = 4;
-	std::function<glm::vec3()> getPlayerPosition = [&]() { return transform->getPosition(); };
+	std::function<glm::vec3()> getPlayerPosition = [&]() { return transform->GetPosition(); };
 	std::function<glm::vec3()> getPlayerDirection = [&]() { return camera->m_frontDirection; };
 	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPlayerPosition, getPlayerDirection);
-	rayCaster->setOwnColliderID(sphereCollider->GetColliderID());
+	rayCaster->SetOwnColliderID(sphereCollider->GetColliderID());
 }
 
 void PlayerScript::Start()
@@ -48,7 +48,7 @@ void PlayerScript::Update(float deltaTime)
 	UpdateMovement();
 
 	std::shared_ptr<GameObject> otherObject;
-	int objectID = rayCaster->CastRay(camera->getPosition(), camera->m_frontDirection, 10);
+	int objectID = rayCaster->CastRay(camera->GetPosition(), camera->m_frontDirection, 10);
 	if(objectID != -1 && GetAISceneObject != nullptr)
 	{
 		otherObject = GetAISceneObject(objectID);
@@ -109,7 +109,7 @@ void PlayerScript::UpdateMovement()
 		sprintActive = false;
 	}
 
-	transform->setPosition(transform->getPosition() + tempPosition);
+	transform->SetPosition(transform->GetPosition() + tempPosition);
 
 	if(!m_pauseMouse)
 	{
@@ -130,7 +130,7 @@ void PlayerScript::UpdateMovement()
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	camera->m_frontDirection = glm::normalize(direction);
 
-	sphereCollider->SetPosition(transform->getPosition());
+	sphereCollider->SetPosition(transform->GetPosition());
 
 	//// TEST EMOTION SYSTEM ////
 
@@ -166,7 +166,7 @@ void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
 	{
 		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
 		{
-			if(glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 5)
+			if(glm::distance(transform->GetPosition(), otherObject->GetComponent<Transform>()->GetPosition()) < 5)
 			{
 				if (input->GetKeyToggle(YOKAI_INPUT::E))
 				{
@@ -189,7 +189,7 @@ void PlayerScript::TestEmotions(std::shared_ptr<GameObject> otherObject)
 {
 	std::shared_ptr<EmotionSystem> otherEmotionSystem = otherObject->GetComponent<EmotionSystem>();
 
-	if (glm::distance(transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 5)
+	if (glm::distance(transform->GetPosition(), otherObject->GetComponent<Transform>()->GetPosition()) < 5)
 	{
 		if (input->GetKeyToggle(YOKAI_INPUT::P))
 		{

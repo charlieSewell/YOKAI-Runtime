@@ -98,38 +98,38 @@ void PhysicsScene::Init()
 {
 	Player = m_objectManager.CreateObject("Player");
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
-	m_objectManager.GetObject(Player)->GetComponent<Transform>()->setPosition(11, 3, 1);
+	m_objectManager.GetObject(Player)->GetComponent<Transform>()->SetPosition(11, 3, 1);
 	m_objectManager.GetObject(Player)->Start();
 
 	//Walls and Box
 
 	Box = m_objectManager.CreateObject("Box");
 	m_objectManager.GetObject(Box)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/Desk/woodbox.gltf");
-	m_objectManager.GetObject(Box)->AddComponent<Transform>()->setPosition(glm::dvec3(12.125, 0.66, -10));
+	m_objectManager.GetObject(Box)->AddComponent<Transform>()->SetPosition(glm::dvec3(12.125, 0.66, -10));
 	m_objectManager.GetObject(Box)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.5, 0.5, 0.5));
 	m_objectManager.GetObject(Box)->Start();
 	m_objectManager.GetObject(Box)->GetComponent<BoxCollider>()->StaticSet();
-	m_objectManager.GetObject(Box)->GetComponent<Transform>()->setScale(0.5);
+	m_objectManager.GetObject(Box)->GetComponent<Transform>()->SetScale(0.5);
 
 	Wall1 = m_objectManager.CreateObject("Wall1");
 	m_objectManager.GetObject(Wall1)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/Desk/gridwall.gltf");
-	m_objectManager.GetObject(Wall1)->AddComponent<Transform>()->setPosition(glm::dvec3(12.125, -0.8, -10));
+	m_objectManager.GetObject(Wall1)->AddComponent<Transform>()->SetPosition(glm::dvec3(12.125, -0.8, -10));
 	m_objectManager.GetObject(Wall1)->Start();
-	m_objectManager.GetObject(Wall1)->GetComponent<Transform>()->setScale(10);
+	m_objectManager.GetObject(Wall1)->GetComponent<Transform>()->SetScale(10);
 
 	Wall2 = m_objectManager.CreateObject("Wall2");
 	m_objectManager.GetObject(Wall2)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/Desk/gridwall.gltf");
-	m_objectManager.GetObject(Wall2)->AddComponent<Transform>()->setPosition(glm::dvec3(6.6, 0.25, -6.5));
+	m_objectManager.GetObject(Wall2)->AddComponent<Transform>()->SetPosition(glm::dvec3(6.6, 0.25, -6.5));
 	m_objectManager.GetObject(Wall2)->Start();
-	m_objectManager.GetObject(Wall2)->GetComponent<Transform>()->setScale(5);
-	m_objectManager.GetObject(Wall2)->GetComponent<Transform>()->setRotation(glm::quat(0.5, 0.5, -0.5, 0.5));
+	m_objectManager.GetObject(Wall2)->GetComponent<Transform>()->SetScale(5);
+	m_objectManager.GetObject(Wall2)->GetComponent<Transform>()->SetRotation(glm::quat(0.5, 0.5, -0.5, 0.5));
 
 	Wall3 = m_objectManager.CreateObject("Wall3");
 	m_objectManager.GetObject(Wall3)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/Desk/gridwall.gltf");
-	m_objectManager.GetObject(Wall3)->AddComponent<Transform>()->setPosition(glm::dvec3(17.4, 0.25, -6.5));
+	m_objectManager.GetObject(Wall3)->AddComponent<Transform>()->SetPosition(glm::dvec3(17.4, 0.25, -6.5));
 	m_objectManager.GetObject(Wall3)->Start();
-	m_objectManager.GetObject(Wall3)->GetComponent<Transform>()->setScale(5);
-	m_objectManager.GetObject(Wall3)->GetComponent<Transform>()->setRotation(glm::quat(0.5, 0.5, -0.5, 0.5));
+	m_objectManager.GetObject(Wall3)->GetComponent<Transform>()->SetScale(5);
+	m_objectManager.GetObject(Wall3)->GetComponent<Transform>()->SetRotation(glm::quat(0.5, 0.5, -0.5, 0.5));
 
 	//Test 1 Init
 
@@ -143,12 +143,12 @@ void PhysicsScene::Init()
 
 	glm::mat4 offset = glm::mat4(1.0);
 	offset = glm::translate(offset, glm::vec3(0.0, -0.3, -0.00685));
-	m_objectManager.GetObject(Plank1)->AddComponent<Transform>()->setPosition(glm::dvec3(10.5, 2.66, -4));
+	m_objectManager.GetObject(Plank1)->AddComponent<Transform>()->SetPosition(glm::dvec3(10.5, 2.66, -4));
 	m_objectManager.GetObject(Plank1)->GetComponent<DrawableEntity>()->SetOffset(offset);
 	m_objectManager.GetObject(Plank1)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
 	m_objectManager.GetObject(Plank1)->Start();
 
-	m_objectManager.GetObject(Plank2)->AddComponent<Transform>()->setPosition(glm::dvec3(11.5, 2.66, -4));
+	m_objectManager.GetObject(Plank2)->AddComponent<Transform>()->SetPosition(glm::dvec3(11.5, 2.66, -4));
 	m_objectManager.GetObject(Plank2)->GetComponent<DrawableEntity>()->SetOffset(offset);
 	m_objectManager.GetObject(Plank2)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
 	m_objectManager.GetObject(Plank2)->Start();
@@ -157,7 +157,7 @@ void PhysicsScene::Init()
 	offset1 = glm::translate(offset1, glm::vec3(0.2075, -0.735, 0));
 	offset1 = glm::scale(offset1, glm::vec3(2.5, 2.5, 2.5));
 	m_objectManager.GetObject(Ball)->GetComponent<DrawableEntity>()->SetOffset(offset1);
-	m_objectManager.GetObject(Ball)->AddComponent<Transform>()->setPosition(glm::dvec3(14, 2.75, -3.95));
+	m_objectManager.GetObject(Ball)->AddComponent<Transform>()->SetPosition(glm::dvec3(14, 2.75, -3.95));
 	m_objectManager.GetObject(Ball)->AddComponent<SphereCollider>()->SetRadius(0.041);
 	m_objectManager.GetObject(Ball)->Start();
 
@@ -173,7 +173,7 @@ void PhysicsScene::Init()
 	offset2 = glm::translate(offset2, glm::vec3(0.2075, -0.735, 0));
 	offset2 = glm::scale(offset2, glm::vec3(2.5, 2.5, 2.5));
 	m_objectManager.GetObject(Ball2)->GetComponent<DrawableEntity>()->SetOffset(offset2);
-	m_objectManager.GetObject(Ball2)->AddComponent<Transform>()->setPosition(glm::dvec3(10, 2.72, -7));
+	m_objectManager.GetObject(Ball2)->AddComponent<Transform>()->SetPosition(glm::dvec3(10, 2.72, -7));
 	m_objectManager.GetObject(Ball2)->AddComponent<SphereCollider>()->SetRadius(0.041);
 	m_objectManager.GetObject(Ball2)->Start();
 
@@ -182,7 +182,7 @@ void PhysicsScene::Init()
 	offset3 = glm::translate(offset3, glm::vec3(0.2075, -0.735, 0));
 	offset3 = glm::scale(offset3, glm::vec3(2.5, 2.5, 2.5));
 	m_objectManager.GetObject(Ball3)->GetComponent<DrawableEntity>()->SetOffset(offset3);
-	m_objectManager.GetObject(Ball3)->AddComponent<Transform>()->setPosition(glm::dvec3(13, 2.70, -7));
+	m_objectManager.GetObject(Ball3)->AddComponent<Transform>()->SetPosition(glm::dvec3(13, 2.70, -7));
 	m_objectManager.GetObject(Ball3)->AddComponent<SphereCollider>()->SetRadius(0.041);
 	m_objectManager.GetObject(Ball3)->Start();
 	
@@ -195,12 +195,12 @@ void PhysicsScene::Init()
 
 	glm::mat4 offset4 = glm::mat4(1.0);
 	offset4 = glm::translate(offset4, glm::vec3(0.0, -0.3, -0.00685));
-	m_objectManager.GetObject(Plank3)->AddComponent<Transform>()->setPosition(glm::dvec3(11.5, 2.66, -10));
+	m_objectManager.GetObject(Plank3)->AddComponent<Transform>()->SetPosition(glm::dvec3(11.5, 2.66, -10));
 	m_objectManager.GetObject(Plank3)->GetComponent<DrawableEntity>()->SetOffset(offset4);
 	m_objectManager.GetObject(Plank3)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
 	m_objectManager.GetObject(Plank3)->Start();
 
-	m_objectManager.GetObject(Plank4)->AddComponent<Transform>()->setPosition(glm::dvec3(12.7, 2.66, -10));
+	m_objectManager.GetObject(Plank4)->AddComponent<Transform>()->SetPosition(glm::dvec3(12.7, 2.66, -10));
 	m_objectManager.GetObject(Plank4)->GetComponent<DrawableEntity>()->SetOffset(offset4);
 	m_objectManager.GetObject(Plank4)->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.02, 0.16, 0.1));
 	m_objectManager.GetObject(Plank4)->Start();
@@ -261,14 +261,14 @@ void PhysicsScene::InitColliders()
 	
 	// Floor
 	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(20, 0.2, 20));
-	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(15, 0, -15));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->SetPosition(glm::dvec3(15, 0, -15));
 	m_objectManager.GetObject(Colliders[counter])->Start();
 	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
 	++counter;
 
 	// Left Wall
 	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.10, 5.0, 5.0));
-	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(7.0, 0.25, -6.5));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->SetPosition(glm::dvec3(7.0, 0.25, -6.5));
 	m_objectManager.GetObject(Colliders[counter])->Start();
 	//m_objectManager.GetObject(Colliders[counter])->GetComponent<Transform>()->setRotation(glm::quat(0.966, 0, 0.259, 0));
 	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();
@@ -276,7 +276,7 @@ void PhysicsScene::InitColliders()
 
 	// Right Wall
 	m_objectManager.GetObject(Colliders[counter])->AddComponent<BoxCollider>()->SetExtents(glm::dvec3(0.10, 5.0, 5.0));
-	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->setPosition(glm::dvec3(17, 0.25, -6.5));
+	m_objectManager.GetObject(Colliders[counter])->AddComponent<Transform>()->SetPosition(glm::dvec3(17, 0.25, -6.5));
 	m_objectManager.GetObject(Colliders[counter])->Start();
 	//m_objectManager.GetObject(Colliders[counter])->GetComponent<Transform>()->setRotation(glm::quat(0.966, 0, -0.259, 0));
 	m_objectManager.GetObject(Colliders[counter])->GetComponent<BoxCollider>()->StaticSet();

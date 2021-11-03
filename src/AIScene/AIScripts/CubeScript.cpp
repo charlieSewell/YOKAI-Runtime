@@ -15,10 +15,10 @@ CubeScript::CubeScript(GameObject* parent)
 void CubeScript::Awake()
 {
 	Transform offset;
-	offset.setPosition(0.0f, -1.65f, 0.0f);
+	offset.SetPosition(0.0f, -1.65f, 0.0f);
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/shay/shay.gltf");
-	m_gameObject->GetComponent<DrawableEntity>()->SetOffset(offset.getMatrix());
-	m_transform->setScale(0.25);
+	m_gameObject->GetComponent<DrawableEntity>()->SetOffset(offset.GetMatrix());
+	m_transform->SetScale(0.25);
 	m_boxCollider->SetExtents(glm::vec3(0.25, 0.25, 0.25));
 	m_boxCollider->Start();
 	//m_boxCollider->StaticSet();
