@@ -3,6 +3,7 @@ target_sources(${PROJECT_NAME} PRIVATE
         main.cpp
 		DemoScene/DemoScene.cpp
 		Common/PlayerScript.cpp
+		ConnorsPhysicsScene/ConnorsPhysicsScene.cpp
 
 		AIScene/AIScene.cpp
 		AIScene/AIScripts/ZombieScript.cpp

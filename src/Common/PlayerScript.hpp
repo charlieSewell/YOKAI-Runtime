@@ -28,6 +28,8 @@ public:
 
 	void PlayerScript::DrawText(std::string text);
 
+	float movementSpeed = 0;
+
 private:
 	GameObject* gameObject;
 	std::shared_ptr<Transform> transform;
@@ -39,7 +41,6 @@ private:
 
 	std::shared_ptr<EmotionSystem> m_emotionSystem;
 
-	float movementSpeed = 0;
 	float lookSensitivity =	0;
 	float sprintMultiplyer = 0;
 	bool sprintActive = false;

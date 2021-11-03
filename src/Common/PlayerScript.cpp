@@ -199,7 +199,7 @@ void PlayerScript::TestEmotions(std::shared_ptr<GameObject> otherObject)
 
 		if (input->GetKeyToggle(YOKAI_INPUT::L))
 		{
-			// Meh
+			// Slightly frustrating
 			otherEmotionSystem->TriggerEmotionalResponse(-0.5, 0.3);
 		}
 

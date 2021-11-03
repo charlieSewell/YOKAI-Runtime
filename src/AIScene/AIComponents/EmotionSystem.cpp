@@ -99,7 +99,6 @@ void EmotionSystem::UpdateEmotionalState()
 	}
 }
 
-//#include <iostream>
 void EmotionSystem::Update(float deltaTime)
 {
 	UpdateEmotionalState();
