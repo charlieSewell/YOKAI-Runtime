@@ -17,6 +17,8 @@ target_sources(${PROJECT_NAME} PRIVATE
 		LightingScene/LightingScene.cpp
 
 		PhysicsScene/PhysicsScene.cpp
+
+		CharliePhysics/CharliePhysics.cpp
 )
 
 # Include project header files.
