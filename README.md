@@ -8,6 +8,15 @@
   libxinerama-dev libxcursor-dev libxi-dev`
 * macOS: `brew install cmake ninja llvm`
 * Windows: `None` 
+
+### Cloning
+```
+git clone https://github.com/charlieSewell/YOKAI-Runtime.git
+cd YOKAI-Runtime
+git checkout main
+git submodule update --init --recursive --depth 1
+```
+
 ### Building
 
 #### Linux & macOS:
