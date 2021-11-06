@@ -15,60 +15,53 @@ class CharliePhysics : public Scene
 {
   public:
 
-      CharliePhysics();
-    /**
-     * @brief Initialised the Scene
-     */
-    void Init() override;
-    /**
-     * @brief Updates the Scene before physics simulation
-     */
-    void Update(double frameRate) override;
-    /**
-     * @brief Updates the Scene After physics simulation
-     */
-    void LateUpdate(double frameRate);
-    /**
-     * @brief Draws the Scene
-     */
-    void Draw() override;
-    /**
-     * @brief Enables the Scene
-     */
-    void Enable() override;
-    /**
-     * @brief Disables the Scene
-     */
-    void Disable() override;
-  private:
-	
+  CharliePhysics();
+  /**
+   * @brief Initialised the Scene
+   */
+  void Init() override;
+  /**
+   * @brief Updates the Scene before physics simulation
+   */
+  void Update(double frameRate) override;
+  /**
+   * @brief Updates the Scene After physics simulation
+   */
+  void LateUpdate(double frameRate);
+  /**
+   * @brief Draws the Scene
+   */
+  void Draw() override;
+  /**
+   * @brief Enables the Scene
+   */
+  void Enable() override;
+  /**
+   * @brief Disables the Scene
+   */
+  void Disable() override;
+private:
+	/**
+	 * @brief Initialises Colliders
+	 */
 	void InitColliders();
-
-    void PhysicsTest1();
-
-
-    ///Is this scene active
-    bool isEnabled = true;
-
+  /**
+   * @brief Runs Physics Test1
+   */
+  void PhysicsTest1();
+  ///Is this scene active
+  bool isEnabled = true;
+  ///is physics on
 	bool m_physicsOn;
 
 	unsigned int Player;
-    unsigned int Box;
-    unsigned int Wall1;
-    unsigned int Wall2;
-    unsigned int Wall3;
+  unsigned int Wall;
 
-    unsigned int Plank1;
-    unsigned int Plank2;
-    unsigned int Ball;
-
-    unsigned int Plank3;
-    unsigned int Plank4;
-
-    unsigned int Ball2;
-    unsigned int Ball3;
+  unsigned int Plank1;
+  unsigned int Plank2;
+  unsigned int Ball;
 
 	unsigned int UIInputObject;
 	std::shared_ptr<Input> UIinput;
-    std::vector<unsigned int> Colliders;
+  std::vector<unsigned int> Colliders;
 };
