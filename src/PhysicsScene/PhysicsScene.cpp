@@ -36,7 +36,7 @@ void PhysicsScene::PhysicsTest1()
 
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetLinearVelocity(glm::dvec3(-1, 0, 0));
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetAngularVelocity(glm::dvec3(0, 0, 0));
-	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetMass(2.0);
+	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetMass(1.0);
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetIsStaticObject(false);
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetInertiaTensor();
 	m_objectManager.GetObject(Ball)->GetComponent<SphereCollider>()->SetOrientation(glm::quat(1, 0, 0, 0));
