@@ -1,11 +1,9 @@
 # YOKAI-Runtime
 
 ### Dependencies
-* Linux: `apt install build-essential clang ninja-build clang-9 \
-  libstdc++-9-dev ninja-build libgl1-mesa-dev libx11-dev \
-  libxrandr-dev libudev-dev libfreetype6-dev \
-  libopenal-dev libflac++-dev libvorbis-dev \
-  libxinerama-dev libxcursor-dev libxi-dev`
+* Linux: `apt install build-essential clang ninja-build libx11-dev \
+   libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxext-dev\
+   libxfixes-dev libglu1-mesa-dev`
 * macOS: `brew install cmake ninja llvm`
 * Windows: `None` 
 ### Building
