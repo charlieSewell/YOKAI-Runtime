@@ -1,6 +1,5 @@
 
 #include "Engine/Yokai.hpp"
-#include "DemoScene/DemoScene.hpp"
 #include "CharliePhysics/CharliePhysics.hpp"
 int main()
 {

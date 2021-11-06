@@ -116,7 +116,31 @@ void CharliePhysics::Update(double frameRate)
 		m_objectManager.GetObject(Plank1)->GetComponent<BoxCollider>()->SetGravityAffected(true);
 		m_objectManager.GetObject(Plank2)->GetComponent<BoxCollider>()->SetGravityAffected(true);
 	}
+	if(UIinput->GetKeyToggle(YOKAI_INPUT::Q))
+	{
+		unsigned int Bullet = m_objectManager.CreateObject("Bullet");
+		m_objectManager.GetObject(Bullet)->AddComponent<DrawableEntity>()->LoadModel("content/demoScene/models/LectureTheatre/physicsbullet.gltf");
 
+		glm::vec3 playerPos = m_objectManager.GetObject(Player)->GetComponent<Transform>()->GetPosition();
+		glm::vec3 frontDirection = m_objectManager.GetObject(Player)->GetComponent<Camera>()->m_frontDirection;
+
+		glm::mat4 offset1 = glm::mat4(1.0);
+		offset1 = glm::translate(offset1, glm::vec3(0.2075, -0.735, 0));
+		offset1 = glm::scale(offset1, glm::vec3(2.5, 2.5, 2.5));
+		m_objectManager.GetObject(Bullet)->GetComponent<DrawableEntity>()->SetOffset(offset1);
+		m_objectManager.GetObject(Bullet)->AddComponent<Transform>()->SetPosition(playerPos);
+		m_objectManager.GetObject(Bullet)->AddComponent<SphereCollider>()->SetRadius(0.041);
+		m_objectManager.GetObject(Bullet)->Start();
+
+		m_objectManager.GetObject(Bullet)->GetComponent<SphereCollider>()->SetLinearVelocity(glm::normalize(frontDirection) * 4.0f);
+		m_objectManager.GetObject(Bullet)->GetComponent<SphereCollider>()->SetAngularVelocity(glm::dvec3(0, 0, 0));
+		m_objectManager.GetObject(Bullet)->GetComponent<SphereCollider>()->SetMass(1.0f);
+		m_objectManager.GetObject(Bullet)->GetComponent<SphereCollider>()->SetIsStaticObject(false);
+		m_objectManager.GetObject(Bullet)->GetComponent<SphereCollider>()->SetInertiaTensor();
+		m_objectManager.GetObject(Bullet)->GetComponent<SphereCollider>()->SetOrientation(glm::quat(1, 0, 0, 0));
+		m_objectManager.GetObject(Bullet)->GetComponent<SphereCollider>()->SetCollisionCategory(Physics::CATEGORY2);
+		m_objectManager.GetObject(Bullet)->GetComponent<SphereCollider>()->SetCollisionMaskBits(Physics::CATEGORY1 | Physics::CATEGORY2);
+	}
 }
 void CharliePhysics::LateUpdate(double frameRate)
 {
