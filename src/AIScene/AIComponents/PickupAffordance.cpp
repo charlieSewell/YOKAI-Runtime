@@ -27,7 +27,7 @@ void PickupAffordance::Stop()
 {
 	IsUsing = false;
 	m_otherPickupAffordance->IsAffording = false;
-	m_otherPickupAffordance->transformPtr->setRotation(glm::quat{});
+	m_otherPickupAffordance->transformPtr->SetRotation(glm::quat{});
 	if(m_otherPickupAffordance->isDynamic)
 	{
 		m_otherPickupAffordance->colliderPtr->SetLinearVelocity(glm::normalize(GetDirection()) * 2.0f);
@@ -42,8 +42,8 @@ void PickupAffordance::Update(float deltaTime)
 		Transform transform = glm::inverse(glm::lookAt(GetPosition(), GetPosition() + GetDirection(), glm::vec3(0, 1, 0)));
 		glm::vec3 offset = GetDirection() * PickupFrontOffset;
 		offset.y += PickupHeightOffset;
-		transform.setPosition(GetPosition() + offset);
-		transform.setScale(m_otherPickupAffordance->transformPtr->getScale());
+		transform.SetPosition(GetPosition() + offset);
+		transform.SetScale(m_otherPickupAffordance->transformPtr->GetScale());
 		*m_otherPickupAffordance->transformPtr = transform;
 	}
 }

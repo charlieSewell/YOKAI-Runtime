@@ -19,14 +19,14 @@ ZombieScript::ZombieScript(GameObject* parent)
 void ZombieScript::Awake()
 {
 	Transform offset;
-	offset.setPosition(0.0f, -4.0f, 0.0f);
+	offset.SetPosition(0.0f, -4.0f, 0.0f);
 	m_gameObject->AddComponent<DrawableEntity>()->LoadModel("content/aiScene/models/Zombie/ZombieSmooth.gltf");
-	m_gameObject->AddComponent<DrawableEntity>()->SetOffset(offset.getMatrix());
-	m_transform->setScale(0.25);
+	m_gameObject->AddComponent<DrawableEntity>()->SetOffset(offset.GetMatrix());
+	m_transform->SetScale(0.25);
 	m_boxCollider->SetExtents(0.4, 1.1, 0.4);
 	m_boxCollider->Start();
 	m_boxCollider->StaticSet();
-	m_rayCaster->setOwnColliderID(m_boxCollider->GetColliderID());
+	m_rayCaster->SetOwnColliderID(m_boxCollider->GetColliderID());
 	m_automatedBehaviours->TopSpeed = m_topSpeed;
 	m_automatedBehaviours->SetCastHeight(0.5f);
 	m_automatedBehaviours->RotationSpeed = 0.005;
@@ -110,7 +110,7 @@ void ZombieScript::StateMachine()
 	case EMOTION::FRUSTRATED:
 		if (!m_evadeActive)
 		{
-			m_evadePosition = m_transform->getPosition();
+			m_evadePosition = m_transform->GetPosition();
 			m_evadeActive = true;
 		}
 		m_automatedBehaviours->evade(m_evadePosition);
@@ -119,7 +119,7 @@ void ZombieScript::StateMachine()
 	case EMOTION::FEAR:
 		if (!m_evadeActive)
 		{
-			m_evadePosition = m_transform->getPosition();
+			m_evadePosition = m_transform->GetPosition();
 			m_evadeActive = true;
 		}
 		m_automatedBehaviours->evade(m_evadePosition);
@@ -143,20 +143,20 @@ bool ZombieScript::CheckBite(std::shared_ptr<GameObject> otherObject)
 			m_automatedBehaviours->frontFeelerHit = -1;
 			m_automatedBehaviours->feelerLeftHit = -1;
 			m_automatedBehaviours->feelerRightHit = -1;
-			m_automatedBehaviours->seek(otherObject->GetComponent<Transform>()->getPosition());
+			m_automatedBehaviours->seek(otherObject->GetComponent<Transform>()->GetPosition());
 
-			if (glm::distance(m_transform->getPosition(), otherObject->GetComponent<Transform>()->getPosition()) < 2)
+			if (glm::distance(m_transform->GetPosition(), otherObject->GetComponent<Transform>()->GetPosition()) < 2)
 			{
 				biteAffordance->Interact(otherBiteAffordance);
 
 				int otherColliderID = 0;
 				if (otherObject->GetComponent<BoxCollider>() != nullptr)
 				{
-					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
+					m_rayCaster->SetExcludedColliderID(otherObject->GetComponent<BoxCollider>()->GetColliderID());
 				}
 				else if (otherObject->GetComponent<SphereCollider>() != nullptr)
 				{
-					m_rayCaster->setExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
+					m_rayCaster->SetExcludedColliderID(otherObject->GetComponent<SphereCollider>()->GetColliderID());
 				}
 				m_gameObject->GetComponent<DrawableEntity>()->SetAnimation("ZombieAttack");
 			}

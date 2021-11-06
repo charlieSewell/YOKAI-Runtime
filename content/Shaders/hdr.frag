@@ -2,17 +2,15 @@
 
 in vec2 TextureCoordinates;
 
-// Uniforms
-// Texture for the hdr buffer
+//framebuffer in
 uniform sampler2D hdrBuffer;
 
-// Controls exposure level of image
+//exposure level of image
 uniform float exposure;
 
 out vec4 fragColor;
 
 // Uses Reinhard tonemapping https://www.cs.utah.edu/~reinhard/cdrom/tonemap.pdf
-// with an added controllable exposure component
 
 void main() {
 	vec3 color = texture(hdrBuffer, TextureCoordinates).rgb;
