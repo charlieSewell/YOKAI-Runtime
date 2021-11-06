@@ -22,7 +22,11 @@ class AIScene : public Scene
 	/**
 	 * @brief Updates the Scene
 	 */
-    void Update(float frameRate) override;
+    void Update(double deltaTime) override;
+	void LateUpdate(double deltaTime) override;
+
+	void UpdateEmotionIcons(std::vector<unsigned int> actors, const int SIZE);
+
     /**
      * @brief Draws the Scene
      */
@@ -41,15 +45,33 @@ class AIScene : public Scene
     ///Is this scene active
     bool isEnabled = true;
 
-	bool m_physicsOn;
+	bool m_physicsOn = false;
 
+	// Object sizes will not be hard coded in later
 	unsigned int Player;
-	unsigned int Zombies;
 	unsigned int UIInputObject;
+	unsigned int House;
+
+	std::vector<unsigned int> Zombies;
+	std::vector<unsigned int> Dogs;
+	std::vector<unsigned int> Blakes;
+	std::vector<unsigned int> Cubes;
+	std::map<unsigned int, unsigned int> Emotions;
+
+	const int NUM_ZOMBIES = 3;
+	const int NUM_DOGS = 3;
+	const int NUM_BLAKES = 3;
+	const int NUM_CUBES = 3;
+
+	// Models
+	unsigned int m_calmModel;
+	unsigned int m_excitedModel;
+	unsigned int m_boredModel;
+	unsigned int m_frustrationModel;
+	unsigned int m_fearModel;
 
 	std::shared_ptr<Input> UIinput;
-
 	//colliders
-	unsigned int Colliders;
+	 std::vector<unsigned int> Colliders;
 
 };

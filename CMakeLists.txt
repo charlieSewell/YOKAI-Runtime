@@ -8,7 +8,7 @@ set(PROJECT_NAME YOKAI_RUNTIME)
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 # If enabled, the post build symlink will copy instead.
-option(CopyResources "CopyResources" ON)
+option(CopyResources "CopyResources" OFF)
 
 # Clang sanitizer settings.
 set(SANITIZER_OS "Darwin,Linux")
@@ -48,7 +48,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG    ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE  ${PROJECT_BINARY_DIR}/lib)
 
 # Define the executable.
-add_executable(${PROJECT_NAME} src/main.cpp )
+add_executable(${PROJECT_NAME} src/main.cpp)
 
 # Set C++ standard.
 set_target_properties(${PROJECT_NAME} PROPERTIES
