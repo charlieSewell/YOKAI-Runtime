@@ -1,5 +1,4 @@
 #include "PlayerScript.hpp"
-#include "AIScene/AIComponents/PickupAffordance.hpp"
 
 PlayerScript::PlayerScript(GameObject* parent)
 	:
@@ -8,14 +7,7 @@ PlayerScript::PlayerScript(GameObject* parent)
 	transform(gameObject->AddComponent<Transform>()),
 	camera(gameObject->AddComponent<Camera>()),
 	input(gameObject->AddComponent<Input>()),
-	sphereCollider(gameObject->AddComponent<SphereCollider>()),
-	rayCaster(gameObject->AddComponent<RayCaster>()),
-	affordanceSystem(gameObject->AddComponent<AffordanceSystem>()),
-	m_emotionSystem(gameObject->AddComponent<EmotionSystem>())
-{
-	
-}
-
+	sphereCollider(gameObject->AddComponent<SphereCollider>()){}
 
 void PlayerScript::Awake()
 {
@@ -24,8 +16,6 @@ void PlayerScript::Awake()
 	sprintMultiplyer = 4;
 	std::function<glm::vec3()> getPlayerPosition = [&]() { return transform->GetPosition(); };
 	std::function<glm::vec3()> getPlayerDirection = [&]() { return camera->m_frontDirection; };
-	affordanceSystem->AddAffordance<PickupAffordance>()->EnableAbility(getPlayerPosition, getPlayerDirection);
-	rayCaster->SetOwnColliderID(sphereCollider->GetColliderID());
 }
 
 void PlayerScript::Start()
@@ -44,27 +34,7 @@ void PlayerScript::Start()
 
 void PlayerScript::Update(float deltaTime)
 {
-
 	UpdateMovement();
-
-	std::shared_ptr<GameObject> otherObject;
-	int objectID = rayCaster->CastRay(camera->GetPosition(), camera->m_frontDirection, 10);
-	if(objectID != -1 && GetAISceneObject != nullptr)
-	{
-		otherObject = GetAISceneObject(objectID);
-		if(otherObject->GetComponent<AffordanceSystem>() != nullptr)
-		{
-			if(otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>() != nullptr)
-			{
-				CheckPickup(otherObject);
-			}
-		}
-
-		if (otherObject->GetComponent<EmotionSystem>() != nullptr)
-		{
-			TestEmotions(otherObject);
-		}
-	}
 }
 
 void PlayerScript::Draw()
@@ -132,83 +102,6 @@ void PlayerScript::UpdateMovement()
 
 	sphereCollider->SetPosition(transform->GetPosition());
 
-	//// TEST EMOTION SYSTEM ////
-
-	if (input->GetKeyState(YOKAI_INPUT::P))
-	{
-		// good
-		m_emotionSystem->TriggerEmotionalResponse(1, 0.9);
-	}
-
-	if (input->GetKeyState(YOKAI_INPUT::L))
-	{
-		// Meh
-		m_emotionSystem->TriggerEmotionalResponse(-0.5, 0.3);
-	}
-
-	if (input->GetKeyState(YOKAI_INPUT::M))
-	{
-		// Scary
-		m_emotionSystem->TriggerEmotionalResponse(-1, 1);
-	}
-		
-
-	////	  END TEST		////
-
-}
-
-void PlayerScript::CheckPickup(std::shared_ptr<GameObject> otherObject)
-{
-	std::shared_ptr<PickupAffordance> pickupAffordance = affordanceSystem->GetAffordance<PickupAffordance>();
-	std::shared_ptr<PickupAffordance> otherPickupAffordance = otherObject->GetComponent<AffordanceSystem>()->GetAffordance<PickupAffordance>();
-
-	if(otherPickupAffordance != nullptr)
-	{
-		if (pickupAffordance->HasAbility && !pickupAffordance->IsUsing && otherPickupAffordance->HasAffordance && !otherPickupAffordance->IsAffording)
-		{
-			if(glm::distance(transform->GetPosition(), otherObject->GetComponent<Transform>()->GetPosition()) < 5)
-			{
-				if (input->GetKeyToggle(YOKAI_INPUT::E))
-				{
-					pickupAffordance->Interact(otherPickupAffordance);
-				}
-			}
-		}
-		else if(pickupAffordance->IsUsing)
-		{
-			if (input->GetKeyToggle(YOKAI_INPUT::E))
-			{
-				pickupAffordance->Stop();
-			}
-		}
-	}
-
-}
-
-void PlayerScript::TestEmotions(std::shared_ptr<GameObject> otherObject)
-{
-	std::shared_ptr<EmotionSystem> otherEmotionSystem = otherObject->GetComponent<EmotionSystem>();
-
-	if (glm::distance(transform->GetPosition(), otherObject->GetComponent<Transform>()->GetPosition()) < 5)
-	{
-		if (input->GetKeyToggle(YOKAI_INPUT::P))
-		{
-			// good
-			otherEmotionSystem->TriggerEmotionalResponse(1, 0.9);
-		}
-
-		if (input->GetKeyToggle(YOKAI_INPUT::L))
-		{
-			// Meh
-			otherEmotionSystem->TriggerEmotionalResponse(-0.5, 0.3);
-		}
-
-		if (input->GetKeyToggle(YOKAI_INPUT::M))
-		{
-			// Scary
-			otherEmotionSystem->TriggerEmotionalResponse(-1, 1);
-		}
-	}
 }
 
 void PlayerScript::ToggleMouse()
