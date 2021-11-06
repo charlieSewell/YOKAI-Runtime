@@ -1,7 +1,5 @@
 # YOKAI-Runtime
-<p align=center>
-  <b> Yokai Runtime </b>
-</p>
+
 ### Dependencies
 * Linux: `apt install build-essential clang ninja-build clang-9 \
   libstdc++-9-dev ninja-build libgl1-mesa-dev libx11-dev \
