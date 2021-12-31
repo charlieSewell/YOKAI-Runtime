@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <functional>
-#include "Components/Transform.hpp"
+#include "Transform.hpp"
 #include "Components/BoxCollider.hpp"
 #include "AIScene/AIComponents/EmotionSystem.hpp"
 

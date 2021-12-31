@@ -8,9 +8,9 @@ int main()
 {
 	auto& engine = Yokai::getInstance();
 
+	engine.AddScene(std::shared_ptr<Scene>(new LightingScene()));
 	engine.AddScene(std::shared_ptr<Scene>(new DemoScene()));
 	engine.AddScene(std::shared_ptr<Scene>(new AIScene()));
-	engine.AddScene(std::shared_ptr<Scene>(new LightingScene()));
 	engine.AddScene(std::shared_ptr<Scene>(new PhysicsScene()));
 
     engine.Run();

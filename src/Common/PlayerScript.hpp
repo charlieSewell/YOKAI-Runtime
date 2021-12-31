@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Engine/GameObject.hpp"
-#include "Components/Transform.hpp"
-#include "Components/Component.hpp"
-#include "Components/Camera.hpp"
+#include "Transform.hpp"
+#include "Camera.hpp"
 #include "Components/SphereCollider.hpp"
 #include "Components/InputComponent.hpp"
 #include "Components/ConcaveCollider.hpp"

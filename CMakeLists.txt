@@ -5,7 +5,7 @@ if(APPLE)
 endif(APPLE)
 # Set the project details.
 set(PROJECT_NAME YOKAI_RUNTIME)
-project(${PROJECT_NAME} LANGUAGES CXX)
+project(${PROJECT_NAME} LANGUAGES C CXX)
 
 # If enabled, the post build symlink will copy instead.
 option(CopyResources "CopyResources" OFF)
@@ -90,7 +90,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
         # Disable specific warnings.
         -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
         -Wno-deprecated-declarations -Wno-exit-time-destructors
-        -Wno-switch-enum -Wno-weak-vtables -Wno-global-constructors>
+        -Wno-switch-enum -Wno-weak-vtables -Wno-global-constructors -Wunused-function>
         # GCC
         $<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
         # Visual Studio

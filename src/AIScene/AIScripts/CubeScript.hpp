@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Engine/GameObject.hpp"
-#include "Components/Transform.hpp"
-#include "Components/Component.hpp"
+#include "Transform.hpp"
 #include "Components/InputComponent.hpp"
 #include "Components/BoxCollider.hpp"
 #include "Components/DrawableEntity.hpp"

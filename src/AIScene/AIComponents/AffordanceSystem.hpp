@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IAffordance.hpp"
-#include "Components/Component.hpp"
+#include "Engine/Component.hpp"
 #include <vector>
 #include <memory>
 
