@@ -13,7 +13,8 @@ void LightingScene::Init()
     Scene =  m_objectManager.CreateObject();
     m_objectManager.GetObject(Scene)->AddComponent<DrawableEntity>()->LoadModel("content/FlightHelmet/FlightHelmet.gltf");
     m_objectManager.GetObject(Scene)->Start();	// This line only exists to add a transform. Should come up with a better solution
-	m_objectManager.GetObject(Scene)->GetComponent<Transform>()->Scale(1);
+	m_objectManager.GetObject(Scene)->GetComponent<Transform>()->Scale(0.1);
+	m_objectManager.GetObject(Scene)->GetComponent<Transform>()->Rotate(90,{0,1,0});
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
 	m_objectManager.GetObject(Player)->Start();
 	for (int i = 0; i < 0; i++) 
