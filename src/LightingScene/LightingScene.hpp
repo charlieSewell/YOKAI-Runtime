@@ -51,6 +51,6 @@ class LightingScene : public Scene
 	unsigned int UIInputObject;
 
 	std::shared_ptr<Input> UIinput;
-  glm::vec3 RandomPosition(std::uniform_real_distribution<> dis, std::mt19937 gen);
+  PointLight RandomLight();
 
 };

@@ -8,7 +8,7 @@ public:
 
 	IAffordance() = default;
 
-	virtual void Update(float deltaTime) {};
+	virtual void Update(float deltaTime) = 0;
 
 	bool HasAffordance = false;
 	bool HasAbility = false;
@@ -20,5 +20,4 @@ public:
 	virtual void Stop() = 0;
 
 protected:
-
 };

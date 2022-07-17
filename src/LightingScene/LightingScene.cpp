@@ -8,24 +8,29 @@ LightingScene::LightingScene()
 
 void LightingScene::Init()
 {
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_real_distribution<> dis(0, 1);
+	
 	Player = m_objectManager.CreateObject();
     Scene =  m_objectManager.CreateObject();
-    m_objectManager.GetObject(Scene)->AddComponent<DrawableEntity>()->LoadModel("content/sponza/sponza.obj");
+	unsigned int test =  m_objectManager.CreateObject();
+	unsigned int test2 =  m_objectManager.CreateObject();
+	m_objectManager.GetObject(Scene)->AddComponent<DrawableEntity>()->LoadModel("content/new/Sponza/Sponza.gltf");
+	m_objectManager.GetObject(test2)->AddComponent<DrawableEntity>()->LoadModel("content/FlightHelmet/FlightHelmet.gltf");
+    m_objectManager.GetObject(test)->AddComponent<DrawableEntity>()->LoadModel("content/glTF-Sample-Models/2.0/MetalRoughSpheres/glTF/MetalRoughSpheres.gltf");
     m_objectManager.GetObject(Scene)->Start();	// This line only exists to add a transform. Should come up with a better solution
-	m_objectManager.GetObject(Scene)->GetComponent<Transform>()->Scale(0.1);
-
+	m_objectManager.GetObject(test)->Start();	// This line only exists to add a transform. Should come up with a better solution
+	m_objectManager.GetObject(test2)->Start();	// This line only exists to add a transform. Should come up with a better solution
+	m_objectManager.GetObject(test2)->GetComponent<Transform>()->Translate(0,10,0);
+	m_objectManager.GetObject(test2)->GetComponent<Transform>()->Scale(0.1);
+	
+	m_objectManager.GetObject(test)->GetComponent<Transform>()->Scale(4);
+	m_objectManager.GetObject(test)->GetComponent<Transform>()->Translate(0,10,0);	
+	m_objectManager.GetObject(Scene)->GetComponent<Transform>()->Scale(100);
 	m_objectManager.GetObject(Player)->AddComponent<PlayerScript>();
 	m_objectManager.GetObject(Player)->Start();
-	for (int i = 0; i < 1000; i++) 
-	{
-		m_lightManager.AddLight(glm::vec4(1.0f + dis(gen), 1.0f + dis(gen), 1.0f + dis(gen), 1.0f),glm::vec4(RandomPosition(dis, gen), 1.0f),glm::vec4(glm::vec3(0.0f), 40.0f));
-	}
+	m_lightManager.AddLight({0.1,1.5,-0.5},{1,1,1},0);
 	UIInputObject = m_objectManager.CreateObject();
 	UIinput = m_objectManager.GetObject(UIInputObject)->AddComponent<Input>();
-
+	//YOKAI_PARSE::LoadScene("content/sponza.json", m_objectManager, m_lightManager);
 }
 
 void LightingScene::Update(double deltaTime)
@@ -38,16 +43,15 @@ void LightingScene::Update(double deltaTime)
 	}	
 	if(m_physicsOn)
 	{
-		for (int i = 0; i < 1000; i++) 
+		for (int i = 0; i < 1; i++) 
 		{
-			m_lightManager.GetLight(i)->position.y = m_lightManager.GetLight(i)->position.y = fmod((m_lightManager.GetLight(i)->position.y + (-4.5f * 0.1) - 0.0f + 170.0f), 170.0f) + 0.0f;
+			//m_lightManager.GetLight(i)->position.y = m_lightManager.GetLight(i)->position.y = fmod((m_lightManager.GetLight(i)->position.y + (-3.0f * 0.01) - 0.0f + 3.0f), 3.0f) + 0.0f;
 		}
 	}
 	if(UIinput->GetKeyState(YOKAI_INPUT::G))
 	{
 		YOKAI_PARSE::SaveScene("content/sponza.json", m_objectManager, m_lightManager);
 	}
-	m_lightManager.UpdateLights();
 	//PhysicsSystem::getInstance().IsDebugEnabled(m_physicsOn);
 }
 void LightingScene::LateUpdate(double deltaTime)
@@ -69,17 +73,20 @@ void LightingScene::Disable()
 {
     isEnabled = false;
 }
-glm::vec3 LightingScene::RandomPosition(std::uniform_real_distribution<> dis, std::mt19937 gen) 
+PointLight LightingScene::RandomLight() 
 {
-	const glm::vec3 LIGHT_MIN_BOUNDS = glm::vec3(-270.0f, 0.0f, -270.0f);
-    const glm::vec3 LIGHT_MAX_BOUNDS = glm::vec3(270.0f, 170.0f, 270.0f);
+	std::random_device rd;
+    std::seed_seq seed = { rd() };
+    std::mt19937 gen(seed);
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+	
+	constexpr float POWER_MIN = 20.0f;
+    constexpr float POWER_MAX = 100.0f;
+	glm::vec3 scale {10,10,10};
 	glm::vec3 position = glm::vec3(0.0);
-	for (int i = 0; i < 3; i++) 
-	{
-		float min = LIGHT_MIN_BOUNDS[i];
-		float max = LIGHT_MAX_BOUNDS[i];
-		position[i] = (GLfloat)dis(gen) * (max - min) + min;
-	}
+	position += glm::vec3(dist(gen), dist(gen), dist(gen)) * scale - (scale * 0.5f);
+    glm::vec3 color = glm::vec3(dist(gen), dist(gen), dist(gen));
+    glm::vec3 power = color * glm::vec3(dist(gen) * (POWER_MAX - POWER_MIN) + POWER_MIN);
 
-	return position;
+	return { position, power };
 }

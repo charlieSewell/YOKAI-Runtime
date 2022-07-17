@@ -121,7 +121,7 @@ void main() {
 		vec3 irradiance = lightColor.rgb * ((base_diffuse.rgb * diffuse) + (base_specular.rgb * vec3(specular))) * attenuation;
 		color.rgb += irradiance;
 	}
-	color.rgb += base_diffuse.rgb * 0.08;
+	color.rgb += base_diffuse.rgb * 0.01;
 
 	// Use the mask to discard any fragments that are transparent
 	if (base_diffuse.a <= 0.2) {

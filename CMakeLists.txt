@@ -1,14 +1,15 @@
+enable_testing()
 # Set cmake minimum version.
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.22)
 if(APPLE)
     set(CMAKE_MACOSX_RPATH ON)
 endif(APPLE)
 # Set the project details.
 set(PROJECT_NAME YOKAI_RUNTIME)
-project(${PROJECT_NAME} LANGUAGES CXX)
+project(${PROJECT_NAME} LANGUAGES C CXX)
 
 # If enabled, the post build symlink will copy instead.
-option(CopyResources "CopyResources" OFF)
+option(CopyResources "CopyResources" ON)
 
 # Clang sanitizer settings.
 set(SANITIZER_OS "Darwin,Linux")
@@ -90,11 +91,11 @@ target_compile_options(${PROJECT_NAME} PRIVATE
         # Disable specific warnings.
         -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded
         -Wno-deprecated-declarations -Wno-exit-time-destructors
-        -Wno-switch-enum -Wno-weak-vtables -Wno-global-constructors>
+        -Wno-switch-enum -Wno-weak-vtables -Wno-global-constructors -Wunused-function>
         # GCC
         $<$<CXX_COMPILER_ID:GNU>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
         # Visual Studio
-        $<$<CXX_COMPILER_ID:MSVC>:/W4>
+        $<$<CXX_COMPILER_ID:MSVC>:/W4 /external:anglebrackets /external:W0>
         # Enable the clang sanitizer.
         $<$<AND:$<CONFIG:Debug>,$<CXX_COMPILER_ID:Clang>,$<PLATFORM_ID:${SANITIZER_OS}>>:${SANITIZER_FLAGS}>
         )
