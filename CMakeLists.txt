@@ -1,3 +1,4 @@
+enable_testing()
 # Set cmake minimum version.
 cmake_minimum_required(VERSION 3.22)
 if(APPLE)
